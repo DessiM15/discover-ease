@@ -14,6 +14,7 @@ import {
   Settings,
   Scale,
   Bell,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,7 @@ const navigation = [
   { name: "Discovery", href: "/discovery", icon: FileSearch },
   { name: "Documents", href: "/documents", icon: FileText },
   { name: "Productions", href: "/productions", icon: FolderOpen },
+  { name: "Workflows", href: "/workflows", icon: Sparkles },
   { name: "Billing", href: "/billing", icon: DollarSign },
   { name: "Calendar", href: "/calendar", icon: Calendar },
   { name: "Settings", href: "/settings", icon: Settings },
