@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "sync-users": "tsx scripts/sync-auth-users.ts",
+    "fix-references": "tsx scripts/fix-user-references.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
