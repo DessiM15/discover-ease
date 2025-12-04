@@ -31,7 +31,17 @@ const navigation = [
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  user?: {
+    first_name?: string | null;
+    last_name?: string | null;
+    firms?: {
+      name?: string | null;
+    } | null;
+  } | null;
+}
+
+export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -74,7 +84,18 @@ export function Sidebar() {
       </nav>
 
       {/* User section */}
-      <div className="border-t border-slate-800 p-4">
+      <div className="border-t border-slate-800 p-4 space-y-2">
+        {user && (
+          <div className="rounded-lg bg-slate-900/50 p-3">
+            <p className="text-xs text-slate-400 mb-1">Signed in as</p>
+            <p className="text-sm font-medium text-white">
+              {user.first_name} {user.last_name}
+            </p>
+            {user.firms && (
+              <p className="text-xs text-slate-400 mt-1">{user.firms.name}</p>
+            )}
+          </div>
+        )}
         <div className="flex items-center gap-3 rounded-lg bg-slate-900/50 p-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/20 text-amber-500">
             <Bell className="h-5 w-5" />
