@@ -25,14 +25,14 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const supabase = createClient();
 
-  // Get user's firm ID
+  // Get user's firm ID and name
   const { data: userData } = useQuery({
     queryKey: ["user", user?.id],
     queryFn: async () => {
       if (!user) return null;
       const { data, error } = await supabase
         .from("users")
-        .select("firm_id")
+        .select("firm_id, first_name, last_name")
         .eq("id", user.id)
         .single();
       if (error) throw error;
@@ -91,7 +91,9 @@ export default function DashboardPage() {
       <div className="glass rounded-xl border border-slate-800 bg-gradient-to-r from-amber-500/10 to-slate-900/80 p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Welcome back!</h1>
+            <h1 className="text-2xl font-bold text-white">
+              Welcome back{userData?.first_name ? `, ${userData.first_name}` : ""}!
+            </h1>
             <p className="mt-1 text-slate-400">Here's what's happening with your practice today.</p>
           </div>
           <Button asChild>
