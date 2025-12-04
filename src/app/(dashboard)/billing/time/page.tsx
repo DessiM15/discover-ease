@@ -98,7 +98,7 @@ export default function TimeTrackingPage() {
         </Dialog>
       )}
 
-      <TimeEntryTable />
+      <TimeEntryTable firmId={undefined} caseId={undefined} />
     </div>
   );
 }

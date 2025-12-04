@@ -12,51 +12,96 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Edit, Trash2, CheckSquare, Square } from "lucide-react";
+import { Edit, Trash2, CheckSquare, Square, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { createClient } from "@/lib/supabase/client";
+import { useAuth } from "@/components/providers/auth-provider";
 
-const demoEntries = [
-  {
-    id: "1",
-    date: "2024-12-10",
-    caseName: "Smith v. Johnson",
-    description: "Draft motion for summary judgment",
-    hours: 2.5,
-    rate: 300,
-    amount: 750,
-    activityCode: "Drafting",
-    isBillable: true,
-    isBilled: false,
-  },
-  {
-    id: "2",
-    date: "2024-12-10",
-    caseName: "Estate of Williams",
-    description: "Client meeting - estate planning",
-    hours: 1.0,
-    rate: 300,
-    amount: 300,
-    activityCode: "Meeting",
-    isBillable: true,
-    isBilled: false,
-  },
-  {
-    id: "3",
-    date: "2024-12-09",
-    caseName: "State v. Davis",
-    description: "Research case law on search and seizure",
-    hours: 3.0,
-    rate: 300,
-    amount: 900,
-    activityCode: "Research",
-    isBillable: true,
-    isBilled: true,
-  },
-];
+interface TimeEntryTableProps {
+  firmId?: string;
+  caseId?: string;
+}
 
-export function TimeEntryTable() {
+export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
   const [dateFilter, setDateFilter] = useState("this_week");
+  const supabase = createClient();
+  const { user } = useAuth();
+
+  // Get user's firm ID if not provided
+  const { data: userData } = useQuery({
+    queryKey: ["user", user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data, error } = await supabase
+        .from("users")
+        .select("firm_id")
+        .eq("id", user.id)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && !firmId,
+  });
+
+  const effectiveFirmId = firmId || userData?.firm_id;
+
+  // Calculate date range based on filter
+  const getDateRange = () => {
+    const now = new Date();
+    switch (dateFilter) {
+      case "today":
+        return {
+          start: new Date(now.setHours(0, 0, 0, 0)).toISOString(),
+          end: new Date(now.setHours(23, 59, 59, 999)).toISOString(),
+        };
+      case "this_week":
+        const weekStart = new Date(now);
+        weekStart.setDate(now.getDate() - now.getDay());
+        weekStart.setHours(0, 0, 0, 0);
+        return {
+          start: weekStart.toISOString(),
+          end: new Date().toISOString(),
+        };
+      case "this_month":
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        return {
+          start: monthStart.toISOString(),
+          end: new Date().toISOString(),
+        };
+      default:
+        return null;
+    }
+  };
+
+  const dateRange = getDateRange();
+
+  // Fetch time entries
+  const { data: timeEntries, isLoading } = useQuery({
+    queryKey: ["time-entries", effectiveFirmId, caseId, dateFilter],
+    queryFn: async () => {
+      if (!effectiveFirmId) return [];
+      let query = supabase
+        .from("time_entries")
+        .select("*, cases(name), users(first_name, last_name)")
+        .eq("firm_id", effectiveFirmId)
+        .order("date", { ascending: false });
+
+      if (caseId) {
+        query = query.eq("case_id", caseId);
+      }
+
+      if (dateRange) {
+        query = query.gte("date", dateRange.start).lte("date", dateRange.end);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!effectiveFirmId,
+  });
 
   const toggleSelect = (id: string) => {
     setSelectedEntries((prev) =>
@@ -65,18 +110,32 @@ export function TimeEntryTable() {
   };
 
   const toggleSelectAll = () => {
-    if (selectedEntries.length === demoEntries.length) {
+    if (!timeEntries) return;
+    if (selectedEntries.length === timeEntries.length) {
       setSelectedEntries([]);
     } else {
-      setSelectedEntries(demoEntries.map((e) => e.id));
+      setSelectedEntries(timeEntries.map((e: any) => e.id));
     }
   };
 
-  const totalHours = demoEntries.reduce((sum, e) => sum + e.hours, 0);
-  const totalAmount = demoEntries.reduce((sum, e) => sum + e.amount, 0);
-  const unbilledAmount = demoEntries
-    .filter((e) => !e.isBilled)
-    .reduce((sum, e) => sum + e.amount, 0);
+  const totalHours = timeEntries?.reduce((sum: number, e: any) => sum + parseFloat(e.hours || 0), 0) || 0;
+  const totalAmount = timeEntries?.reduce((sum: number, e: any) => sum + parseFloat(e.amount || 0), 0) || 0;
+  const unbilledAmount =
+    timeEntries
+      ?.filter((e: any) => !e.is_billed)
+      .reduce((sum: number, e: any) => sum + parseFloat(e.amount || 0), 0) || 0;
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -104,116 +163,121 @@ export function TimeEntryTable() {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-slate-800">
-                <th className="px-4 py-3 text-left">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                    onClick={toggleSelectAll}
-                  >
-                    {selectedEntries.length === demoEntries.length ? (
-                      <CheckSquare className="h-4 w-4" />
-                    ) : (
-                      <Square className="h-4 w-4" />
-                    )}
-                  </Button>
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Date</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Case</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">
-                  Description
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Hours</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Rate</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Amount</th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-slate-400">Status</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {demoEntries.map((entry) => (
-                <tr
-                  key={entry.id}
-                  className="border-b border-slate-800/50 hover:bg-slate-900/50 transition-colors"
-                >
-                  <td className="px-4 py-3">
+        {timeEntries && timeEntries.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-slate-800">
+                  <th className="px-4 py-3 text-left">
                     <Button
                       variant="ghost"
                       size="icon"
                       className="h-6 w-6"
-                      onClick={() => toggleSelect(entry.id)}
+                      onClick={toggleSelectAll}
                     >
-                      {selectedEntries.includes(entry.id) ? (
+                      {selectedEntries.length === timeEntries.length ? (
                         <CheckSquare className="h-4 w-4" />
                       ) : (
                         <Square className="h-4 w-4" />
                       )}
                     </Button>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-slate-300">
-                    {new Date(entry.date).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-white">{entry.caseName}</td>
-                  <td className="px-4 py-3 text-sm text-slate-300 max-w-xs truncate">
-                    {entry.description}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-slate-300 text-right">
-                    {entry.hours.toFixed(2)}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-slate-300 text-right">
-                    ${entry.rate.toFixed(2)}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-white font-medium text-right">
-                    ${entry.amount.toFixed(2)}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <div className="flex items-center justify-center gap-2">
-                      {entry.isBilled ? (
-                        <Badge variant="success">Billed</Badge>
-                      ) : (
-                        <Badge variant={entry.isBillable ? "warning" : "outline"}>
-                          {entry.isBillable ? "Unbilled" : "Non-billable"}
-                        </Badge>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Edit className="h-4 w-4" />
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Case</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">
+                    Description
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Hours</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Rate</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Amount</th>
+                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400">Status</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {timeEntries.map((entry: any) => (
+                  <tr
+                    key={entry.id}
+                    className="border-b border-slate-800/50 hover:bg-slate-900/50 transition-colors"
+                  >
+                    <td className="px-4 py-3">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6"
+                        onClick={() => toggleSelect(entry.id)}
+                      >
+                        {selectedEntries.includes(entry.id) ? (
+                          <CheckSquare className="h-4 w-4" />
+                        ) : (
+                          <Square className="h-4 w-4" />
+                        )}
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-slate-300">
+                      {new Date(entry.date).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-white">
+                      {entry.cases?.name || "No case"}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-slate-300 max-w-xs truncate">
+                      {entry.description}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-slate-300 text-right">
+                      {parseFloat(entry.hours || 0).toFixed(2)}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-slate-300 text-right">
+                      ${parseFloat(entry.rate || 0).toFixed(2)}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-white font-medium text-right">
+                      ${parseFloat(entry.amount || 0).toFixed(2)}
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        {entry.is_billed ? (
+                          <Badge variant="success">Billed</Badge>
+                        ) : (
+                          <Badge variant={entry.is_billable ? "warning" : "outline"}>
+                            {entry.is_billable ? "Unbilled" : "Non-billable"}
+                          </Badge>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr className="border-t-2 border-slate-800">
+                  <td colSpan={4} className="px-4 py-4 text-sm font-medium text-white">
+                    Totals
+                  </td>
+                  <td className="px-4 py-4 text-sm font-medium text-white text-right">
+                    {totalHours.toFixed(2)} hrs
+                  </td>
+                  <td colSpan={2} className="px-4 py-4 text-sm font-medium text-white text-right">
+                    ${totalAmount.toFixed(2)}
+                  </td>
+                  <td colSpan={2} className="px-4 py-4 text-sm text-slate-400 text-right">
+                    Unbilled: ${unbilledAmount.toFixed(2)}
                   </td>
                 </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr className="border-t-2 border-slate-800">
-                <td colSpan={4} className="px-4 py-4 text-sm font-medium text-white">
-                  Totals
-                </td>
-                <td className="px-4 py-4 text-sm font-medium text-white text-right">
-                  {totalHours.toFixed(2)} hrs
-                </td>
-                <td colSpan={2} className="px-4 py-4 text-sm font-medium text-white text-right">
-                  ${totalAmount.toFixed(2)}
-                </td>
-                <td colSpan={2} className="px-4 py-4 text-sm text-slate-400 text-right">
-                  Unbilled: ${unbilledAmount.toFixed(2)}
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+              </tfoot>
+            </table>
+          </div>
+        ) : (
+          <p className="text-center text-slate-400 py-8">No time entries found</p>
+        )}
       </CardContent>
     </Card>
   );
 }
-

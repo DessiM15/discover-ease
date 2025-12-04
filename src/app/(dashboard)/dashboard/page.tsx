@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,28 +12,77 @@ import {
   Calendar,
   Activity,
   Sparkles,
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
+import { useDashboardStats, useRecentCases, useUpcomingDeadlines } from "@/hooks/use-dashboard";
+import { useAuth } from "@/components/providers/auth-provider";
+import { useQuery } from "@tanstack/react-query";
+import { createClient } from "@/lib/supabase/client";
+import { formatDistanceToNow } from "date-fns";
 
 export default function DashboardPage() {
-  // Demo data - will be replaced with real data hooks
+  const { user } = useAuth();
+  const supabase = createClient();
+
+  // Get user's firm ID
+  const { data: userData } = useQuery({
+    queryKey: ["user", user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data, error } = await supabase
+        .from("users")
+        .select("firm_id")
+        .eq("id", user.id)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  const firmId = userData?.firm_id;
+  const { data: dashboardStats, isLoading: statsLoading } = useDashboardStats(firmId || "");
+  const { data: recentCases, isLoading: casesLoading } = useRecentCases(firmId || "");
+  const { data: deadlines, isLoading: deadlinesLoading } = useUpcomingDeadlines(firmId || "");
+
+  if (statsLoading || casesLoading || deadlinesLoading || !firmId) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+      </div>
+    );
+  }
+
   const stats = [
-    { label: "Active Cases", value: "24", icon: Briefcase, change: "+12%", trend: "up" },
-    { label: "Documents", value: "1,247", icon: FileText, change: "+8%", trend: "up" },
-    { label: "Pending Tasks", value: "18", icon: Clock, change: "-5%", trend: "down" },
-    { label: "Overdue", value: "3", icon: AlertCircle, change: "-2", trend: "down" },
-  ];
-
-  const recentCases = [
-    { id: "1", name: "Smith v. Johnson", type: "Personal Injury", status: "active", date: "2024-12-01" },
-    { id: "2", name: "Estate of Williams", type: "Estate Planning", status: "active", date: "2024-11-28" },
-    { id: "3", name: "State v. Davis", type: "Criminal Defense", status: "pending", date: "2024-11-25" },
-  ];
-
-  const upcomingDeadlines = [
-    { id: "1", title: "Discovery Response Due", case: "Smith v. Johnson", date: "2024-12-10", type: "deadline" },
-    { id: "2", title: "Motion Hearing", case: "Estate of Williams", date: "2024-12-15", type: "court_date" },
-    { id: "3", title: "Deposition", case: "State v. Davis", date: "2024-12-20", type: "deposition" },
+    {
+      label: "Active Cases",
+      value: dashboardStats?.activeCases?.toString() || "0",
+      icon: Briefcase,
+      change: "+12%",
+      trend: "up" as const,
+    },
+    {
+      label: "Documents",
+      value: dashboardStats?.documents?.toLocaleString() || "0",
+      icon: FileText,
+      change: "+8%",
+      trend: "up" as const,
+    },
+    {
+      label: "Pending Tasks",
+      value: dashboardStats?.pendingTasks?.toString() || "0",
+      icon: Clock,
+      change: "-5%",
+      trend: "down" as const,
+    },
+    {
+      label: "Overdue",
+      value: dashboardStats?.overdue?.toString() || "0",
+      icon: AlertCircle,
+      change: "-2",
+      trend: "down" as const,
+    },
   ];
 
   return (
@@ -43,7 +94,9 @@ export default function DashboardPage() {
             <h1 className="text-2xl font-bold text-white">Welcome back!</h1>
             <p className="mt-1 text-slate-400">Here's what's happening with your practice today.</p>
           </div>
-          <Button>View All Cases</Button>
+          <Button asChild>
+            <Link href="/cases">View All Cases</Link>
+          </Button>
         </div>
       </div>
 
@@ -105,30 +158,39 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentCases.map((caseItem) => (
-                <div
-                  key={caseItem.id}
-                  className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/50 p-4 hover:bg-slate-900 transition-colors"
-                >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium text-white">{caseItem.name}</h4>
-                      <Badge variant="secondary" className="text-xs">
-                        {caseItem.type}
-                      </Badge>
-                    </div>
-                    <p className="mt-1 text-xs text-slate-400">
-                      Updated {new Date(caseItem.date).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <Badge
-                    variant={caseItem.status === "active" ? "default" : "outline"}
-                    className="ml-4"
+              {recentCases && recentCases.length > 0 ? (
+                recentCases.map((caseItem: any) => (
+                  <div
+                    key={caseItem.id}
+                    className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/50 p-4 hover:bg-slate-900 transition-colors"
                   >
-                    {caseItem.status}
-                  </Badge>
-                </div>
-              ))}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/cases/${caseItem.id}`}
+                          className="font-medium text-white hover:text-amber-500"
+                        >
+                          {caseItem.name}
+                        </Link>
+                        <Badge variant="secondary" className="text-xs">
+                          {caseItem.type?.replace("_", " ") || "Other"}
+                        </Badge>
+                      </div>
+                      <p className="mt-1 text-xs text-slate-400">
+                        Updated {formatDistanceToNow(new Date(caseItem.updated_at), { addSuffix: true })}
+                      </p>
+                    </div>
+                    <Badge
+                      variant={caseItem.status === "active" ? "default" : "outline"}
+                      className="ml-4"
+                    >
+                      {caseItem.status}
+                    </Badge>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-slate-400 py-8">No cases found</p>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -148,30 +210,36 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {upcomingDeadlines.map((deadline) => (
-                <div
-                  key={deadline.id}
-                  className="flex items-start gap-4 rounded-lg border border-slate-800 bg-slate-900/50 p-4"
-                >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10">
-                    <Calendar className="h-5 w-5 text-amber-500" />
+              {deadlines && deadlines.length > 0 ? (
+                deadlines.map((deadline: any) => (
+                  <div
+                    key={deadline.id}
+                    className="flex items-start gap-4 rounded-lg border border-slate-800 bg-slate-900/50 p-4"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10">
+                      <Calendar className="h-5 w-5 text-amber-500" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-white">{deadline.title}</h4>
+                      <p className="mt-1 text-sm text-slate-400">
+                        {deadline.cases?.name || "No case"}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {new Date(deadline.start_date).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      {deadline.type?.replace("_", " ") || "Other"}
+                    </Badge>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium text-white">{deadline.title}</h4>
-                    <p className="mt-1 text-sm text-slate-400">{deadline.case}</p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      {new Date(deadline.date).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    {deadline.type.replace("_", " ")}
-                  </Badge>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-center text-slate-400 py-8">No upcoming deadlines</p>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -211,4 +279,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-

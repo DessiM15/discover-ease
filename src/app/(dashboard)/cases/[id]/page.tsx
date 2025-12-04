@@ -1,26 +1,80 @@
+"use client";
+
+import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Users, Calendar, DollarSign, FileSearch } from "lucide-react";
+import { FileText, Users, Calendar, DollarSign, FileSearch, Loader2 } from "lucide-react";
+import { useCase } from "@/hooks/use-cases";
+import { useQuery } from "@tanstack/react-query";
+import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 
-export default async function CaseDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  // Demo data - will be replaced with real data hooks
-  const caseData = {
-    id,
-    caseNumber: "2024-001",
-    name: "Smith v. Johnson",
-    type: "personal_injury",
-    status: "active",
-    description: "Personal injury case involving a motor vehicle accident.",
-    court: "Superior Court",
-    judge: "Hon. Jane Smith",
-    courtCaseNumber: "CV-2024-001234",
-    dateOpened: "2024-01-15",
-    leadAttorney: "John Doe",
-    client: "Smith, Jane",
+export default function CaseDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const [caseId, setCaseId] = React.useState<string | null>(null);
+  const supabase = createClient();
+
+  React.useEffect(() => {
+    params.then((p) => setCaseId(p.id));
+  }, [params]);
+
+  const { data: caseData, isLoading } = useCase(caseId || "");
+
+  // Get case contacts
+  const { data: caseContacts } = useQuery({
+    queryKey: ["case-contacts", caseId],
+    queryFn: async () => {
+      if (!caseId) return [];
+      const { data, error } = await supabase
+        .from("case_contacts")
+        .select("*, contacts(*)")
+        .eq("case_id", caseId);
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!caseId,
+  });
+
+  // Get case team
+  const { data: caseTeam } = useQuery({
+    queryKey: ["case-team", caseId],
+    queryFn: async () => {
+      if (!caseId) return [];
+      const { data, error } = await supabase
+        .from("case_team")
+        .select("*, users(first_name, last_name, title)")
+        .eq("case_id", caseId);
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!caseId,
+  });
+
+  if (isLoading || !caseId) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+      </div>
+    );
+  }
+
+  if (!caseData) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-slate-400">Case not found</p>
+        <Button asChild className="mt-4">
+          <Link href="/cases">Back to Cases</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  const getCaseTypeLabel = (type: string) => {
+    return type.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
   };
+
+  const primaryClient = caseContacts?.find((cc: any) => cc.is_primary && cc.contacts)?.contacts;
 
   return (
     <div className="space-y-6">
@@ -29,10 +83,12 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold text-white">{caseData.name}</h1>
-            <Badge variant="default">Active</Badge>
-            <Badge variant="outline">Personal Injury</Badge>
+            <Badge variant={caseData.status === "active" ? "default" : "outline"}>
+              {caseData.status}
+            </Badge>
+            <Badge variant="outline">{getCaseTypeLabel(caseData.type)}</Badge>
           </div>
-          <p className="mt-2 text-slate-400">Case #: {caseData.caseNumber}</p>
+          <p className="mt-2 text-slate-400">Case #: {(caseData as any).case_number || caseData.caseNumber}</p>
         </div>
         <Button>Edit Case</Button>
       </div>
@@ -44,15 +100,22 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
             <CardTitle className="text-sm font-medium text-slate-400">Client</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-semibold text-white">{caseData.client}</p>
+            <p className="text-lg font-semibold text-white">
+              {primaryClient
+                ? `${primaryClient.first_name || ""} ${primaryClient.last_name || ""}`.trim() ||
+                  primaryClient.company_name ||
+                  "N/A"
+                : "N/A"}
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-400">Lead Attorney</CardTitle>
+            <CardTitle className="text-sm font-medium text-slate-400">Court</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-semibold text-white">{caseData.leadAttorney}</p>
+            <p className="text-lg font-semibold text-white">{caseData.court || "N/A"}</p>
+            {caseData.judge && <p className="text-sm text-slate-400 mt-1">{caseData.judge}</p>}
           </CardContent>
         </Card>
         <Card>
@@ -61,7 +124,9 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
           </CardHeader>
           <CardContent>
             <p className="text-lg font-semibold text-white">
-              {new Date(caseData.dateOpened).toLocaleDateString()}
+              {((caseData as any).date_opened || caseData.dateOpened)
+                ? new Date(((caseData as any).date_opened || caseData.dateOpened) as string).toLocaleDateString()
+                : "N/A"}
             </p>
           </CardContent>
         </Card>
@@ -71,55 +136,83 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-          <TabsTrigger value="discovery">Discovery</TabsTrigger>
-          <TabsTrigger value="team">Team</TabsTrigger>
-          <TabsTrigger value="contacts">Contacts</TabsTrigger>
-          <TabsTrigger value="billing">Billing</TabsTrigger>
+          <TabsTrigger value="documents">
+            <FileText className="mr-2 h-4 w-4" />
+            Documents
+          </TabsTrigger>
+          <TabsTrigger value="discovery">
+            <FileSearch className="mr-2 h-4 w-4" />
+            Discovery
+          </TabsTrigger>
+          <TabsTrigger value="contacts">
+            <Users className="mr-2 h-4 w-4" />
+            Contacts
+          </TabsTrigger>
+          <TabsTrigger value="team">
+            <Users className="mr-2 h-4 w-4" />
+            Team
+          </TabsTrigger>
+          <TabsTrigger value="billing">
+            <DollarSign className="mr-2 h-4 w-4" />
+            Billing
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Case Details</CardTitle>
+              <CardTitle>Case Description</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <p className="text-sm font-medium text-slate-400">Description</p>
-                <p className="mt-1 text-white">{caseData.description}</p>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <p className="text-sm font-medium text-slate-400">Court</p>
-                  <p className="mt-1 text-white">{caseData.court}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-slate-400">Judge</p>
-                  <p className="mt-1 text-white">{caseData.judge}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-slate-400">Court Case Number</p>
-                  <p className="mt-1 text-white">{caseData.courtCaseNumber}</p>
-                </div>
-              </div>
+            <CardContent>
+              <p className="text-slate-300">{caseData.description || "No description provided."}</p>
             </CardContent>
           </Card>
+
+          {((caseData as any).trial_date || caseData.trialDate) && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Important Dates</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {((caseData as any).trial_date || caseData.trialDate) && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Trial Date:</span>
+                    <span className="text-white">
+                      {new Date(((caseData as any).trial_date || caseData.trialDate) as string).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
+                {((caseData as any).discovery_cutoff || caseData.discoveryCutoff) && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Discovery Cutoff:</span>
+                    <span className="text-white">
+                      {new Date(((caseData as any).discovery_cutoff || caseData.discoveryCutoff) as string).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
+                {((caseData as any).statute_of_limitations || caseData.statuteOfLimitations) && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Statute of Limitations:</span>
+                    <span className="text-white">
+                      {new Date(((caseData as any).statute_of_limitations || caseData.statuteOfLimitations) as string).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="documents">
           <Card>
             <CardHeader>
               <CardTitle>Documents</CardTitle>
-              <CardDescription>All documents related to this case</CardDescription>
+              <CardDescription>Case documents and files</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <FileText className="mb-4 h-12 w-12 text-slate-400" />
-                <p className="text-slate-400">No documents yet</p>
-                <Button variant="outline" className="mt-4">
-                  Upload Document
-                </Button>
-              </div>
+              <Button asChild>
+                <Link href={`/documents?case=${caseId}`}>View All Documents</Link>
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -127,41 +220,13 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
         <TabsContent value="discovery">
           <Card>
             <CardHeader>
-              <CardTitle>Discovery</CardTitle>
-              <CardDescription>Discovery requests and responses</CardDescription>
+              <CardTitle>Discovery Requests</CardTitle>
+              <CardDescription>Manage discovery requests for this case</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <FileSearch className="mb-4 h-12 w-12 text-slate-400" />
-                <p className="text-slate-400">No discovery requests yet</p>
-                <Button variant="outline" className="mt-4">
-                  Create Discovery Request
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="team">
-          <Card>
-            <CardHeader>
-              <CardTitle>Case Team</CardTitle>
-              <CardDescription>Team members assigned to this case</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/50 p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/20 text-amber-500">
-                      <Users className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-white">{caseData.leadAttorney}</p>
-                      <p className="text-sm text-slate-400">Lead Attorney</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Button asChild>
+                <Link href={`/discovery?case=${caseId}`}>View Discovery Log</Link>
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -170,18 +235,64 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
           <Card>
             <CardHeader>
               <CardTitle>Case Contacts</CardTitle>
-              <CardDescription>Contacts associated with this case</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/50 p-4">
-                  <div>
-                    <p className="font-medium text-white">{caseData.client}</p>
-                    <p className="text-sm text-slate-400">Client</p>
-                  </div>
-                  <Badge variant="outline">Primary</Badge>
+              {caseContacts && caseContacts.length > 0 ? (
+                <div className="space-y-3">
+                  {caseContacts.map((cc: any) => (
+                    <div
+                      key={cc.id}
+                      className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-white">
+                          {cc.contacts?.first_name && cc.contacts?.last_name
+                            ? `${cc.contacts.first_name} ${cc.contacts.last_name}`
+                            : cc.contacts?.company_name || "Unknown"}
+                        </p>
+                        <p className="text-xs text-slate-400">{cc.role}</p>
+                      </div>
+                      {cc.is_primary && <Badge variant="outline">Primary</Badge>}
+                    </div>
+                  ))}
                 </div>
-              </div>
+              ) : (
+                <p className="text-slate-400">No contacts linked to this case</p>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="team">
+          <Card>
+            <CardHeader>
+              <CardTitle>Case Team</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {caseTeam && caseTeam.length > 0 ? (
+                <div className="space-y-3">
+                  {caseTeam.map((member: any) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-white">
+                          {member.users?.first_name} {member.users?.last_name}
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          {member.role} {member.users?.title ? `• ${member.users.title}` : ""}
+                        </p>
+                      </div>
+                      {member.billing_rate && (
+                        <p className="text-sm text-slate-400">${member.billing_rate}/hr</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-400">No team members assigned</p>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -190,13 +301,12 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
           <Card>
             <CardHeader>
               <CardTitle>Billing</CardTitle>
-              <CardDescription>Time entries and expenses for this case</CardDescription>
+              <CardDescription>Time entries and invoices for this case</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <DollarSign className="mb-4 h-12 w-12 text-slate-400" />
-                <p className="text-slate-400">No billing entries yet</p>
-              </div>
+              <Button asChild>
+                <Link href={`/billing/time?case=${caseId}`}>View Time Entries</Link>
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -204,4 +314,3 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
     </div>
   );
 }
-

@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,46 +11,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Search, Filter } from "lucide-react";
+import { Plus, Search, Filter, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useCases } from "@/hooks/use-cases";
+import { useAuth } from "@/components/providers/auth-provider";
+import { useQuery } from "@tanstack/react-query";
+import { createClient } from "@/lib/supabase/client";
+import { useState } from "react";
 
 export default function CasesPage() {
-  // Demo data - will be replaced with real data hooks
-  const cases = [
-    {
-      id: "1",
-      caseNumber: "2024-001",
-      name: "Smith v. Johnson",
-      type: "personal_injury",
-      status: "active",
-      leadAttorney: "John Doe",
-      dateOpened: "2024-01-15",
-      client: "Smith, Jane",
+  const { user } = useAuth();
+  const supabase = createClient();
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Get user's firm ID
+  const { data: userData } = useQuery({
+    queryKey: ["user", user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data, error } = await supabase
+        .from("users")
+        .select("firm_id")
+        .eq("id", user.id)
+        .single();
+      if (error) throw error;
+      return data;
     },
-    {
-      id: "2",
-      caseNumber: "2024-002",
-      name: "Estate of Williams",
-      type: "estate_planning",
-      status: "active",
-      leadAttorney: "Jane Smith",
-      dateOpened: "2024-02-01",
-      client: "Williams Family",
-    },
-    {
-      id: "3",
-      caseNumber: "2024-003",
-      name: "State v. Davis",
-      type: "criminal_defense",
-      status: "pending",
-      leadAttorney: "John Doe",
-      dateOpened: "2024-02-15",
-      client: "Davis, Robert",
-    },
-  ];
+    enabled: !!user,
+  });
+
+  const firmId = userData?.firm_id;
+  const { data: cases, isLoading } = useCases(firmId);
+
+  const filteredCases = cases?.filter((caseItem: any) => {
+    if (statusFilter !== "all" && caseItem.status !== statusFilter) return false;
+    if (typeFilter !== "all" && caseItem.type !== typeFilter) return false;
+    if (
+      searchQuery &&
+      !caseItem.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !(caseItem.case_number || caseItem.caseNumber)?.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+      return false;
+    return true;
+  });
 
   const getCaseTypeLabel = (type: string) => {
-    return type.split("_").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+    return type.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
   };
 
   const getStatusVariant = (status: string) => {
@@ -63,6 +73,14 @@ export default function CasesPage() {
         return "outline";
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -89,9 +107,11 @@ export default function CasesPage() {
               <Input
                 placeholder="Search cases..."
                 className="pl-10 bg-slate-900/50 border-slate-800"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Select defaultValue="all">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full md:w-[180px] bg-slate-900/50 border-slate-800">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
@@ -102,7 +122,7 @@ export default function CasesPage() {
                 <SelectItem value="closed">Closed</SelectItem>
               </SelectContent>
             </Select>
-            <Select defaultValue="all">
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger className="w-full md:w-[180px] bg-slate-900/50 border-slate-800">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
@@ -111,6 +131,9 @@ export default function CasesPage() {
                 <SelectItem value="personal_injury">Personal Injury</SelectItem>
                 <SelectItem value="criminal_defense">Criminal Defense</SelectItem>
                 <SelectItem value="family_law">Family Law</SelectItem>
+                <SelectItem value="divorce">Divorce</SelectItem>
+                <SelectItem value="estate_planning">Estate Planning</SelectItem>
+                <SelectItem value="contract_dispute">Contract Dispute</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -119,39 +142,47 @@ export default function CasesPage() {
 
       {/* Cases List */}
       <div className="space-y-4">
-        {cases.map((caseItem) => (
-          <Card key={caseItem.id} className="hover:border-amber-500/20 transition-colors">
-            <CardContent className="pt-6">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3">
-                    <Link
-                      href={`/cases/${caseItem.id}`}
-                      className="text-lg font-semibold text-white hover:text-amber-500 transition-colors"
-                    >
-                      {caseItem.name}
-                    </Link>
-                    <Badge variant={getStatusVariant(caseItem.status)}>
-                      {caseItem.status}
-                    </Badge>
-                    <Badge variant="outline">{getCaseTypeLabel(caseItem.type)}</Badge>
+        {filteredCases && filteredCases.length > 0 ? (
+          filteredCases.map((caseItem) => (
+            <Card key={caseItem.id} className="hover:border-amber-500/20 transition-colors">
+              <CardContent className="pt-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3">
+                      <Link
+                        href={`/cases/${caseItem.id}`}
+                        className="text-lg font-semibold text-white hover:text-amber-500 transition-colors"
+                      >
+                        {caseItem.name}
+                      </Link>
+                      <Badge variant={getStatusVariant(caseItem.status)}>
+                        {caseItem.status}
+                      </Badge>
+                      <Badge variant="outline">{getCaseTypeLabel(caseItem.type)}</Badge>
+                    </div>
+                    <div className="mt-2 space-y-1 text-sm text-slate-400">
+                      <p>Case #: {(caseItem as any).case_number || caseItem.caseNumber}</p>
+                      {caseItem.court && <p>Court: {caseItem.court}</p>}
+                      {((caseItem as any).date_opened || caseItem.dateOpened) && (
+                        <p>Opened: {new Date(((caseItem as any).date_opened || caseItem.dateOpened) as string).toLocaleDateString()}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="mt-2 space-y-1 text-sm text-slate-400">
-                    <p>Case #: {caseItem.caseNumber}</p>
-                    <p>Client: {caseItem.client}</p>
-                    <p>Lead Attorney: {caseItem.leadAttorney}</p>
-                    <p>Opened: {new Date(caseItem.dateOpened).toLocaleDateString()}</p>
-                  </div>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href={`/cases/${caseItem.id}`}>View Details</Link>
+                  </Button>
                 </div>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href={`/cases/${caseItem.id}`}>View Details</Link>
-                </Button>
-              </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <Card>
+            <CardContent className="pt-6">
+              <p className="text-center text-slate-400 py-8">No cases found</p>
             </CardContent>
           </Card>
-        ))}
+        )}
       </div>
     </div>
   );
 }
-
