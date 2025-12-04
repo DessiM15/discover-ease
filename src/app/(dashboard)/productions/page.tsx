@@ -114,9 +114,9 @@ export default function ProductionsPage() {
 
     try {
       await createMutation.mutateAsync({
-        case_id: newProduction.caseId,
+        caseId: newProduction.caseId,
         name: newProduction.name,
-        bates_prefix: newProduction.batesPrefix,
+        batesPrefix: newProduction.batesPrefix,
         description: newProduction.description || null,
       });
 
