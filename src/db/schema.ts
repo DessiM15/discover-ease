@@ -382,6 +382,7 @@ export const events = pgTable('events', {
   recurrenceRule: text('recurrence_rule'),
   isCourtDeadline: boolean('is_court_deadline').default(false).notNull(),
   reminderMinutes: integer('reminder_minutes').array(),
+  color: text('color'),
   googleEventId: text('google_event_id'),
   outlookEventId: text('outlook_event_id'),
   createdById: uuid('created_by_id').references(() => users.id),
