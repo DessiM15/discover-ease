@@ -146,9 +146,15 @@ export function useUpdateProduction() {
 
   return useMutation({
     mutationFn: async ({ id, ...updates }: { id: string } & Partial<ProductionSetInsert>) => {
+      // Convert Date objects to ISO strings for Supabase
+      const updatesForSupabase = { ...updates };
+      if (updatesForSupabase.producedDate instanceof Date) {
+        updatesForSupabase.producedDate = updatesForSupabase.producedDate.toISOString() as any;
+      }
+      
       const { data, error } = await supabase
         .from("production_sets")
-        .update(updates)
+        .update(updatesForSupabase as any)
         .eq("id", id)
         .select()
         .single();
