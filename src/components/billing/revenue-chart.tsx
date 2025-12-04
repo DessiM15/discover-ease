@@ -1,0 +1,33 @@
+"use client";
+
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+
+const data = [
+  { month: "Jul", revenue: 42000 },
+  { month: "Aug", revenue: 45000 },
+  { month: "Sep", revenue: 48000 },
+  { month: "Oct", revenue: 52000 },
+  { month: "Nov", revenue: 49000 },
+  { month: "Dec", revenue: 45200 },
+];
+
+export function RevenueChart() {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+        <XAxis dataKey="month" stroke="#94a3b8" />
+        <YAxis stroke="#94a3b8" />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: "#0f172a",
+            border: "1px solid #1e293b",
+            borderRadius: "8px",
+          }}
+        />
+        <Bar dataKey="revenue" fill="#f59e0b" radius={[8, 8, 0, 0]} />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}
+
