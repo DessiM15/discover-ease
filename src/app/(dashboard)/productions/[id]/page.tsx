@@ -148,10 +148,13 @@ export default function ProductionDetailPage() {
     if (!producedDate) return;
 
     try {
+      // Convert date string to ISO datetime string for timestamp field
+      const isoDateString = new Date(producedDate + "T00:00:00.000Z").toISOString();
+      
       await updateProductionMutation.mutateAsync({
         id: productionId,
-        produced_date: producedDate,
-        produced_to_id: producedToId || null,
+        producedDate: isoDateString,
+        producedToId: producedToId || null,
       });
       setMarkProducedDialogOpen(false);
     } catch (error) {
