@@ -136,8 +136,8 @@ export default function ProductionDetailPage() {
     try {
       await updateDocumentMutation.mutateAsync({
         id: productionDocId,
-        is_privileged: isPrivileged,
-        privilege_reason: privilegeReason || null,
+        isPrivileged: isPrivileged,
+        privilegeReason: privilegeReason || null,
       });
     } catch (error) {
       console.error("Error updating privilege status:", error);
