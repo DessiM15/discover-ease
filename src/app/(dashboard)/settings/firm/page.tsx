@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function FirmSettingsPage() {
   const { user } = useAuth();
