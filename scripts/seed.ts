@@ -186,7 +186,6 @@ async function seed() {
         last_name: 'Foster',
         email: 'amanda@techstart.io',
         phone: '(713) 555-0200',
-        title: 'CEO',
       },
       // Opposing Parties
       {
@@ -208,7 +207,6 @@ async function seed() {
         first_name: 'Brian',
         last_name: 'Walsh',
         email: 'legal@dataflow.io',
-        title: 'CEO',
       },
       // Opposing Counsel
       {
@@ -243,7 +241,6 @@ async function seed() {
         type: 'expert',
         first_name: 'Michael',
         last_name: 'Chen',
-        title: 'Dr.',
         email: 'mchen@houstonortho.com',
         phone: '(713) 555-0500',
       },
@@ -252,7 +249,6 @@ async function seed() {
         type: 'expert',
         first_name: 'Sarah',
         last_name: 'Thompson',
-        title: 'CPA',
         email: 'sthompson@forensicaccounting.com',
         phone: '(713) 555-0600',
       },
@@ -261,7 +257,6 @@ async function seed() {
         type: 'expert',
         first_name: 'James',
         last_name: 'Wilson',
-        title: 'Dr.',
         email: 'jwilson@vocationalexpert.com',
         phone: '(713) 555-0700',
       },
@@ -270,7 +265,6 @@ async function seed() {
         type: 'expert',
         first_name: 'Robert',
         last_name: 'Anderson',
-        title: 'MBA',
         email: 'randerson@businessvaluation.com',
         phone: '(713) 555-0800',
       },
@@ -436,7 +430,7 @@ async function seed() {
       {
         case_id: CASE_IDS.johnson,
         contact_id: getContactId('jwilliams@williamshart.com'),
-        role: 'opposing_counsel',
+        role: 'third_party',
         is_primary: false,
       },
       {
@@ -454,7 +448,7 @@ async function seed() {
       {
         case_id: CASE_IDS.martinez,
         contact_id: getContactId('rgarcia@garcialaw.com'),
-        role: 'opposing_counsel',
+        role: 'third_party',
         is_primary: false,
       },
       {
@@ -478,16 +472,24 @@ async function seed() {
       {
         case_id: CASE_IDS.techstart,
         contact_id: getContactId('kmorrison@morrisonreed.com'),
-        role: 'opposing_counsel',
+        role: 'third_party',
         is_primary: false,
       },
     ].filter((cc) => cc.contact_id); // Filter out any null contact IDs
 
     for (const caseContact of caseContacts) {
-      const { error } = await supabase.from('case_contacts').upsert(caseContact, {
-        onConflict: 'case_id,contact_id',
-      });
-      if (error) throw error;
+      // Check if already exists
+      const { data: existing } = await supabase
+        .from('case_contacts')
+        .select('id')
+        .eq('case_id', caseContact.case_id)
+        .eq('contact_id', caseContact.contact_id)
+        .single();
+      
+      if (!existing) {
+        const { error } = await supabase.from('case_contacts').insert(caseContact);
+        if (error) throw error;
+      }
     }
     console.log('✅ Case contacts linked\n');
 
@@ -504,8 +506,18 @@ async function seed() {
     ];
 
     for (const team of caseTeams) {
-      const { error } = await supabase.from('case_team').upsert(team, { onConflict: 'case_id,user_id' });
-      if (error) throw error;
+      // Check if already exists
+      const { data: existing } = await supabase
+        .from('case_team')
+        .select('id')
+        .eq('case_id', team.case_id)
+        .eq('user_id', team.user_id)
+        .single();
+      
+      if (!existing) {
+        const { error } = await supabase.from('case_team').insert(team);
+        if (error) throw error;
+      }
     }
     console.log('✅ Case teams created\n');
 
