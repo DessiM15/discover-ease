@@ -214,7 +214,7 @@ export default function ProductionsPage() {
                       setNewProduction((prev) => ({
                         ...prev,
                         caseId: value,
-                        batesPrefix: selectedCase.batesPrefix,
+                        batesPrefix: selectedCase.batesPrefix || "",
                       }));
                     }
                   }}

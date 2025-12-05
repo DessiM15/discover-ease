@@ -76,12 +76,12 @@ export default function ProfileSettingsPage() {
     try {
       await updateUser.mutateAsync({
         id: user.id,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
+        firstName: formData.first_name,
+        lastName: formData.last_name,
         phone: formData.phone || null,
         title: formData.title || null,
-        bar_number: formData.bar_number || null,
-        billing_rate: formData.billing_rate ? parseFloat(formData.billing_rate) : null,
+        barNumber: formData.bar_number || null,
+        billingRate: formData.billing_rate || null,
       });
       toast.success("Profile updated successfully");
     } catch (error: any) {

@@ -83,13 +83,13 @@ export default function TeamSettingsPage() {
     try {
       // Create user in database
       await createUser.mutateAsync({
-        firm_id: firmId,
+        firmId: firmId,
         email: data.email,
-        first_name: data.first_name,
-        last_name: data.last_name,
+        firstName: data.first_name,
+        lastName: data.last_name,
         role: data.role,
-        billing_rate: data.billing_rate ? parseFloat(data.billing_rate) : null,
-        is_active: true,
+        billingRate: data.billing_rate || null,
+        isActive: true,
       });
 
       // TODO: Send invite email via SendGrid
