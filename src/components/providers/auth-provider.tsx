@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { User, Session } from "@supabase/supabase-js";
+import type { User, Session, AuthError } from "@supabase/supabase-js";
 
 interface AuthContextType {
   user: User | null;
@@ -25,16 +25,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const supabase = createClient();
 
       // Get initial session
-      supabase.auth.getUser().then(({ data: { user }, error }) => {
+      supabase.auth.getUser().then(({ data, error }: { data: { user: User | null }, error: AuthError | null }) => {
         if (!mounted) return;
         if (error) {
           console.error('Auth error:', error);
           setLoading(false);
           return;
         }
-        setUser(user);
+        setUser(data.user);
         setLoading(false);
-      }).catch((error) => {
+      }).catch((error: unknown) => {
         if (!mounted) return;
         console.error('Auth error:', error);
         setLoading(false);
@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         mounted = false;
         subscription.unsubscribe();
       };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Failed to initialize Supabase client:', error);
       setLoading(false);
       return () => {
