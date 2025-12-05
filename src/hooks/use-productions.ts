@@ -208,7 +208,7 @@ export function useAddDocumentsToProduction() {
       if (!documents) throw new Error("Documents not found");
 
       // Create production document entries
-      const productionDocs = documents.map((doc, index) => {
+      const productionDocs = documents.map((doc: { id: string; page_count: number | null }, index: number) => {
         const batesNumber = batesPrefix
           ? `${batesPrefix}-${String(currentBates + index + 1).padStart(6, "0")}`
           : null;
@@ -256,7 +256,7 @@ export function useUpdateProductionDocument() {
       return data as ProductionDocumentSelect;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["production-documents", data.production_set_id] });
+      queryClient.invalidateQueries({ queryKey: ["production-documents", data.productionSetId] });
     },
   });
 }

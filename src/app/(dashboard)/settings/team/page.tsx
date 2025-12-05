@@ -105,8 +105,8 @@ export default function TeamSettingsPage() {
       await updateUser.mutateAsync({
         id: userId,
         role: data.role,
-        billing_rate: data.billing_rate ? parseFloat(data.billing_rate) : null,
-        is_active: data.is_active,
+        billingRate: data.billing_rate || null,
+        isActive: data.is_active,
       });
       toast.success("User updated successfully");
       setEditingUser(null);

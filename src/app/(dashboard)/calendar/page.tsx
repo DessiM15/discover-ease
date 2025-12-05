@@ -439,8 +439,8 @@ export default function CalendarPage() {
           createEvent.mutate(
             {
               ...data,
-              firm_id: firmId,
-              created_by_id: user?.id,
+              firmId: firmId,
+              createdById: user?.id,
             },
             {
               onSuccess: () => {
@@ -833,16 +833,16 @@ function NewEventModal({
     onCreate({
       title: formData.title,
       type: formData.type,
-      case_id: formData.case_id || null,
-      start_date: startDate.toISOString(),
-      end_date: endDate.toISOString(),
-      all_day: formData.all_day,
+      caseId: formData.case_id || null,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      allDay: formData.all_day,
       location: formData.location || null,
-      video_link: formData.video_link || null,
+      videoLink: formData.video_link || null,
       description: formData.description || null,
-      reminder_minutes: formData.reminder_minutes ? [formData.reminder_minutes] : null,
-      is_recurring: formData.is_recurring,
-      recurrence_rule: formData.recurrence_rule || null,
+      reminderMinutes: formData.reminder_minutes ? [formData.reminder_minutes] : null,
+      isRecurring: formData.is_recurring,
+      recurrenceRule: formData.recurrence_rule || null,
       color: formData.color || null,
     });
   };
