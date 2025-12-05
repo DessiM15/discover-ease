@@ -13,8 +13,12 @@ export function useEvents(firmId?: string, filters?: {
   endDate?: Date;
   caseId?: string;
   type?: string;
+  limit?: number;
+  offset?: number;
 }) {
   const supabase = createClient();
+  const limit = filters?.limit ?? 100; // Default limit
+  const offset = filters?.offset ?? 0;
 
   return useQuery({
     queryKey: ["events", firmId, filters],
@@ -33,7 +37,7 @@ export function useEvents(firmId?: string, filters?: {
             first_name,
             last_name
           )
-        `);
+        `, { count: 'exact' });
 
       if (firmId) {
         query = query.eq("firm_id", firmId);
@@ -51,9 +55,11 @@ export function useEvents(firmId?: string, filters?: {
         query = query.eq("type", filters.type);
       }
 
-      const { data, error } = await query.order("start_date", { ascending: true });
+      const { data, error, count } = await query
+        .order("start_date", { ascending: true })
+        .range(offset, offset + limit - 1);
       if (error) throw error;
-      return data as any[];
+      return { data: data as any[], count: count ?? 0 };
     },
     enabled: !!firmId,
   });

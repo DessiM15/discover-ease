@@ -168,7 +168,10 @@ export function Sidebar({ user }: SidebarProps) {
             )}
           </div>
         )}
-        <div className="flex items-center gap-3 rounded-lg bg-slate-900/50 p-3">
+        <Link
+          href="/notifications"
+          className="flex items-center gap-3 rounded-lg bg-slate-900/50 p-3 hover:bg-slate-900 transition-colors"
+        >
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/20 text-amber-500">
             <Bell className="h-5 w-5" />
           </div>
@@ -176,7 +179,7 @@ export function Sidebar({ user }: SidebarProps) {
             <p className="text-sm font-medium text-white">Notifications</p>
             <p className="text-xs text-slate-400">3 new</p>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

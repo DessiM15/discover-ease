@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, Bell } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UserMenu } from "@/components/layout/user-menu";
@@ -22,9 +23,11 @@ export function Header() {
 
       {/* Right side actions */}
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-amber-500" />
+        <Button variant="ghost" size="icon" className="relative" asChild>
+          <Link href="/notifications">
+            <Bell className="h-5 w-5" />
+            <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-amber-500" />
+          </Link>
         </Button>
         <UserMenu />
       </div>

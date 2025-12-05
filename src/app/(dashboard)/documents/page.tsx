@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -45,7 +45,7 @@ import { useCases } from "@/hooks/use-cases";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import Link from "next/link";
 
 const DOCUMENT_CATEGORIES = [
@@ -128,15 +128,17 @@ export default function DocumentsPage() {
   const firmId = userData?.firm_id;
 
   // Get cases for filter
-  const { data: cases } = useCases(firmId);
+  const { data: casesData } = useCases(firmId);
+  const cases = casesData?.data ?? [];
 
   // Get documents with filters
-  const { data: documents, isLoading } = useDocuments(firmId, {
+  const { data: documentsData, isLoading } = useDocuments(firmId, {
     caseId: selectedCase !== "all" ? selectedCase : undefined,
     category: selectedCategory !== "all" ? selectedCategory : undefined,
     status: selectedStatus !== "all" ? selectedStatus : undefined,
     search: searchQuery || undefined,
   });
+  const documents = documentsData?.data ?? [];
 
   const uploadMutation = useUploadDocument();
   const deleteMutation = useDeleteDocument();
@@ -204,7 +206,8 @@ export default function DocumentsPage() {
     setDetailDialogOpen(true);
   };
 
-  const filteredDocuments = documents || [];
+  // Memoize filtered documents to prevent recalculation
+  const filteredDocuments = useMemo(() => documents || [], [documents]);
 
   return (
     <div className="space-y-6">

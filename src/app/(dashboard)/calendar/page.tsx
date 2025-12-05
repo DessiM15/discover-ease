@@ -152,16 +152,20 @@ export default function CalendarPage() {
     return date;
   }, [startOfPeriod, view]);
 
-  const { data: events = [] } = useEvents(firmId, {
+  const { data: eventsData } = useEvents(firmId, {
     startDate: startOfPeriod,
     endDate: endOfPeriod,
   });
+  const events = eventsData?.data ?? [];
 
-  const { data: tasks = [] } = useTasks(firmId, {
+  const { data: tasksData } = useTasks(firmId, {
     dueDate: endOfPeriod,
   });
+  const tasks = tasksData?.data ?? [];
 
-  const { data: cases = [] } = useCases(firmId);
+  const { data: casesData } = useCases(firmId);
+  const cases = casesData?.data ?? [];
+  
   const { data: users = [] } = useUsers(firmId);
 
   const createEvent = useCreateEvent();

@@ -13,8 +13,12 @@ export function useTasks(firmId?: string, filters?: {
   assignedToId?: string;
   caseId?: string;
   dueDate?: Date;
+  limit?: number;
+  offset?: number;
 }) {
   const supabase = createClient();
+  const limit = filters?.limit ?? 100; // Default limit
+  const offset = filters?.offset ?? 0;
 
   return useQuery({
     queryKey: ["tasks", firmId, filters],
@@ -38,7 +42,7 @@ export function useTasks(firmId?: string, filters?: {
             first_name,
             last_name
           )
-        `);
+        `, { count: 'exact' });
 
       if (firmId) {
         query = query.eq("firm_id", firmId);
@@ -56,9 +60,11 @@ export function useTasks(firmId?: string, filters?: {
         query = query.lte("due_date", filters.dueDate.toISOString());
       }
 
-      const { data, error } = await query.order("due_date", { ascending: true });
+      const { data, error, count } = await query
+        .order("due_date", { ascending: true })
+        .range(offset, offset + limit - 1);
       if (error) throw error;
-      return data as any[];
+      return { data: data as any[], count: count ?? 0 };
     },
     enabled: !!firmId,
   });

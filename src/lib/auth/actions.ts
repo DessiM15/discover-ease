@@ -7,7 +7,11 @@ import { redirect } from "next/navigation";
 export async function signIn(email: string, password: string) {
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  if (!supabase) {
+    return { error: "Failed to initialize authentication service" };
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -16,7 +20,13 @@ export async function signIn(email: string, password: string) {
     return { error: error.message };
   }
 
+  if (!data.user) {
+    return { error: "Login failed. Please check your credentials." };
+  }
+
   revalidatePath("/", "layout");
+  // redirect() throws a special NEXT_REDIRECT error that Next.js uses for navigation
+  // This error should NOT be caught - it's how Next.js handles redirects
   redirect("/dashboard");
 }
 

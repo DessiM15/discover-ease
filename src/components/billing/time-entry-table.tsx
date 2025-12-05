@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -96,7 +96,7 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
         query = query.gte("date", dateRange.start).lte("date", dateRange.end);
       }
 
-      const { data, error } = await query;
+      const { data, error } = await query.limit(100); // Limit to prevent loading too much data
       if (error) throw error;
       return data || [];
     },
@@ -118,12 +118,15 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
     }
   };
 
-  const totalHours = timeEntries?.reduce((sum: number, e: any) => sum + parseFloat(e.hours || 0), 0) || 0;
-  const totalAmount = timeEntries?.reduce((sum: number, e: any) => sum + parseFloat(e.amount || 0), 0) || 0;
-  const unbilledAmount =
-    timeEntries
+  // Memoize calculations to prevent recalculation on every render
+  const { totalHours, totalAmount, unbilledAmount } = useMemo(() => {
+    const hours = timeEntries?.reduce((sum: number, e: any) => sum + parseFloat(e.hours || 0), 0) || 0;
+    const amount = timeEntries?.reduce((sum: number, e: any) => sum + parseFloat(e.amount || 0), 0) || 0;
+    const unbilled = timeEntries
       ?.filter((e: any) => !e.is_billed)
       .reduce((sum: number, e: any) => sum + parseFloat(e.amount || 0), 0) || 0;
+    return { totalHours: hours, totalAmount: amount, unbilledAmount: unbilled };
+  }, [timeEntries]);
 
   if (isLoading) {
     return (

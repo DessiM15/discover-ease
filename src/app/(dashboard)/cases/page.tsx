@@ -43,7 +43,8 @@ export default function CasesPage() {
   });
 
   const firmId = userData?.firm_id;
-  const { data: cases, isLoading } = useCases(firmId);
+  const { data: casesData, isLoading } = useCases(firmId);
+  const cases = casesData?.data ?? [];
 
   const filteredCases = cases?.filter((caseItem: any) => {
     if (statusFilter !== "all" && caseItem.status !== statusFilter) return false;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ import { Loader2 } from "lucide-react";
 export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,13 +26,34 @@ export default function LoginPage() {
 
     try {
       const result = await signIn(email, password);
+      
       if (result?.error) {
         setError(result.error);
         setLoading(false);
+        return;
       }
-      // If successful, signIn will redirect
+      
+      // If no error returned, the redirect should have happened
+      // If we reach here, the redirect might have failed, so navigate manually
+      router.push("/dashboard");
+      router.refresh();
     } catch (error: any) {
-      setError(error.message || "An error occurred");
+      // Next.js redirect() throws a special error - if we catch it, the redirect is working
+      // Check if it's a redirect error
+      if (error && typeof error === 'object' && 'digest' in error && 
+          typeof error.digest === 'string' && error.digest.includes('NEXT_REDIRECT')) {
+        // This is expected - the redirect is happening
+        return;
+      }
+      
+      console.error("Login error:", error);
+      const errorMessage = error?.message || error?.toString() || "Unknown error";
+      
+      if (errorMessage.includes("fetch") || errorMessage.includes("network") || errorMessage.includes("Failed to fetch")) {
+        setError("Network error: Could not connect to server. Please check your internet connection and try again.");
+      } else {
+        setError(errorMessage || "An unexpected error occurred. Please try again.");
+      }
       setLoading(false);
     }
   };

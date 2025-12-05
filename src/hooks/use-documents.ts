@@ -13,8 +13,12 @@ export function useDocuments(firmId?: string, filters?: {
   category?: string;
   status?: string;
   search?: string;
+  limit?: number;
+  offset?: number;
 }) {
   const supabase = createClient();
+  const limit = filters?.limit ?? 50; // Default limit to prevent loading too much data
+  const offset = filters?.offset ?? 0;
 
   return useQuery({
     queryKey: ["documents", firmId, filters],
@@ -33,7 +37,7 @@ export function useDocuments(firmId?: string, filters?: {
             first_name,
             last_name
           )
-        `);
+        `, { count: 'exact' });
 
       if (firmId) {
         query = query.eq("firm_id", firmId);
@@ -51,9 +55,11 @@ export function useDocuments(firmId?: string, filters?: {
         query = query.or(`name.ilike.%${filters.search}%,original_name.ilike.%${filters.search}%,description.ilike.%${filters.search}%`);
       }
 
-      const { data, error } = await query.order("created_at", { ascending: false });
+      const { data, error, count } = await query
+        .order("created_at", { ascending: false })
+        .range(offset, offset + limit - 1);
       if (error) throw error;
-      return data as any[];
+      return { data: data as any[], count: count ?? 0 };
     },
     enabled: !!firmId,
   });

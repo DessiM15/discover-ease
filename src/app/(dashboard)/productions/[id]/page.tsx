@@ -88,10 +88,11 @@ export default function ProductionDetailPage() {
   const { data: productionDocuments, isLoading: documentsLoading } = useProductionDocuments(productionId);
 
   // Get case documents for adding to production
-  const { data: caseDocuments } = useDocuments(
+  const { data: caseDocumentsData } = useDocuments(
     firmId,
     production?.case_id ? { caseId: production.case_id } : undefined
   );
+  const caseDocuments = caseDocumentsData?.data ?? [];
 
   // Get case
   const { data: caseData } = useCase(production?.case_id || "");

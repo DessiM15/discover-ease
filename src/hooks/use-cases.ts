@@ -8,19 +8,23 @@ import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 export type CaseInsert = InferInsertModel<typeof cases>;
 export type CaseSelect = InferSelectModel<typeof cases>;
 
-export function useCases(firmId?: string) {
+export function useCases(firmId?: string, options?: { limit?: number; offset?: number }) {
   const supabase = createClient();
+  const limit = options?.limit ?? 100; // Default limit
+  const offset = options?.offset ?? 0;
 
   return useQuery({
-    queryKey: ["cases", firmId],
+    queryKey: ["cases", firmId, options],
     queryFn: async () => {
-      let query = supabase.from("cases").select("*");
+      let query = supabase.from("cases").select("*", { count: 'exact' });
       if (firmId) {
         query = query.eq("firm_id", firmId);
       }
-      const { data, error } = await query.order("created_at", { ascending: false });
+      const { data, error, count } = await query
+        .order("created_at", { ascending: false })
+        .range(offset, offset + limit - 1);
       if (error) throw error;
-      return data as CaseSelect[];
+      return { data: data as CaseSelect[], count: count ?? 0 };
     },
   });
 }

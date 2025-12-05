@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, Suspense } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ import { useDashboardStats, useRecentCases, useUpcomingDeadlines } from "@/hooks
 import { useAuth } from "@/components/providers/auth-provider";
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -46,15 +47,8 @@ export default function DashboardPage() {
   const { data: recentCases, isLoading: casesLoading } = useRecentCases(firmId || "");
   const { data: deadlines, isLoading: deadlinesLoading } = useUpcomingDeadlines(firmId || "");
 
-  if (statsLoading || casesLoading || deadlinesLoading || !firmId) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
-      </div>
-    );
-  }
-
-  const stats = [
+  // Memoize stats to prevent recalculation on every render
+  const stats = useMemo(() => [
     {
       label: "Active Cases",
       value: dashboardStats?.activeCases?.toString() || "0",
@@ -83,7 +77,15 @@ export default function DashboardPage() {
       change: "-2",
       trend: "down" as const,
     },
-  ];
+  ], [dashboardStats]);
+
+  if (statsLoading || casesLoading || deadlinesLoading || !firmId) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -114,8 +116,8 @@ export default function DashboardPage() {
               <p className="mt-1 text-sm text-slate-400">
                 Review 3 new AI-generated case summaries and discovery response suggestions.
               </p>
-              <Button variant="outline" size="sm" className="mt-3">
-                View Insights
+              <Button variant="outline" size="sm" className="mt-3" asChild>
+                <Link href="/insights">View Insights</Link>
               </Button>
             </div>
           </div>

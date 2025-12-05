@@ -64,7 +64,8 @@ export default function ProductionsPage() {
   const firmId = userData?.firm_id;
 
   // Get cases
-  const { data: cases } = useCases(firmId);
+  const { data: casesData } = useCases(firmId);
+  const cases = casesData?.data ?? [];
 
   // Get productions
   const { data: productions, isLoading } = useProductions(firmId);
