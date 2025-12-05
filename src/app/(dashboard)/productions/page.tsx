@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, FileText, Calendar, User, Hash, Download, Loader2, X } from "lucide-react";
+import { Plus, FileText, Calendar, User, Hash, Download, Loader2, X, Eye } from "lucide-react";
 import { formatBatesRange } from "@/lib/utils";
 import { useProductions, useCreateProduction, useProductionDocuments, useGeneratePrivilegeLog } from "@/hooks/use-productions";
 import { useCases } from "@/hooks/use-cases";
@@ -210,11 +210,11 @@ export default function ProductionsPage() {
                   onValueChange={(value) => {
                     setNewProduction({ ...newProduction, caseId: value });
                     const selectedCase = cases?.find((c) => c.id === value);
-                    if (selectedCase?.bates_prefix) {
+                    if (selectedCase?.batesPrefix) {
                       setNewProduction((prev) => ({
                         ...prev,
                         caseId: value,
-                        batesPrefix: selectedCase.bates_prefix || "",
+                        batesPrefix: selectedCase.batesPrefix,
                       }));
                     }
                   }}
