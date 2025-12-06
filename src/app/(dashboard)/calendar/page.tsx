@@ -809,13 +809,14 @@ function NewEventModal({
       end_date: today,
       end_time: "10:00",
       all_day: false,
-    location: "",
-    video_link: "",
-    description: "",
-    reminder_minutes: null as number | null,
-    is_recurring: false,
-    recurrence_rule: "",
-    color: "",
+      location: "",
+      video_link: "",
+      description: "",
+      reminder_minutes: null as number | null,
+      is_recurring: false,
+      recurrence_rule: "",
+      color: "",
+    };
   });
 
   // Set default color when type changes
