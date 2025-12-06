@@ -2,51 +2,34 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { DashboardClient } from "./dashboard-client";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Quick auth check - redirect if not authenticated
+  let supabase;
   try {
-    const supabase = await createClient();
+    supabase = await createClient();
     const {
       data: { user },
-      error: authError,
     } = await supabase.auth.getUser();
 
-    if (authError || !user) {
+    if (!user) {
       redirect("/login");
     }
-
-    // Get user details from database
-    const { data: userData, error: userError } = await supabase
-      .from("users")
-      .select("*, firms(name)")
-      .eq("id", user.id)
-      .single();
-
-    // If user data fetch fails, still render but without user data
-    // This prevents the entire app from crashing
-    if (userError) {
-      console.error("Failed to fetch user data:", userError);
-    }
-
-    return (
-      <div className="flex h-screen bg-slate-950">
-        <Sidebar user={userData || null} />
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <Header />
-          <main className="flex-1 overflow-y-auto bg-slate-950 p-6">
-            {children}
-          </main>
-        </div>
-      </div>
-    );
   } catch (error) {
     console.error("Dashboard layout error:", error);
-    // If there's a critical error, redirect to login
     redirect("/login");
   }
+
+  // Render with client component for user data (non-blocking)
+  return (
+    <DashboardClient>
+      {children}
+    </DashboardClient>
+  );
 }
 

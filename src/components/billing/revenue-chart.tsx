@@ -30,7 +30,7 @@ const Tooltip = dynamic(
 );
 const ResponsiveContainer = dynamic(
   () => import("recharts").then((mod) => mod.ResponsiveContainer),
-  { ssr: false, loading: () => <div className="flex items-center justify-center h-[300px]"><Loader2 className="h-6 w-6 animate-spin text-amber-500" /></div> }
+  { ssr: false, loading: () => <div className="flex items-center justify-center h-[300px]"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div> }
 );
 
 const data = [

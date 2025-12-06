@@ -28,7 +28,7 @@ export function TimeEntryForm({
   initialCaseId = "",
   onSuccess,
 }: TimeEntryFormProps) {
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [caseId, setCaseId] = useState(initialCaseId);
   const [description, setDescription] = useState(initialDescription);
   const [hours, setHours] = useState(initialHours.toString());
@@ -65,14 +65,14 @@ export function TimeEntryForm({
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="mt-1 bg-slate-900/50 border-slate-800"
+            className="mt-1 bg-card/50 border-border"
             required
           />
         </div>
         <div>
           <Label>Case</Label>
           <Select value={caseId} onValueChange={setCaseId} required>
-            <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+            <SelectTrigger className="mt-1 bg-card/50 border-border">
               <SelectValue placeholder="Select case" />
             </SelectTrigger>
             <SelectContent>
@@ -90,7 +90,7 @@ export function TimeEntryForm({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Describe the work performed..."
-          className="mt-1 bg-slate-900/50 border-slate-800"
+          className="mt-1 bg-card/50 border-border"
           required
         />
       </div>
@@ -104,7 +104,7 @@ export function TimeEntryForm({
             min="0"
             value={hours}
             onChange={(e) => setHours(e.target.value)}
-            className="mt-1 bg-slate-900/50 border-slate-800"
+            className="mt-1 bg-card/50 border-border"
             required
           />
         </div>
@@ -116,7 +116,7 @@ export function TimeEntryForm({
             min="0"
             value={rate}
             onChange={(e) => setRate(e.target.value)}
-            className="mt-1 bg-slate-900/50 border-slate-800"
+            className="mt-1 bg-card/50 border-border"
             required
           />
         </div>
@@ -126,7 +126,7 @@ export function TimeEntryForm({
             type="text"
             value={`$${amount.toFixed(2)}`}
             readOnly
-            className="mt-1 bg-slate-800/50 border-slate-800"
+            className="mt-1 bg-muted/50 border-border"
           />
         </div>
       </div>
@@ -135,7 +135,7 @@ export function TimeEntryForm({
         <div>
           <Label>Activity Code</Label>
           <Select value={activityCode} onValueChange={setActivityCode}>
-            <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+            <SelectTrigger className="mt-1 bg-card/50 border-border">
               <SelectValue placeholder="Select activity" />
             </SelectTrigger>
             <SelectContent>
@@ -165,7 +165,7 @@ export function TimeEntryForm({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Additional notes..."
-          className="mt-1 bg-slate-900/50 border-slate-800"
+          className="mt-1 bg-card/50 border-border"
         />
       </div>
 

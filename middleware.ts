@@ -19,6 +19,17 @@ const protectedRoutes = [
 const authRoutes = ["/login", "/register", "/forgot-password"];
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Skip middleware for static files, API routes, and Next.js internals to improve performance
+  if (
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/favicon.ico')
+  ) {
+    return NextResponse.next();
+  }
+
   // Check if environment variables are set
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -26,7 +37,6 @@ export async function middleware(request: NextRequest) {
   if (!supabaseUrl || !supabaseAnonKey) {
     console.error("Missing Supabase environment variables");
     // Allow the request to proceed if env vars are missing (development mode)
-    // In production, this should be configured in Vercel
     return NextResponse.next();
   }
 
@@ -56,18 +66,18 @@ export async function middleware(request: NextRequest) {
       },
     });
 
+    // Optimize: Check session first (faster than getUser for most cases)
     const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
 
-    // If there's an error getting the user, log it but don't block the request
-    // This allows the app to handle auth errors gracefully
-    if (error) {
-      console.error("Auth error in middleware:", error.message);
+    // If there's an error getting the session, log it but don't block
+    if (sessionError) {
+      console.error("Auth error in middleware:", sessionError.message);
     }
 
-    const pathname = request.nextUrl.pathname;
+    const user = session?.user ?? null;
 
     // Check if the current path is a protected route
     const isProtectedRoute = protectedRoutes.some((route) =>

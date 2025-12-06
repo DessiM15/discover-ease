@@ -30,15 +30,15 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between text-xs">
-        <span className="text-slate-400">Password strength</span>
+        <span className="text-muted-foreground">Password strength</span>
         <span className={cn(
           "font-medium",
-          score <= 2 ? "text-red-400" : score <= 4 ? "text-yellow-400" : "text-green-400"
+          score <= 2 ? "text-destructive" : score <= 4 ? "text-yellow-400" : "text-green-400"
         )}>
           {label}
         </span>
       </div>
-      <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+      <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
         <div
           className={cn("h-full transition-all", color)}
           style={{ width: `${(score / 6) * 100}%` }}

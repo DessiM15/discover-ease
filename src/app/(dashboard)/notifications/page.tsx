@@ -135,8 +135,8 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Notifications</h1>
-          <p className="mt-1 text-slate-400">
+          <h1 className="text-3xl font-bold text-foreground">Notifications</h1>
+          <p className="mt-1 text-muted-foreground">
             {unreadCount > 0 ? `${unreadCount} unread notification${unreadCount !== 1 ? "s" : ""}` : "All caught up!"}
           </p>
         </div>
@@ -165,22 +165,22 @@ export default function NotificationsPage() {
               return (
                 <Card
                   key={notification.id}
-                  className={`hover:border-amber-500/20 transition-colors ${
+                  className={`hover:border-primary/20 transition-colors ${
                     !notification.read ? "border-l-4 border-l-amber-500" : ""
                   }`}
                 >
-                  <CardContent className="pt-6">
+                  <CardContent>
                     <div className="flex items-start gap-4">
                       <div
                         className={`rounded-lg p-2 ${
                           !notification.read
-                            ? "bg-amber-500/10"
-                            : "bg-slate-800/50"
+                            ? "bg-primary/10"
+                            : "bg-muted/50/50"
                         }`}
                       >
                         <Icon
                           className={`h-5 w-5 ${
-                            !notification.read ? "text-amber-500" : "text-slate-400"
+                            !notification.read ? "text-primary" : "text-muted-foreground"
                           }`}
                         />
                       </div>
@@ -190,7 +190,7 @@ export default function NotificationsPage() {
                             <div className="flex items-center gap-2 mb-1">
                               <h3
                                 className={`font-semibold ${
-                                  !notification.read ? "text-white" : "text-slate-300"
+                                  !notification.read ? "text-foreground" : "text-foreground"
                                 }`}
                               >
                                 {notification.title}
@@ -204,8 +204,8 @@ export default function NotificationsPage() {
                                 {notification.priority}
                               </Badge>
                             </div>
-                            <p className="text-sm text-slate-400 mb-2">{notification.message}</p>
-                            <p className="text-xs text-slate-500">{notification.timestamp}</p>
+                            <p className="text-sm text-muted-foreground mb-2">{notification.message}</p>
+                            <p className="text-xs text-muted-foreground">{notification.timestamp}</p>
                           </div>
                           <Button variant="ghost" size="sm" asChild>
                             <Link href={notification.link}>
@@ -221,10 +221,10 @@ export default function NotificationsPage() {
             })
           ) : (
             <Card>
-              <CardContent className="pt-6">
+              <CardContent>
                 <div className="text-center py-12">
-                  <Bell className="h-12 w-12 mx-auto text-slate-400 mb-4" />
-                  <p className="text-slate-400">No notifications</p>
+                  <Bell className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground">No notifications</p>
                 </div>
               </CardContent>
             </Card>
@@ -240,24 +240,24 @@ export default function NotificationsPage() {
                 return (
                   <Card
                     key={notification.id}
-                    className="hover:border-amber-500/20 transition-colors border-l-4 border-l-amber-500"
+                    className="hover:border-primary/20 transition-colors border-l-4 border-l-amber-500"
                   >
-                    <CardContent className="pt-6">
+                    <CardContent>
                       <div className="flex items-start gap-4">
-                        <div className="rounded-lg bg-amber-500/10 p-2">
-                          <Icon className="h-5 w-5 text-amber-500" />
+                        <div className="rounded-lg bg-primary/10 p-2">
+                          <Icon className="h-5 w-5 text-primary" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold text-white">{notification.title}</h3>
+                                <h3 className="font-semibold text-foreground">{notification.title}</h3>
                                 <Badge variant="default" className="text-xs">
                                   New
                                 </Badge>
                               </div>
-                              <p className="text-sm text-slate-400 mb-2">{notification.message}</p>
-                              <p className="text-xs text-slate-500">{notification.timestamp}</p>
+                              <p className="text-sm text-muted-foreground mb-2">{notification.message}</p>
+                              <p className="text-xs text-muted-foreground">{notification.timestamp}</p>
                             </div>
                             <Button variant="ghost" size="sm" asChild>
                               <Link href={notification.link}>View</Link>
@@ -271,10 +271,10 @@ export default function NotificationsPage() {
               })
           ) : (
             <Card>
-              <CardContent className="pt-6">
+              <CardContent>
                 <div className="text-center py-12">
                   <CheckCircle2 className="h-12 w-12 mx-auto text-green-500 mb-4" />
-                  <p className="text-slate-400">All notifications read</p>
+                  <p className="text-muted-foreground">All notifications read</p>
                 </div>
               </CardContent>
             </Card>
@@ -291,22 +291,22 @@ export default function NotificationsPage() {
                   return (
                     <Card
                       key={notification.id}
-                      className={`hover:border-amber-500/20 transition-colors ${
+                      className={`hover:border-primary/20 transition-colors ${
                         !notification.read ? "border-l-4 border-l-amber-500" : ""
                       }`}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent>
                         <div className="flex items-start gap-4">
                           <div
                             className={`rounded-lg p-2 ${
                               !notification.read
-                                ? "bg-amber-500/10"
-                                : "bg-slate-800/50"
+                                ? "bg-primary/10"
+                                : "bg-muted/50"
                             }`}
                           >
                             <Icon
                               className={`h-5 w-5 ${
-                                !notification.read ? "text-amber-500" : "text-slate-400"
+                                !notification.read ? "text-primary" : "text-muted-foreground"
                               }`}
                             />
                           </div>
@@ -316,7 +316,7 @@ export default function NotificationsPage() {
                                 <div className="flex items-center gap-2 mb-1">
                                   <h3
                                     className={`font-semibold ${
-                                      !notification.read ? "text-white" : "text-slate-300"
+                                      !notification.read ? "text-foreground" : "text-muted-foreground"
                                     }`}
                                   >
                                     {notification.title}
@@ -327,8 +327,8 @@ export default function NotificationsPage() {
                                     </Badge>
                                   )}
                                 </div>
-                                <p className="text-sm text-slate-400 mb-2">{notification.message}</p>
-                                <p className="text-xs text-slate-500">{notification.timestamp}</p>
+                                <p className="text-sm text-muted-foreground mb-2">{notification.message}</p>
+                                <p className="text-xs text-muted-foreground">{notification.timestamp}</p>
                               </div>
                               <Button variant="ghost" size="sm" asChild>
                                 <Link href={notification.link}>View</Link>
@@ -342,10 +342,10 @@ export default function NotificationsPage() {
                 })
             ) : (
               <Card>
-                <CardContent className="pt-6">
+                <CardContent>
                   <div className="text-center py-12">
-                    <Bell className="h-12 w-12 mx-auto text-slate-400 mb-4" />
-                    <p className="text-slate-400">No {type} notifications</p>
+                    <Bell className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">No {type} notifications</p>
                   </div>
                 </CardContent>
               </Card>
@@ -356,4 +356,5 @@ export default function NotificationsPage() {
     </div>
   );
 }
+
 

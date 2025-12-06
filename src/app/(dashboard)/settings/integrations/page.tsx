@@ -59,8 +59,8 @@ export default function IntegrationsSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Integrations</h1>
-        <p className="mt-1 text-slate-400">Connect with external services and tools</p>
+        <h1 className="text-3xl font-bold text-foreground">Integrations</h1>
+        <p className="mt-1 text-muted-foreground">Connect with external services and tools</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -71,11 +71,11 @@ export default function IntegrationsSettingsPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-lg bg-amber-500/10 p-2">
-                      <Icon className="h-5 w-5 text-amber-500" />
+                    <div className="rounded-lg bg-primary/10 p-2">
+                      <Icon className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-white">{integration.name}</CardTitle>
+                      <CardTitle className="text-foreground">{integration.name}</CardTitle>
                       <CardDescription>{integration.description}</CardDescription>
                     </div>
                   </div>
@@ -115,4 +115,6 @@ export default function IntegrationsSettingsPage() {
     </div>
   );
 }
+
+
 

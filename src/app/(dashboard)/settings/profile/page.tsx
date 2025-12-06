@@ -52,7 +52,7 @@ export default function ProfileSettingsPage() {
   });
 
   if (isLoading) {
-    return <div className="text-white">Loading...</div>;
+    return <div className="text-foreground">Loading...</div>;
   }
 
   if (userData) {
@@ -119,8 +119,8 @@ export default function ProfileSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Profile Settings</h1>
-        <p className="mt-1 text-slate-400">Manage your personal information</p>
+        <h1 className="text-3xl font-bold text-foreground">Profile Settings</h1>
+        <p className="mt-1 text-muted-foreground">Manage your personal information</p>
       </div>
 
       <Card>
@@ -154,7 +154,7 @@ export default function ProfileSettingsPage() {
             <div>
               <Label htmlFor="email">Email</Label>
               <Input id="email" value={formData.email} disabled />
-              <p className="mt-1 text-xs text-slate-400">Email cannot be changed</p>
+              <p className="mt-1 text-xs text-muted-foreground">Email cannot be changed</p>
             </div>
 
             <div>

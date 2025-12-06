@@ -10,8 +10,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { signIn } from "@/lib/auth/actions";
 import { Loader2 } from "lucide-react";
 
-export const dynamic = 'force-dynamic';
-
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -67,7 +65,7 @@ export default function LoginPage() {
       <CardContent>
         <form onSubmit={handleLogin} className="space-y-4">
           {error && (
-            <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-sm text-red-400">
+            <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">
               {error}
             </div>
           )}
@@ -90,7 +88,7 @@ export default function LoginPage() {
               <Label htmlFor="password">Password</Label>
               <Link
                 href="/forgot-password"
-                className="text-sm text-amber-500 hover:underline"
+                className="text-sm text-primary hover:underline"
               >
                 Forgot password?
               </Link>
@@ -117,9 +115,9 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-slate-400">
+        <div className="mt-6 text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <Link href="/register" className="text-amber-500 hover:underline">
+          <Link href="/register" className="text-primary hover:underline">
             Sign up
           </Link>
         </div>

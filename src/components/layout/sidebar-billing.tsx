@@ -23,15 +23,15 @@ export function BillingNavItem({ href, children, isActive }: BillingNavItemProps
         className={cn(
           "group w-full flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
           isActive
-            ? "bg-amber-500/10 text-amber-500"
-            : "text-slate-400 hover:bg-slate-900 hover:text-white"
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:bg-accent hover:text-foreground"
         )}
       >
         <div className="flex items-center gap-3">
           <DollarSign
             className={cn(
               "h-5 w-5",
-              isActive ? "text-amber-500" : "text-slate-400 group-hover:text-white"
+              isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
             )}
           />
           Billing
@@ -53,8 +53,8 @@ export function BillingNavItem({ href, children, isActive }: BillingNavItemProps
                 className={cn(
                   "block rounded-lg px-3 py-2 text-sm transition-colors",
                   isChildActive
-                    ? "bg-amber-500/10 text-amber-500"
-                    : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 )}
               >
                 {child.name}

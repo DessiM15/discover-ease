@@ -15,7 +15,7 @@ export function TrustLedger({ transactions }: TrustLedgerProps) {
       case "Deposit":
         return <ArrowDown className="h-4 w-4 text-green-400" />;
       case "Withdrawal":
-        return <ArrowUp className="h-4 w-4 text-red-400" />;
+        return <ArrowUp className="h-4 w-4 text-destructive" />;
       case "Transfer":
         return <ArrowRightLeft className="h-4 w-4 text-blue-400" />;
       default:
@@ -32,13 +32,13 @@ export function TrustLedger({ transactions }: TrustLedgerProps) {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-slate-800">
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Date</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Client/Case</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Description</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Amount</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">
+              <tr className="border-b border-border">
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Date</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Client/Case</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Type</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Description</th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Amount</th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">
                   Running Balance
                 </th>
               </tr>
@@ -47,15 +47,15 @@ export function TrustLedger({ transactions }: TrustLedgerProps) {
               {transactions.map((transaction) => (
                 <tr
                   key={transaction.id}
-                  className="border-b border-slate-800/50 hover:bg-slate-900/50 transition-colors"
+                  className="border-b border-border/50 hover:bg-muted/50 transition-colors"
                 >
-                  <td className="px-4 py-3 text-sm text-slate-300">
+                  <td className="px-4 py-3 text-sm text-foreground">
                     {new Date(transaction.date).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-3 text-sm text-white">
+                  <td className="px-4 py-3 text-sm text-foreground">
                     <div>
                       <p>{transaction.client}</p>
-                      <p className="text-xs text-slate-400">{transaction.caseName}</p>
+                      <p className="text-xs text-muted-foreground">{transaction.caseName}</p>
                     </div>
                   </td>
                   <td className="px-4 py-3">
@@ -64,16 +64,16 @@ export function TrustLedger({ transactions }: TrustLedgerProps) {
                       <Badge variant="outline">{transaction.type}</Badge>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-300">{transaction.description}</td>
+                  <td className="px-4 py-3 text-sm text-foreground">{transaction.description}</td>
                   <td
                     className={cn(
                       "px-4 py-3 text-sm font-medium text-right",
-                      transaction.amount > 0 ? "text-green-400" : "text-red-400"
+                      transaction.amount > 0 ? "text-green-400" : "text-destructive"
                     )}
                   >
                     {transaction.amount > 0 ? "+" : ""}${Math.abs(transaction.amount).toLocaleString()}
                   </td>
-                  <td className="px-4 py-3 text-sm text-white font-medium text-right">
+                  <td className="px-4 py-3 text-sm text-foreground font-medium text-right">
                     ${transaction.runningBalance.toLocaleString()}
                   </td>
                 </tr>

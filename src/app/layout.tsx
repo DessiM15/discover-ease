@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ThemeScript } from "@/components/providers/theme-script";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -25,11 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={dmSans.variable} suppressHydrationWarning>
+    <html lang="en" className={`${dmSans.variable} dark`} suppressHydrationWarning>
       <body className="antialiased font-sans">
+        <ThemeScript />
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange
           storageKey="discoverease-theme"

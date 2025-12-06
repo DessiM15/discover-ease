@@ -68,7 +68,7 @@ export default function RegisterPage() {
       <CardContent>
         <form onSubmit={handleRegister} className="space-y-4">
           {error && (
-            <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-sm text-red-400">
+            <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">
               {error}
             </div>
           )}
@@ -151,7 +151,7 @@ export default function RegisterPage() {
               disabled={loading}
             />
             {confirmPassword && password !== confirmPassword && (
-              <p className="text-xs text-red-400">Passwords do not match</p>
+              <p className="text-xs text-destructive">Passwords do not match</p>
             )}
           </div>
 
@@ -161,17 +161,17 @@ export default function RegisterPage() {
               id="terms"
               checked={acceptedTerms}
               onChange={(e) => setAcceptedTerms(e.target.checked)}
-              className="mt-1 h-4 w-4 rounded border-slate-800 bg-slate-900 text-amber-500 focus:ring-amber-500"
+              className="mt-1 h-4 w-4 rounded border-input bg-background text-primary focus:ring-ring"
               required
               disabled={loading}
             />
-            <Label htmlFor="terms" className="text-sm text-slate-400 cursor-pointer">
+            <Label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer">
               I agree to the{" "}
-              <Link href="/terms" className="text-amber-500 hover:underline">
+              <Link href="/terms" className="text-primary hover:underline">
                 Terms and Conditions
               </Link>{" "}
               and{" "}
-              <Link href="/privacy" className="text-amber-500 hover:underline">
+              <Link href="/privacy" className="text-primary hover:underline">
                 Privacy Policy
               </Link>
             </Label>
@@ -189,9 +189,9 @@ export default function RegisterPage() {
           </Button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-slate-400">
+        <div className="mt-6 text-center text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/login" className="text-amber-500 hover:underline">
+          <Link href="/login" className="text-primary hover:underline">
             Sign in
           </Link>
         </div>

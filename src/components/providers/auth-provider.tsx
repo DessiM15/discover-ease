@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { User, Session, AuthError } from "@supabase/supabase-js";
 
@@ -24,23 +24,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const supabase = createClient();
 
-      // Get initial session
-      supabase.auth.getUser().then(({ data, error }: { data: { user: User | null }, error: AuthError | null }) => {
+      // Optimize: Get session first (fastest), set user immediately, then verify if needed
+      supabase.auth.getSession().then(({ data: { session }, error }: { data: { session: Session | null }, error: AuthError | null }) => {
         if (!mounted) return;
-        if (error) {
-          console.error('Auth error:', error);
+        
+        // Set user immediately from session if available (instant UI update)
+        if (session?.user) {
+          setUser(session.user);
+          setLoading(false); // Stop loading immediately
+        } else {
+          // No session - set loading to false quickly, user will be null
           setLoading(false);
-          return;
         }
-        setUser(data.user);
-        setLoading(false);
+        
+        // Verify in background if session exists (non-blocking)
+        if (session) {
+          // Verify session is still valid in background (don't block)
+          supabase.auth.getUser().catch(() => {
+            // Silently handle - session might have expired
+            if (mounted) {
+              setUser(null);
+            }
+          });
+        }
       }).catch((error: unknown) => {
         if (!mounted) return;
         console.error('Auth error:', error);
         setLoading(false);
       });
 
-      // Listen for auth changes
+      // Listen for auth changes (non-blocking)
       const {
         data: { subscription },
       } = supabase.auth.onAuthStateChange((_event: string, session: Session | null) => {

@@ -86,46 +86,46 @@ export default function InsightsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">AI Insights</h1>
-          <p className="mt-1 text-slate-400">AI-generated summaries, suggestions, and analysis for your practice</p>
+          <h1 className="text-3xl font-bold text-foreground">AI Insights</h1>
+          <p className="mt-1 text-muted-foreground">AI-generated summaries, suggestions, and analysis for your practice</p>
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400">New Insights</CardTitle>
-            <Sparkles className="h-4 w-4 text-amber-500" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">New Insights</CardTitle>
+            <Sparkles className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold text-foreground">
               {insights.filter((i) => i.status === "new").length}
             </div>
-            <p className="text-xs text-slate-400 mt-1">Require review</p>
+            <p className="text-xs text-muted-foreground mt-1">Require review</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400">This Week</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">This Week</CardTitle>
             <TrendingUp className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">{insights.length}</div>
-            <p className="text-xs text-slate-400 mt-1">Total insights generated</p>
+            <div className="text-2xl font-bold text-foreground">{insights.length}</div>
+            <p className="text-xs text-muted-foreground mt-1">Total insights generated</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400">Reviewed</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Reviewed</CardTitle>
             <CheckCircle2 className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold text-foreground">
               {insights.filter((i) => i.status === "reviewed").length}
             </div>
-            <p className="text-xs text-slate-400 mt-1">Already reviewed</p>
+            <p className="text-xs text-muted-foreground mt-1">Already reviewed</p>
           </CardContent>
         </Card>
       </div>
@@ -134,12 +134,12 @@ export default function InsightsPage() {
         {insights.map((insight) => {
           const Icon = getTypeIcon(insight.type);
           return (
-            <Card key={insight.id} className="hover:border-amber-500/20 transition-colors">
+            <Card key={insight.id} className="hover:border-primary/20 transition-colors">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-3 flex-1">
-                    <div className="rounded-lg bg-amber-500/10 p-2">
-                      <Icon className="h-5 w-5 text-amber-500" />
+                    <div className="rounded-lg bg-primary/10 p-2">
+                      <Icon className="h-5 w-5 text-primary" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
@@ -150,7 +150,7 @@ export default function InsightsPage() {
                         </Badge>
                       </div>
                       <CardDescription>{insight.description}</CardDescription>
-                      <div className="flex items-center gap-4 mt-3 text-sm text-slate-400">
+                      <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
                         {insight.caseName && (
                           <div className="flex items-center gap-1">
                             <FileText className="h-3 w-3" />
@@ -186,11 +186,11 @@ export default function InsightsPage() {
 
       {insights.length === 0 && (
         <Card>
-          <CardContent className="pt-6">
+          <CardContent>
             <div className="text-center py-12">
-              <Sparkles className="h-12 w-12 mx-auto text-slate-400 mb-4" />
-              <p className="text-slate-400">No insights available yet</p>
-              <p className="text-sm text-slate-500 mt-2">
+              <Sparkles className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <p className="text-muted-foreground">No insights available yet</p>
+              <p className="text-sm text-muted-foreground mt-2">
                 AI insights will appear here as they are generated
               </p>
             </div>
@@ -200,4 +200,5 @@ export default function InsightsPage() {
     </div>
   );
 }
+
 

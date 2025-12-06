@@ -23,7 +23,7 @@ export function Header() {
       </div>
 
       {/* Right side actions */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <ThemeToggle />
         <Button variant="ghost" size="icon" className="relative" asChild>
           <Link href="/notifications">

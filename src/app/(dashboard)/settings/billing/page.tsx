@@ -54,8 +54,8 @@ export default function BillingSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Billing & Subscription</h1>
-        <p className="mt-1 text-slate-400">Manage your subscription and payment methods</p>
+        <h1 className="text-3xl font-bold text-foreground">Billing & Subscription</h1>
+        <p className="mt-1 text-muted-foreground">Manage your subscription and payment methods</p>
       </div>
 
       <Card>
@@ -68,14 +68,14 @@ export default function BillingSettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-xl font-semibold text-white">{subscriptionTier}</h3>
+                  <h3 className="text-xl font-semibold text-foreground">{subscriptionTier}</h3>
                   <Badge
                     variant={subscriptionStatus === "active" ? "success" : "destructive"}
                   >
                     {subscriptionStatus}
                   </Badge>
                 </div>
-                <p className="mt-1 text-sm text-slate-400">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {subscriptionTier === "Starter" && "Perfect for small firms"}
                   {subscriptionTier === "Professional" && "Ideal for growing practices"}
                   {subscriptionTier === "Enterprise" && "For large law firms"}
@@ -84,9 +84,9 @@ export default function BillingSettingsPage() {
               <Button onClick={handleUpgrade}>Upgrade Plan</Button>
             </div>
 
-            <div className="rounded-lg border border-slate-800 p-4">
-              <h4 className="mb-2 font-medium text-white">Plan Features</h4>
-              <ul className="space-y-1 text-sm text-slate-400">
+            <div className="rounded-lg border border-border p-4">
+              <h4 className="mb-2 font-medium text-foreground">Plan Features</h4>
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>• Unlimited cases and contacts</li>
                 <li>• Document management</li>
                 <li>• Time tracking and billing</li>
@@ -107,10 +107,10 @@ export default function BillingSettingsPage() {
         <CardContent>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <CreditCard className="h-8 w-8 text-slate-400" />
+              <CreditCard className="h-8 w-8 text-muted-foreground" />
               <div>
-                <p className="font-medium text-white">Card ending in •••• 4242</p>
-                <p className="text-sm text-slate-400">Expires 12/2025</p>
+                <p className="font-medium text-foreground">Card ending in •••• 4242</p>
+                <p className="text-sm text-muted-foreground">Expires 12/2025</p>
               </div>
             </div>
             <Button variant="outline" onClick={handleUpdatePayment}>
@@ -127,14 +127,14 @@ export default function BillingSettingsPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-lg border border-slate-800 p-4">
+            <div className="flex items-center justify-between rounded-lg border border-border p-4">
               <div>
-                <p className="font-medium text-white">Invoice #INV-2024-001</p>
-                <p className="text-sm text-slate-400">December 1, 2024</p>
+                <p className="font-medium text-foreground">Invoice #INV-2024-001</p>
+                <p className="text-sm text-muted-foreground">December 1, 2024</p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="font-medium text-white">$299.00</p>
+                  <p className="font-medium text-foreground">$299.00</p>
                   <Badge variant="success">Paid</Badge>
                 </div>
                 <Button variant="ghost" size="icon">
@@ -142,7 +142,7 @@ export default function BillingSettingsPage() {
                 </Button>
               </div>
             </div>
-            <p className="text-sm text-slate-400">No other invoices found</p>
+            <p className="text-sm text-muted-foreground">No other invoices found</p>
           </div>
         </CardContent>
       </Card>
@@ -153,8 +153,8 @@ export default function BillingSettingsPage() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-slate-400" />
-            <p className="text-white">January 1, 2025</p>
+            <Calendar className="h-5 w-5 text-muted-foreground" />
+            <p className="text-foreground">January 1, 2025</p>
           </div>
         </CardContent>
       </Card>

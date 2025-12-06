@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   
   // Enable experimental features for better performance
@@ -17,8 +19,11 @@ const nextConfig: NextConfig = {
       '@radix-ui/react-dropdown-menu',
       '@radix-ui/react-select',
       '@radix-ui/react-tabs',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-tooltip',
       'lucide-react',
       'date-fns',
+      'recharts',
     ],
   },
   
@@ -43,6 +48,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/image/:path*',
         headers: [
           {
             key: 'Cache-Control',

@@ -84,13 +84,13 @@ export function TimerWidget({ onStop }: TimerWidgetProps) {
   ];
 
   return (
-    <Card className="sticky top-4 z-10 border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-transparent">
+    <Card className="sticky top-4 z-10 border-primary/20 bg-gradient-to-r from-amber-500/5 to-transparent">
       <CardContent className="pt-6">
         <div className="flex items-center gap-6">
           <div className="flex-1">
             <div className="flex items-center gap-4 mb-4">
               <div className="text-center">
-                <div className="text-5xl font-mono font-bold text-amber-500 mb-2">
+                <div className="text-5xl font-mono font-bold text-primary mb-2">
                   {formatTime(seconds)}
                 </div>
                 <div className="flex items-center justify-center gap-2">
@@ -123,7 +123,7 @@ export function TimerWidget({ onStop }: TimerWidgetProps) {
               <div>
                 <Label>Case</Label>
                 <Select value={caseId} onValueChange={setCaseId}>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1 bg-card/50 border-border">
                     <SelectValue placeholder="Select case" />
                   </SelectTrigger>
                   <SelectContent>
@@ -137,7 +137,7 @@ export function TimerWidget({ onStop }: TimerWidgetProps) {
               <div>
                 <Label>Activity Code</Label>
                 <Select>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1 bg-card/50 border-border">
                     <SelectValue placeholder="Select activity" />
                   </SelectTrigger>
                   <SelectContent>
@@ -157,7 +157,7 @@ export function TimerWidget({ onStop }: TimerWidgetProps) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="What are you working on?"
-                className="mt-1 bg-slate-900/50 border-slate-800"
+                className="mt-1 bg-card/50 border-border"
               />
             </div>
           </div>

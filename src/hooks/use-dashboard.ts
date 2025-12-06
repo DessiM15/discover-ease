@@ -9,39 +9,48 @@ export function useDashboardStats(firmId: string) {
   return useQuery({
     queryKey: ["dashboard-stats", firmId],
     queryFn: async () => {
-      // Get active cases count
-      const { count: activeCases } = await supabase
+      // Run all count queries in parallel for better performance
+      // First, get case IDs for this firm to filter discovery requests
+      const { data: firmCases } = await supabase
         .from("cases")
-        .select("*", { count: "exact", head: true })
-        .eq("firm_id", firmId)
-        .eq("status", "active");
-
-      // Get documents count
-      const { count: documents } = await supabase
-        .from("documents")
-        .select("*", { count: "exact", head: true })
+        .select("id")
         .eq("firm_id", firmId);
+      
+      const caseIds = firmCases?.map((c) => c.id) || [];
 
-      // Get pending tasks count
-      const { count: pendingTasks } = await supabase
-        .from("tasks")
-        .select("*", { count: "exact", head: true })
-        .eq("firm_id", firmId)
-        .eq("status", "pending");
-
-      // Get overdue discovery requests
-      const { count: overdue } = await supabase
-        .from("discovery_requests")
-        .select("*", { count: "exact", head: true })
-        .eq("status", "overdue");
+      const [activeCasesResult, documentsResult, pendingTasksResult, overdueResult] = await Promise.all([
+        supabase
+          .from("cases")
+          .select("*", { count: "exact", head: true })
+          .eq("firm_id", firmId)
+          .eq("status", "active"),
+        supabase
+          .from("documents")
+          .select("*", { count: "exact", head: true })
+          .eq("firm_id", firmId),
+        supabase
+          .from("tasks")
+          .select("*", { count: "exact", head: true })
+          .eq("firm_id", firmId)
+          .eq("status", "pending"),
+        caseIds.length > 0
+          ? supabase
+              .from("discovery_requests")
+              .select("*", { count: "exact", head: true })
+              .in("case_id", caseIds)
+              .eq("status", "overdue")
+          : { count: 0, error: null },
+      ]);
 
       return {
-        activeCases: activeCases || 0,
-        documents: documents || 0,
-        pendingTasks: pendingTasks || 0,
-        overdue: overdue || 0,
+        activeCases: activeCasesResult.count || 0,
+        documents: documentsResult.count || 0,
+        pendingTasks: pendingTasksResult.count || 0,
+        overdue: overdueResult.count || 0,
       };
     },
+    staleTime: 2 * 60 * 1000, // Cache for 2 minutes
+    enabled: !!firmId,
   });
 }
 
@@ -60,6 +69,8 @@ export function useRecentCases(firmId: string) {
       if (error) throw error;
       return data;
     },
+    staleTime: 2 * 60 * 1000, // Cache for 2 minutes
+    enabled: !!firmId,
   });
 }
 
@@ -79,6 +90,8 @@ export function useUpcomingDeadlines(firmId: string) {
       if (error) throw error;
       return data;
     },
+    staleTime: 2 * 60 * 1000, // Cache for 2 minutes
+    enabled: !!firmId,
   });
 }
 
@@ -97,6 +110,8 @@ export function useRecentActivity(firmId: string) {
       if (error) throw error;
       return data;
     },
+    staleTime: 2 * 60 * 1000, // Cache for 2 minutes
+    enabled: !!firmId,
   });
 }
 

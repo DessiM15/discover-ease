@@ -178,8 +178,8 @@ export default function DiscoveryPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Discovery Log</h1>
-          <p className="mt-1 text-slate-400">Track and manage discovery requests and responses</p>
+          <h1 className="text-3xl font-bold text-foreground">Discovery Log</h1>
+          <p className="mt-1 text-muted-foreground">Track and manage discovery requests and responses</p>
         </div>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
@@ -190,17 +190,17 @@ export default function DiscoveryPage() {
       {/* AI Insights Banner */}
       {!dismissedInsights && (
         <Card className="border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-transparent">
-          <CardContent className="pt-6">
+          <CardContent>
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-4 flex-1">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20">
                   <Sparkles className="h-5 w-5 text-purple-400" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-white mb-2">AI Insights</h3>
+                  <h3 className="font-semibold text-foreground mb-2">AI Insights</h3>
                   <ul className="space-y-1">
                     {aiInsights.map((insight, idx) => (
-                      <li key={idx} className="text-sm text-slate-300 flex items-center gap-2">
+                      <li key={idx} className="text-sm text-muted-foreground flex items-center gap-2">
                         <div className="h-1.5 w-1.5 rounded-full bg-purple-400" />
                         {insight}
                       </li>
@@ -212,7 +212,6 @@ export default function DiscoveryPage() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setDismissedInsights(true)}
-                className="text-slate-400 hover:text-white"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -239,46 +238,46 @@ export default function DiscoveryPage() {
         <div className="grid gap-4 md:grid-cols-4">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-400">Total Requests</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Requests</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-white">{stats.total}</p>
+              <p className="text-2xl font-bold text-foreground">{stats.total}</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-400">Pending Responses</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Responses</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-amber-500">{stats.pending}</p>
+              <p className="text-2xl font-bold text-primary">{stats.pending}</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-400">Overdue Items</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Overdue Items</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-red-500">{stats.overdue}</p>
+              <p className="text-2xl font-bold text-destructive">{stats.overdue}</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-400">Completed</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Completed</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-green-500">{stats.completed}</p>
+              <p className="text-2xl font-bold text-emerald-500">{stats.completed}</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Search Bar */}
         <Card>
-          <CardContent className="pt-6">
+          <CardContent>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search discovery requests..."
-                className="pl-10 bg-slate-900/50 border-slate-800"
+                className="pl-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -298,21 +297,21 @@ export default function DiscoveryPage() {
             <Card
               key={request.id}
               className={cn(
-                "hover:border-amber-500/20 transition-colors",
-                isOverdue && "border-red-500/30"
+                "hover:border-primary/20 transition-colors",
+                isOverdue && "border-destructive/30"
               )}
             >
-              <CardContent className="pt-6">
+              <CardContent>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="text-slate-400">
+                      <div className="text-muted-foreground">
                         {(() => {
                           const Icon = getDiscoveryTypeIcon(request.type);
                           return <Icon className="h-5 w-5" />;
                         })()}
                       </div>
-                      <h3 className="text-lg font-semibold text-white hover:text-amber-500 transition-colors cursor-pointer">
+                      <h3 className="text-lg font-semibold text-foreground hover:text-primary transition-colors cursor-pointer">
                         {request.title}
                       </h3>
                       <Badge
@@ -334,40 +333,40 @@ export default function DiscoveryPage() {
 
                     <div className="grid gap-4 md:grid-cols-2 mb-3">
                       <div className="space-y-1 text-sm">
-                        <p className="text-slate-400">
-                          <span className="font-medium text-slate-300">Case:</span> {request.caseName}
+                        <p className="text-muted-foreground">
+                          <span className="font-medium text-foreground">Case:</span> {request.caseName}
                         </p>
-                        <p className="text-slate-400">
-                          <span className="font-medium text-slate-300">From:</span> {request.fromPartyName} →{" "}
-                          <span className="font-medium text-slate-300">To:</span> {request.toPartyName}
+                        <p className="text-muted-foreground">
+                          <span className="font-medium text-foreground">From:</span> {request.fromPartyName} →{" "}
+                          <span className="font-medium text-foreground">To:</span> {request.toPartyName}
                         </p>
                         {request.dueDate && (
                           <p className={cn(
                             "text-sm",
-                            isOverdue ? "text-red-500 font-medium" : "text-slate-400"
+                            isOverdue ? "text-destructive font-medium" : "text-muted-foreground"
                           )}>
-                            <span className="font-medium text-slate-300">Due:</span>{" "}
+                            <span className="font-medium text-foreground">Due:</span>{" "}
                             {new Date(request.dueDate).toLocaleDateString()} •{" "}
                             {formatDaysRemaining(request.dueDate || null)}
                           </p>
                         )}
                         {request.servedDate && (
-                          <p className="text-sm text-slate-400">
-                            <span className="font-medium text-slate-300">Served:</span>{" "}
+                          <p className="text-sm text-muted-foreground">
+                            <span className="font-medium text-foreground">Served:</span>{" "}
                             {new Date(request.servedDate).toLocaleDateString()}
                           </p>
                         )}
                       </div>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-slate-400">Progress</span>
-                          <span className="text-slate-300">
+                          <span className="text-muted-foreground">Progress</span>
+                          <span className="text-foreground">
                             {request.respondedItems} / {request.items} items
                           </span>
                         </div>
-                        <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-amber-500 transition-all"
+                            className="h-full bg-primary transition-all"
                             style={{ width: `${progress}%` }}
                           />
                         </div>
@@ -399,7 +398,7 @@ export default function DiscoveryPage() {
                             variant="outline"
                             size="sm"
                             onClick={() => handleSendFollowUp(request)}
-                            className="text-red-400 border-red-500/20 hover:bg-red-500/10"
+                            className="text-destructive border-destructive/20 hover:bg-destructive/10"
                           >
                             <Send className="mr-2 h-4 w-4" />
                             Follow-up

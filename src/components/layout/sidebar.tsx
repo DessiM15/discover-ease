@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -59,44 +59,59 @@ interface SidebarProps {
 
 export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+  const [mounted, setMounted] = useState(false);
+
+  // Initialize expanded state based on pathname after mount to avoid hydration issues
+  useEffect(() => {
+    setMounted(true);
+    if (pathname) {
+      const initialExpanded: Record<string, boolean> = {};
+      navigation.forEach((item) => {
+        if (item.children && pathname.startsWith(item.href + "/")) {
+          initialExpanded[item.href] = true;
+        }
+      });
+      setExpandedItems(initialExpanded);
+    }
+  }, [pathname]);
 
   return (
-    <div className="flex h-screen w-64 flex-col border-r border-slate-800 bg-slate-950">
+    <aside className="fixed left-0 top-0 h-screen w-60 bg-sidebar text-sidebar-foreground border-r border-sidebar-border flex flex-col z-50">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b border-slate-800 px-6">
+      <div className="flex h-16 items-center border-b border-sidebar-border px-6">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500">
-            <Scale className="h-5 w-5 text-slate-950" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-accent">
+            <Scale className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="text-lg font-bold text-white">DiscoverEase</span>
+          <span className="text-lg font-bold text-sidebar-foreground">DiscoverEase</span>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
+      <nav className="flex-1 space-y-1 px-4 py-4 overflow-y-auto">
         {navigation.map((item) => {
-          const isActive = pathname === item.href || pathname?.startsWith(item.href + "/");
+          const isActive = mounted && pathname ? (pathname === item.href || pathname.startsWith(item.href + "/")) : false;
           const hasChildren = item.children && item.children.length > 0;
 
           if (hasChildren) {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            const [isExpanded, setIsExpanded] = useState(pathname?.startsWith(item.href + "/"));
+            const isExpanded = mounted && expandedItems[item.href] !== false && (expandedItems[item.href] || (pathname && pathname.startsWith(item.href + "/")));
             return (
               <div key={item.name}>
                 <button
-                  onClick={() => setIsExpanded(!isExpanded)}
+                  onClick={() => setExpandedItems((prev) => ({ ...prev, [item.href]: !prev[item.href] }))}
                   className={cn(
-                    "group w-full flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    "group w-full flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mx-1",
                     isActive
-                      ? "bg-amber-500/10 text-amber-500"
-                      : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                      ? "bg-sidebar-accent/10 text-sidebar-accent border-r-2 border-sidebar-accent"
+                      : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-border/50"
                   )}
                 >
                   <div className="flex items-center gap-3">
                     <item.icon
                       className={cn(
                         "h-5 w-5",
-                        isActive ? "text-amber-500" : "text-slate-400 group-hover:text-white"
+                        isActive ? "text-sidebar-accent" : "text-sidebar-foreground/70 group-hover:text-sidebar-foreground"
                       )}
                     />
                     {item.name}
@@ -110,16 +125,16 @@ export function Sidebar({ user }: SidebarProps) {
                 {isExpanded && (
                   <div className="ml-8 mt-1 space-y-1">
                     {item.children!.map((child) => {
-                      const isChildActive = pathname === child.href || pathname?.startsWith(child.href + "/");
+                      const isChildActive = mounted && pathname ? (pathname === child.href || pathname.startsWith(child.href + "/")) : false;
                       return (
                         <Link
                           key={child.name}
                           href={child.href}
                           className={cn(
-                            "block rounded-lg px-3 py-2 text-sm transition-colors",
+                            "block rounded-lg px-3 py-2 text-sm transition-colors mx-1",
                             isChildActive
-                              ? "bg-amber-500/10 text-amber-500"
-                              : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                              ? "bg-sidebar-accent/10 text-sidebar-accent"
+                              : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-border/50"
                           )}
                         >
                           {child.name}
@@ -137,16 +152,16 @@ export function Sidebar({ user }: SidebarProps) {
               key={item.name}
               href={item.href}
               className={cn(
-                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mx-1",
                 isActive
-                  ? "bg-amber-500/10 text-amber-500"
-                  : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                  ? "bg-sidebar-accent/10 text-sidebar-accent border-r-2 border-sidebar-accent"
+                  : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-border/50"
               )}
             >
               <item.icon
                 className={cn(
                   "h-5 w-5",
-                  isActive ? "text-amber-500" : "text-slate-400 group-hover:text-white"
+                  isActive ? "text-sidebar-accent" : "text-sidebar-foreground/70 group-hover:text-sidebar-foreground"
                 )}
               />
               {item.name}
@@ -156,32 +171,32 @@ export function Sidebar({ user }: SidebarProps) {
       </nav>
 
       {/* User section */}
-      <div className="border-t border-slate-800 p-4 space-y-2">
+      <div className="border-t border-sidebar-border p-4 space-y-2">
         {user && (
-          <div className="rounded-lg bg-slate-900/50 p-3">
-            <p className="text-xs text-slate-400 mb-1">Signed in as</p>
-            <p className="text-sm font-medium text-white">
+          <div className="rounded-lg bg-sidebar-border/30 p-3">
+            <p className="text-xs text-sidebar-foreground/60 mb-1">Signed in as</p>
+            <p className="text-sm font-medium text-sidebar-foreground">
               {user.first_name} {user.last_name}
             </p>
             {user.firms && (
-              <p className="text-xs text-slate-400 mt-1">{user.firms.name}</p>
+              <p className="text-xs text-sidebar-foreground/60 mt-1">{user.firms.name}</p>
             )}
           </div>
         )}
         <Link
           href="/notifications"
-          className="flex items-center gap-3 rounded-lg bg-slate-900/50 p-3 hover:bg-slate-900 transition-colors"
+          className="flex items-center gap-3 rounded-lg bg-sidebar-border/30 p-3 hover:bg-sidebar-border/50 transition-colors"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/20 text-amber-500">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sidebar-accent/20 text-sidebar-accent">
             <Bell className="h-5 w-5" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-medium text-white">Notifications</p>
-            <p className="text-xs text-slate-400">3 new</p>
+            <p className="text-sm font-medium text-sidebar-foreground">Notifications</p>
+            <p className="text-xs text-sidebar-foreground/60">3 new</p>
           </div>
         </Link>
       </div>
-    </div>
+    </aside>
   );
 }
 
