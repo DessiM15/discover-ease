@@ -16,7 +16,7 @@ export function useDashboardStats(firmId: string) {
         .select("id")
         .eq("firm_id", firmId);
       
-      const caseIds = firmCases?.map((c) => c.id) || [];
+      const caseIds = firmCases?.map((c: { id: string }) => c.id) || [];
 
       const [activeCasesResult, documentsResult, pendingTasksResult, overdueResult] = await Promise.all([
         supabase
