@@ -18,7 +18,9 @@ import { useUser, useUpdateUser } from "@/hooks/use-users";
 import { toast } from "sonner";
 import Link from "next/link";
 
-const ROLES = [
+type UserRole = "owner" | "attorney" | "paralegal" | "secretary" | "admin" | "billing";
+
+const ROLES: { value: UserRole; label: string }[] = [
   { value: "owner", label: "Owner" },
   { value: "admin", label: "Admin" },
   { value: "attorney", label: "Attorney" },
@@ -38,7 +40,11 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
   const { data: user, isLoading } = useUser(id);
   const updateUser = useUpdateUser();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    role: UserRole | "";
+    billing_rate: string;
+    is_active: boolean;
+  }>({
     role: "",
     billing_rate: "",
     is_active: true,
@@ -56,10 +62,14 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.role) {
+      toast.error("Please select a role");
+      return;
+    }
     try {
       await updateUser.mutateAsync({
         id: id,
-        role: formData.role,
+        role: formData.role as UserRole,
         billingRate: formData.billing_rate || null,
         isActive: formData.is_active,
       });
@@ -103,7 +113,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
           <Label htmlFor="role">Role *</Label>
           <Select
             value={formData.role}
-            onValueChange={(value) => setFormData({ ...formData, role: value })}
+            onValueChange={(value) => setFormData({ ...formData, role: value as UserRole })}
           >
             <SelectTrigger className="mt-1">
               <SelectValue />
