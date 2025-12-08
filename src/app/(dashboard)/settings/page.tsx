@@ -11,6 +11,7 @@ import {
   Bell,
   Database,
   ArrowRight,
+  Palette,
 } from "lucide-react";
 
 export default async function SettingsPage() {
@@ -76,13 +77,19 @@ export default async function SettingsPage() {
       description: "Export data and manage privacy settings",
       icon: Database,
     },
+    {
+      href: "/settings/appearance",
+      title: "Appearance",
+      description: "Customize theme and display preferences",
+      icon: Palette,
+    },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Settings</h1>
-        <p className="mt-1 text-slate-400">Manage your account and firm settings</p>
+        <h1 className="text-3xl font-bold text-foreground">Settings</h1>
+        <p className="mt-1 text-muted-foreground">Manage your account and firm settings</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -91,16 +98,16 @@ export default async function SettingsPage() {
           const Icon = section.icon;
           return (
             <Link key={section.href} href={section.href}>
-              <Card className="cursor-pointer transition-all hover:border-amber-500/50 hover:shadow-lg">
+              <Card className="cursor-pointer transition-all hover:border-primary/50 hover:shadow-lg">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="rounded-lg bg-amber-500/10 p-2">
-                        <Icon className="h-5 w-5 text-amber-500" />
+                      <div className="rounded-lg bg-primary/10 p-2">
+                        <Icon className="h-5 w-5 text-primary" />
                       </div>
-                      <CardTitle className="text-white">{section.title}</CardTitle>
+                      <CardTitle className="text-foreground">{section.title}</CardTitle>
                     </div>
-                    <ArrowRight className="h-5 w-5 text-slate-400" />
+                    <ArrowRight className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <CardDescription>{section.description}</CardDescription>
                 </CardHeader>

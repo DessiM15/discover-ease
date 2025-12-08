@@ -41,18 +41,18 @@ export function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500/20 text-amber-500">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-primary">
             {userInitials}
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="glass border-slate-800 w-56">
+      <DropdownMenuContent align="end" className="border-border w-56">
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none text-white">
+            <p className="text-sm font-medium leading-none text-foreground">
               {user.email}
             </p>
-            <p className="text-xs leading-none text-slate-400">
+            <p className="text-xs leading-none text-muted-foreground">
               {user.user_metadata?.first_name} {user.user_metadata?.last_name}
             </p>
           </div>

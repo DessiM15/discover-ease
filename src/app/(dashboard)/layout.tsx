@@ -33,11 +33,11 @@ export default async function DashboardLayout({
     }
 
     return (
-      <div className="flex h-screen bg-slate-950">
+      <div className="flex h-screen bg-background">
         <Sidebar user={userData || null} />
         <div className="flex flex-1 flex-col overflow-hidden">
           <Header />
-          <main className="flex-1 overflow-y-auto bg-slate-950 p-6">
+          <main className="flex-1 overflow-y-auto bg-background p-6">
             {children}
           </main>
         </div>

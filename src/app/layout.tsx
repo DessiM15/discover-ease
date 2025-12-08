@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -24,14 +25,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={dmSans.variable}>
+    <html lang="en" className={dmSans.variable} suppressHydrationWarning>
       <body className="antialiased font-sans">
-        <AuthProvider>
-          <QueryProvider>
-            {children}
-          </QueryProvider>
-        </AuthProvider>
-        <Toaster position="top-right" theme="dark" />
+        <ThemeProvider>
+          <AuthProvider>
+            <QueryProvider>
+              {children}
+            </QueryProvider>
+          </AuthProvider>
+          <Toaster position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -61,14 +61,14 @@ export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen w-64 flex-col border-r border-slate-800 bg-slate-950">
+    <div className="flex h-screen w-64 flex-col border-r border-border bg-card">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b border-slate-800 px-6">
+      <div className="flex h-16 items-center border-b border-border px-6">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500">
-            <Scale className="h-5 w-5 text-slate-950" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <Scale className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="text-lg font-bold text-white">DiscoverEase</span>
+          <span className="text-lg font-bold text-foreground">DiscoverEase</span>
         </div>
       </div>
 
@@ -88,15 +88,15 @@ export function Sidebar({ user }: SidebarProps) {
                   className={cn(
                     "group w-full flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                     isActive
-                      ? "bg-amber-500/10 text-amber-500"
-                      : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   )}
                 >
                   <div className="flex items-center gap-3">
                     <item.icon
                       className={cn(
                         "h-5 w-5",
-                        isActive ? "text-amber-500" : "text-slate-400 group-hover:text-white"
+                        isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                       )}
                     />
                     {item.name}
@@ -118,8 +118,8 @@ export function Sidebar({ user }: SidebarProps) {
                           className={cn(
                             "block rounded-lg px-3 py-2 text-sm transition-colors",
                             isChildActive
-                              ? "bg-amber-500/10 text-amber-500"
-                              : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                              ? "bg-primary/10 text-primary"
+                              : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                           )}
                         >
                           {child.name}
@@ -139,14 +139,14 @@ export function Sidebar({ user }: SidebarProps) {
               className={cn(
                 "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-amber-500/10 text-amber-500"
-                  : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
               )}
             >
               <item.icon
                 className={cn(
                   "h-5 w-5",
-                  isActive ? "text-amber-500" : "text-slate-400 group-hover:text-white"
+                  isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                 )}
               />
               {item.name}
@@ -156,32 +156,31 @@ export function Sidebar({ user }: SidebarProps) {
       </nav>
 
       {/* User section */}
-      <div className="border-t border-slate-800 p-4 space-y-2">
+      <div className="border-t border-border p-4 space-y-2">
         {user && (
-          <div className="rounded-lg bg-slate-900/50 p-3">
-            <p className="text-xs text-slate-400 mb-1">Signed in as</p>
-            <p className="text-sm font-medium text-white">
+          <div className="rounded-lg bg-secondary/50 p-3">
+            <p className="text-xs text-muted-foreground mb-1">Signed in as</p>
+            <p className="text-sm font-medium text-foreground">
               {user.first_name} {user.last_name}
             </p>
             {user.firms && (
-              <p className="text-xs text-slate-400 mt-1">{user.firms.name}</p>
+              <p className="text-xs text-muted-foreground mt-1">{user.firms.name}</p>
             )}
           </div>
         )}
         <Link
           href="/notifications"
-          className="flex items-center gap-3 rounded-lg bg-slate-900/50 p-3 hover:bg-slate-900 transition-colors"
+          className="flex items-center gap-3 rounded-lg bg-secondary/50 p-3 hover:bg-secondary transition-colors"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/20 text-amber-500">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-primary">
             <Bell className="h-5 w-5" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-medium text-white">Notifications</p>
-            <p className="text-xs text-slate-400">3 new</p>
+            <p className="text-sm font-medium text-foreground">Notifications</p>
+            <p className="text-xs text-muted-foreground">3 new</p>
           </div>
         </Link>
       </div>
     </div>
   );
 }
-
