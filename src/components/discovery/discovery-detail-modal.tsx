@@ -96,7 +96,7 @@ export function DiscoveryDetailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass border-slate-800">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass border-border">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -129,7 +129,7 @@ export function DiscoveryDetailModal({
             {items.map((item) => (
               <div
                 key={item.id}
-                className="rounded-lg border border-slate-800 bg-slate-900/50 p-4"
+                className="rounded-lg border border-border bg-card p-4"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
@@ -141,7 +141,7 @@ export function DiscoveryDetailModal({
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-slate-300 mb-3">{item.text}</p>
+                    <p className="text-sm text-muted-foreground mb-3">{item.text}</p>
                   </div>
                   <Button
                     variant="outline"
@@ -187,7 +187,7 @@ export function DiscoveryDetailModal({
                         </Button>
                       </div>
                     </div>
-                    <p className="text-sm text-slate-300 whitespace-pre-wrap">{aiDraft}</p>
+                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">{aiDraft}</p>
                     <div className="flex gap-2 mt-3">
                       <Button
                         variant="outline"
@@ -209,14 +209,14 @@ export function DiscoveryDetailModal({
 
                 {item.responseText || item.response_text ? (
                   <div className="mt-3">
-                    <Label className="text-xs text-slate-400 mb-1">Response:</Label>
-                    <p className="text-sm text-white">{item.responseText || item.response_text}</p>
+                    <Label className="text-xs text-muted-foreground mb-1">Response:</Label>
+                    <p className="text-sm text-foreground">{item.responseText || item.response_text}</p>
                   </div>
                 ) : (
                   <div className="mt-3">
-                    <Label className="text-xs text-slate-400 mb-1">Response:</Label>
+                    <Label className="text-xs text-muted-foreground mb-1">Response:</Label>
                     <Textarea
-                      className="min-h-[100px] bg-slate-900/50 border-slate-800"
+                      className="min-h-[100px] bg-card border-border"
                       placeholder="Enter response..."
                       value={responseText}
                       onChange={(e) => setResponseText(e.target.value)}
@@ -232,7 +232,7 @@ export function DiscoveryDetailModal({
               <div>
                 <Label>Full Response Text</Label>
                 <Textarea
-                  className="min-h-[300px] bg-slate-900/50 border-slate-800 mt-2"
+                  className="min-h-[300px] bg-card border-border mt-2"
                   placeholder="Enter complete response..."
                   value={request.responseText || request.response_text || ""}
                 />
@@ -240,7 +240,7 @@ export function DiscoveryDetailModal({
               <div>
                 <Label>Objections</Label>
                 <Textarea
-                  className="min-h-[150px] bg-slate-900/50 border-slate-800 mt-2"
+                  className="min-h-[150px] bg-card border-border mt-2"
                   placeholder="Enter objections..."
                   value={request.objections || ""}
                 />
@@ -255,20 +255,20 @@ export function DiscoveryDetailModal({
           <TabsContent value="parties" className="mt-4">
             <div className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
-                  <Label className="text-xs text-slate-400 mb-2">From Party</Label>
+                <div className="rounded-lg border border-border bg-card p-4">
+                  <Label className="text-xs text-muted-foreground mb-2">From Party</Label>
                   <div className="flex items-center gap-2">
-                    <User className="h-5 w-5 text-slate-400" />
-                    <span className="text-white">
+                    <User className="h-5 w-5 text-muted-foreground" />
+                    <span className="text-foreground">
                       {request.fromPartyName || "Not specified"}
                     </span>
                   </div>
                 </div>
-                <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
-                  <Label className="text-xs text-slate-400 mb-2">To Party</Label>
+                <div className="rounded-lg border border-border bg-card p-4">
+                  <Label className="text-xs text-muted-foreground mb-2">To Party</Label>
                   <div className="flex items-center gap-2">
-                    <User className="h-5 w-5 text-slate-400" />
-                    <span className="text-white">
+                    <User className="h-5 w-5 text-muted-foreground" />
+                    <span className="text-foreground">
                       {request.toPartyName || "Not specified"}
                     </span>
                   </div>
@@ -276,24 +276,24 @@ export function DiscoveryDetailModal({
               </div>
               <div className="grid gap-4 md:grid-cols-3">
                 <div>
-                  <Label className="text-xs text-slate-400">Served Date</Label>
-                  <p className="text-white mt-1">
+                  <Label className="text-xs text-muted-foreground">Served Date</Label>
+                  <p className="text-foreground mt-1">
                     {request.servedDate || request.served_date
                       ? new Date(request.servedDate || request.served_date).toLocaleDateString()
                       : "Not served"}
                   </p>
                 </div>
                 <div>
-                  <Label className="text-xs text-slate-400">Due Date</Label>
-                  <p className="text-white mt-1">
+                  <Label className="text-xs text-muted-foreground">Due Date</Label>
+                  <p className="text-foreground mt-1">
                     {request.dueDate || request.due_date
                       ? new Date(request.dueDate || request.due_date).toLocaleDateString()
                       : "No due date"}
                   </p>
                 </div>
                 <div>
-                  <Label className="text-xs text-slate-400">Status</Label>
-                  <p className="text-white mt-1">
+                  <Label className="text-xs text-muted-foreground">Status</Label>
+                  <p className="text-foreground mt-1">
                     {formatDaysRemaining(request.dueDate || request.due_date)}
                   </p>
                 </div>
@@ -306,7 +306,7 @@ export function DiscoveryDetailModal({
               <div>
                 <Label>Notes</Label>
                 <Textarea
-                  className="min-h-[200px] bg-slate-900/50 border-slate-800 mt-2"
+                  className="min-h-[200px] bg-card border-border mt-2"
                   placeholder="Add notes about this discovery request..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}

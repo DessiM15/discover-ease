@@ -42,8 +42,8 @@ export default function TimeTrackingPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Time Tracking</h1>
-          <p className="mt-1 text-slate-400">Track billable and non-billable time</p>
+          <h1 className="text-3xl font-bold text-foreground">Time Tracking</h1>
+          <p className="mt-1 text-muted-foreground">Track billable and non-billable time</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
@@ -61,7 +61,7 @@ export default function TimeTrackingPage() {
                 New Entry
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl glass border-slate-800">
+            <DialogContent className="max-w-2xl glass border-border">
               <DialogHeader>
                 <DialogTitle>New Time Entry</DialogTitle>
                 <DialogDescription>Add a new time entry manually</DialogDescription>
@@ -76,7 +76,7 @@ export default function TimeTrackingPage() {
 
       {showTimerForm && (
         <Dialog open={showTimerForm} onOpenChange={setShowTimerForm}>
-          <DialogContent className="max-w-2xl glass border-slate-800">
+          <DialogContent className="max-w-2xl glass border-border">
             <DialogHeader>
               <DialogTitle>Save Time Entry</DialogTitle>
               <DialogDescription>

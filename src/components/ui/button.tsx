@@ -4,15 +4,15 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default: "bg-amber-500 text-slate-950 hover:bg-amber-600 active:bg-amber-700",
-        destructive: "bg-red-600 text-white hover:bg-red-700 active:bg-red-800",
-        outline: "border border-slate-800 bg-transparent text-slate-200 hover:bg-slate-900 hover:text-white",
-        secondary: "bg-slate-800 text-slate-200 hover:bg-slate-700 active:bg-slate-600",
-        ghost: "hover:bg-slate-900 hover:text-white text-slate-400",
+        destructive: "bg-red-600 text-foreground hover:bg-red-700 active:bg-red-800",
+        outline: "border border-border bg-transparent text-foreground hover:bg-secondary hover:text-foreground",
+        secondary: "bg-secondary text-foreground hover:bg-secondary/80 active:bg-secondary/70",
+        ghost: "hover:bg-muted hover:text-foreground text-muted-foreground",
         link: "text-amber-500 underline-offset-4 hover:underline",
       },
       size: {

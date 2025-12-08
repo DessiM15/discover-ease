@@ -71,7 +71,7 @@ export function FollowUpEmailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl glass border-slate-800">
+      <DialogContent className="max-w-2xl glass border-border">
         <DialogHeader>
           <DialogTitle>Send Follow-Up Email</DialogTitle>
           <DialogDescription>
@@ -86,7 +86,7 @@ export function FollowUpEmailModal({
               value={to}
               onChange={(e) => setTo(e.target.value)}
               placeholder="email@example.com"
-              className="mt-1 bg-slate-900/50 border-slate-800"
+              className="mt-1 bg-card border-border"
             />
           </div>
 
@@ -95,7 +95,7 @@ export function FollowUpEmailModal({
             <Input
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="mt-1 bg-slate-900/50 border-slate-800"
+              className="mt-1 bg-card border-border"
             />
           </div>
 
@@ -115,7 +115,7 @@ export function FollowUpEmailModal({
             <Textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              className="min-h-[200px] bg-slate-900/50 border-slate-800"
+              className="min-h-[200px] bg-card border-border"
             />
           </div>
 

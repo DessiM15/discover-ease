@@ -109,8 +109,8 @@ export default function WorkflowsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">AI Workflows</h1>
-          <p className="mt-1 text-slate-400">Automate tasks with AI-powered workflows</p>
+          <h1 className="text-3xl font-bold text-foreground">AI Workflows</h1>
+          <p className="mt-1 text-muted-foreground">Automate tasks with AI-powered workflows</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
@@ -119,7 +119,7 @@ export default function WorkflowsPage() {
               Create Workflow
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass border-slate-800">
+          <DialogContent className="glass border-border">
             <DialogHeader>
               <DialogTitle>Create New Workflow</DialogTitle>
               <DialogDescription>
@@ -133,7 +133,7 @@ export default function WorkflowsPage() {
                   value={newWorkflow.name}
                   onChange={(e) => setNewWorkflow({ ...newWorkflow, name: e.target.value })}
                   placeholder="e.g., Auto-remind before deadline"
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1 bg-background border-border"
                 />
               </div>
               <div>
@@ -142,7 +142,7 @@ export default function WorkflowsPage() {
                   value={newWorkflow.trigger}
                   onValueChange={(value) => setNewWorkflow({ ...newWorkflow, trigger: value })}
                 >
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1 bg-background border-border">
                     <SelectValue placeholder="Select trigger" />
                   </SelectTrigger>
                   <SelectContent>
@@ -159,7 +159,7 @@ export default function WorkflowsPage() {
                   value={newWorkflow.action}
                   onValueChange={(value) => setNewWorkflow({ ...newWorkflow, action: value })}
                 >
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1 bg-background border-border">
                     <SelectValue placeholder="Select action" />
                   </SelectTrigger>
                   <SelectContent>
@@ -176,7 +176,7 @@ export default function WorkflowsPage() {
                   value={newWorkflow.description}
                   onChange={(e) => setNewWorkflow({ ...newWorkflow, description: e.target.value })}
                   placeholder="Describe what this workflow does..."
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1 bg-background border-border"
                 />
               </div>
               <div className="flex justify-end gap-2">
@@ -230,15 +230,15 @@ export default function WorkflowsPage() {
             <CardContent>
               <div className="space-y-2 text-sm">
                 <div>
-                  <span className="text-slate-400">Trigger:</span>{" "}
-                  <span className="text-white">{getTriggerLabel(workflow.trigger)}</span>
+                  <span className="text-muted-foreground">Trigger:</span>{" "}
+                  <span className="text-foreground">{getTriggerLabel(workflow.trigger)}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400">Action:</span>{" "}
-                  <span className="text-white">{getActionLabel(workflow.action)}</span>
+                  <span className="text-muted-foreground">Action:</span>{" "}
+                  <span className="text-foreground">{getActionLabel(workflow.action)}</span>
                 </div>
                 {workflow.description && (
-                  <p className="text-slate-400 mt-3">{workflow.description}</p>
+                  <p className="text-muted-foreground mt-3">{workflow.description}</p>
                 )}
               </div>
             </CardContent>

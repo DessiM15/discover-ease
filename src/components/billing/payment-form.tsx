@@ -55,16 +55,16 @@ export function PaymentForm({ invoiceId, balance, onSuccess }: PaymentFormProps)
           max={balance}
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="mt-1 bg-slate-900/50 border-slate-800"
+          className="mt-1"
           required
         />
-        <p className="text-xs text-slate-400 mt-1">Balance due: ${balance.toFixed(2)}</p>
+        <p className="text-xs text-muted-foreground mt-1">Balance due: ${balance.toFixed(2)}</p>
       </div>
 
       <div>
         <Label>Payment Method</Label>
         <Select value={method} onValueChange={setMethod} required>
-          <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+          <SelectTrigger className="mt-1">
             <SelectValue placeholder="Select method" />
           </SelectTrigger>
           <SelectContent>
@@ -83,7 +83,7 @@ export function PaymentForm({ invoiceId, balance, onSuccess }: PaymentFormProps)
           value={reference}
           onChange={(e) => setReference(e.target.value)}
           placeholder="Check #, transaction ID, etc."
-          className="mt-1 bg-slate-900/50 border-slate-800"
+          className="mt-1"
         />
       </div>
 
@@ -93,7 +93,7 @@ export function PaymentForm({ invoiceId, balance, onSuccess }: PaymentFormProps)
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="mt-1 bg-slate-900/50 border-slate-800"
+          className="mt-1"
           required
         />
       </div>
@@ -103,7 +103,7 @@ export function PaymentForm({ invoiceId, balance, onSuccess }: PaymentFormProps)
         <Textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="mt-1 bg-slate-900/50 border-slate-800"
+          className="mt-1"
           placeholder="Additional notes..."
         />
       </div>

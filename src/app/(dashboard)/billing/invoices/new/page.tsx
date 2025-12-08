@@ -59,8 +59,8 @@ export default function CreateInvoicePage() {
             </Link>
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-white">Create Invoice</h1>
-            <p className="mt-1 text-slate-400">Generate a new invoice for a client</p>
+            <h1 className="text-3xl font-bold text-foreground">Create Invoice</h1>
+            <p className="mt-1 text-muted-foreground">Generate a new invoice for a client</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -88,7 +88,7 @@ export default function CreateInvoicePage() {
               <div>
                 <Label>Client</Label>
                 <Select value={clientId} onValueChange={setClientId} required>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1 bg-card border-border">
                     <SelectValue placeholder="Select client" />
                   </SelectTrigger>
                   <SelectContent>
@@ -101,7 +101,7 @@ export default function CreateInvoicePage() {
               <div>
                 <Label>Case</Label>
                 <Select value={caseId} onValueChange={setCaseId} required>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1 bg-card border-border">
                     <SelectValue placeholder="Select case" />
                   </SelectTrigger>
                   <SelectContent>
@@ -121,7 +121,7 @@ export default function CreateInvoicePage() {
             <CardContent>
               <div className="space-y-3">
                 {unbilledTime.map((entry) => (
-                  <div key={entry.id} className="flex items-center gap-3 p-3 rounded-lg bg-slate-900/50">
+                  <div key={entry.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted">
                     <Checkbox
                       checked={selectedTimeEntries.includes(entry.id)}
                       onCheckedChange={(checked) => {
@@ -133,10 +133,10 @@ export default function CreateInvoicePage() {
                       }}
                     />
                     <div className="flex-1">
-                      <p className="text-sm text-white">{entry.description}</p>
-                      <p className="text-xs text-slate-400">{entry.hours} hrs @ ${entry.rate}/hr</p>
+                      <p className="text-sm text-foreground">{entry.description}</p>
+                      <p className="text-xs text-muted-foreground">{entry.hours} hrs @ ${entry.rate}/hr</p>
                     </div>
-                    <span className="text-sm font-medium text-white">${entry.amount.toFixed(2)}</span>
+                    <span className="text-sm font-medium text-foreground">${entry.amount.toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -150,7 +150,7 @@ export default function CreateInvoicePage() {
             <CardContent>
               <div className="space-y-3">
                 {unbilledExpenses.map((expense) => (
-                  <div key={expense.id} className="flex items-center gap-3 p-3 rounded-lg bg-slate-900/50">
+                  <div key={expense.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted">
                     <Checkbox
                       checked={selectedExpenses.includes(expense.id)}
                       onCheckedChange={(checked) => {
@@ -162,9 +162,9 @@ export default function CreateInvoicePage() {
                       }}
                     />
                     <div className="flex-1">
-                      <p className="text-sm text-white">{expense.description}</p>
+                      <p className="text-sm text-foreground">{expense.description}</p>
                     </div>
-                    <span className="text-sm font-medium text-white">${expense.amount.toFixed(2)}</span>
+                    <span className="text-sm font-medium text-foreground">${expense.amount.toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -185,7 +185,7 @@ export default function CreateInvoicePage() {
                     type="date"
                     value={invoiceDate}
                     onChange={(e) => setInvoiceDate(e.target.value)}
-                    className="mt-1 bg-slate-900/50 border-slate-800"
+                    className="mt-1 bg-card border-border"
                   />
                 </div>
                 <div>
@@ -194,14 +194,14 @@ export default function CreateInvoicePage() {
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="mt-1 bg-slate-900/50 border-slate-800"
+                    className="mt-1 bg-card border-border"
                   />
                 </div>
               </div>
               <div>
                 <Label>Payment Terms</Label>
                 <Select value={paymentTerms} onValueChange={setPaymentTerms}>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1 bg-card border-border">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -217,7 +217,7 @@ export default function CreateInvoicePage() {
                 <Textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1 bg-card border-border"
                   placeholder="Additional notes or instructions..."
                 />
               </div>
@@ -230,35 +230,35 @@ export default function CreateInvoicePage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Subtotal</span>
-                <span className="text-white">${subtotal.toFixed(2)}</span>
+                <span className="text-muted-foreground">Subtotal</span>
+                <span className="text-foreground">${subtotal.toFixed(2)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Label className="text-sm text-slate-400">Tax Rate</Label>
+                  <Label className="text-sm text-muted-foreground">Tax Rate</Label>
                   <Input
                     type="number"
                     step="0.01"
                     value={taxRate}
                     onChange={(e) => setTaxRate(e.target.value)}
-                    className="w-20 h-8 bg-slate-900/50 border-slate-800"
+                    className="w-20 h-8 bg-card border-border"
                   />
-                  <span className="text-sm text-slate-400">%</span>
+                  <span className="text-sm text-muted-foreground">%</span>
                 </div>
-                <span className="text-sm text-white">${tax.toFixed(2)}</span>
+                <span className="text-sm text-foreground">${tax.toFixed(2)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Label className="text-sm text-slate-400">Discount</Label>
+                  <Label className="text-sm text-muted-foreground">Discount</Label>
                   <Input
                     type="number"
                     step="0.01"
                     value={discount}
                     onChange={(e) => setDiscount(e.target.value)}
-                    className="w-20 h-8 bg-slate-900/50 border-slate-800"
+                    className="w-20 h-8 bg-card border-border"
                   />
                   <Select value={discountType} onValueChange={setDiscountType}>
-                    <SelectTrigger className="w-20 h-8 bg-slate-900/50 border-slate-800">
+                    <SelectTrigger className="w-20 h-8 bg-card border-border">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -267,10 +267,10 @@ export default function CreateInvoicePage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <span className="text-sm text-white">-${discountAmount.toFixed(2)}</span>
+                <span className="text-sm text-foreground">-${discountAmount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between pt-3 border-t border-slate-800">
-                <span className="text-lg font-semibold text-white">Total</span>
+              <div className="flex justify-between pt-3 border-t border-border">
+                <span className="text-lg font-semibold text-foreground">Total</span>
                 <span className="text-lg font-semibold text-amber-500">${total.toFixed(2)}</span>
               </div>
             </CardContent>

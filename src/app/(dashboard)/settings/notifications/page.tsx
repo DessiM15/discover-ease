@@ -55,8 +55,8 @@ export default function NotificationsSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Notifications</h1>
-        <p className="mt-1 text-slate-400">Configure your notification preferences</p>
+        <h1 className="text-3xl font-bold text-foreground">Notifications</h1>
+        <p className="mt-1 text-muted-foreground">Configure your notification preferences</p>
       </div>
 
       <Card>
@@ -68,7 +68,7 @@ export default function NotificationsSettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="email_new_case">New Case Assigned</Label>
-              <p className="text-sm text-slate-400">Get notified when a new case is assigned to you</p>
+              <p className="text-sm text-muted-foreground">Get notified when a new case is assigned to you</p>
             </div>
             <Switch
               id="email_new_case"
@@ -82,7 +82,7 @@ export default function NotificationsSettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="email_task_assigned">Task Assigned</Label>
-              <p className="text-sm text-slate-400">Get notified when a task is assigned to you</p>
+              <p className="text-sm text-muted-foreground">Get notified when a task is assigned to you</p>
             </div>
             <Switch
               id="email_task_assigned"
@@ -96,7 +96,7 @@ export default function NotificationsSettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="email_deadline_reminders">Deadline Reminders</Label>
-              <p className="text-sm text-slate-400">Get reminded about upcoming deadlines</p>
+              <p className="text-sm text-muted-foreground">Get reminded about upcoming deadlines</p>
             </div>
             <Switch
               id="email_deadline_reminders"
@@ -132,7 +132,7 @@ export default function NotificationsSettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="email_invoice_paid">Invoice Paid</Label>
-              <p className="text-sm text-slate-400">Get notified when an invoice is paid</p>
+              <p className="text-sm text-muted-foreground">Get notified when an invoice is paid</p>
             </div>
             <Switch
               id="email_invoice_paid"
@@ -146,7 +146,7 @@ export default function NotificationsSettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="email_client_message">New Client Message</Label>
-              <p className="text-sm text-slate-400">Get notified when a client sends a message</p>
+              <p className="text-sm text-muted-foreground">Get notified when a client sends a message</p>
             </div>
             <Switch
               id="email_client_message"
@@ -160,7 +160,7 @@ export default function NotificationsSettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <Label htmlFor="email_discovery_due">Discovery Due Dates</Label>
-              <p className="text-sm text-slate-400">Get notified about discovery deadlines</p>
+              <p className="text-sm text-muted-foreground">Get notified about discovery deadlines</p>
             </div>
             <Switch
               id="email_discovery_due"

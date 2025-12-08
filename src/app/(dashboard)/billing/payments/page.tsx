@@ -52,8 +52,8 @@ export default function PaymentsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Payments</h1>
-          <p className="mt-1 text-slate-400">Track and manage client payments</p>
+          <h1 className="text-3xl font-bold text-foreground">Payments</h1>
+          <p className="mt-1 text-muted-foreground">Track and manage client payments</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
@@ -71,7 +71,7 @@ export default function PaymentsPage() {
                 Record Payment
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md glass border-slate-800">
+            <DialogContent className="max-w-md glass border-border">
               <DialogHeader>
                 <DialogTitle>Record Payment</DialogTitle>
                 <DialogDescription>Record a new payment</DialogDescription>
@@ -90,32 +90,32 @@ export default function PaymentsPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-slate-800">
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Client</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Invoice</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Amount</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Method</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Reference</th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400">Status</th>
+                <tr className="border-b border-border">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Client</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Invoice</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Amount</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Method</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Reference</th>
+                  <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {demoPayments.map((payment) => (
                   <tr
                     key={payment.id}
-                    className="border-b border-slate-800/50 hover:bg-slate-900/50 transition-colors"
+                    className="border-b border-border hover:bg-muted transition-colors"
                   >
-                    <td className="px-4 py-3 text-sm text-slate-300">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {new Date(payment.date).toLocaleDateString()}
                     </td>
-                    <td className="px-4 py-3 text-sm text-white">{payment.client}</td>
-                    <td className="px-4 py-3 text-sm text-slate-300">{payment.invoiceNumber}</td>
-                    <td className="px-4 py-3 text-sm text-white font-medium text-right">
+                    <td className="px-4 py-3 text-sm text-foreground">{payment.client}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{payment.invoiceNumber}</td>
+                    <td className="px-4 py-3 text-sm text-foreground font-medium text-right">
                       ${payment.amount.toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-slate-300">{payment.method}</td>
-                    <td className="px-4 py-3 text-sm text-slate-300">{payment.reference}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{payment.method}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{payment.reference}</td>
                     <td className="px-4 py-3 text-center">
                       <Badge variant={payment.status === "deposited" ? "success" : "warning"}>
                         {payment.status}

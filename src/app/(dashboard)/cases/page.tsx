@@ -88,8 +88,8 @@ export default function CasesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Cases</h1>
-          <p className="mt-1 text-slate-400">Manage all your legal cases</p>
+          <h1 className="text-3xl font-bold text-foreground">Cases</h1>
+          <p className="mt-1 text-muted-foreground">Manage all your legal cases</p>
         </div>
         <Button asChild>
           <Link href="/cases/new">
@@ -104,16 +104,16 @@ export default function CasesPage() {
         <CardContent className="pt-6">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search cases..."
-                className="pl-10 bg-slate-900/50 border-slate-800"
+                className="pl-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[180px] bg-slate-900/50 border-slate-800">
+              <SelectTrigger className="w-full md:w-[180px]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -124,7 +124,7 @@ export default function CasesPage() {
               </SelectContent>
             </Select>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-full md:w-[180px] bg-slate-900/50 border-slate-800">
+              <SelectTrigger className="w-full md:w-[180px]">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
@@ -152,7 +152,7 @@ export default function CasesPage() {
                     <div className="flex items-center gap-3">
                       <Link
                         href={`/cases/${caseItem.id}`}
-                        className="text-lg font-semibold text-white hover:text-amber-500 transition-colors"
+                        className="text-lg font-semibold text-foreground hover:text-amber-500 transition-colors"
                       >
                         {caseItem.name}
                       </Link>
@@ -161,7 +161,7 @@ export default function CasesPage() {
                       </Badge>
                       <Badge variant="outline">{getCaseTypeLabel(caseItem.type)}</Badge>
                     </div>
-                    <div className="mt-2 space-y-1 text-sm text-slate-400">
+                    <div className="mt-2 space-y-1 text-sm text-muted-foreground">
                       <p>Case #: {(caseItem as any).case_number || caseItem.caseNumber}</p>
                       {caseItem.court && <p>Court: {caseItem.court}</p>}
                       {((caseItem as any).date_opened || caseItem.dateOpened) && (
@@ -179,7 +179,7 @@ export default function CasesPage() {
         ) : (
           <Card>
             <CardContent className="pt-6">
-              <p className="text-center text-slate-400 py-8">No cases found</p>
+              <p className="text-center text-muted-foreground py-8">No cases found</p>
             </CardContent>
           </Card>
         )}

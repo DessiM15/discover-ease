@@ -114,8 +114,8 @@ export default function NewContactPage() {
           </Link>
         </Button>
         <div>
-          <h1 className="text-3xl font-bold text-white">New Contact</h1>
-          <p className="mt-1 text-slate-400">Add a new contact to your database</p>
+          <h1 className="text-3xl font-bold text-foreground">New Contact</h1>
+          <p className="mt-1 text-muted-foreground">Add a new contact to your database</p>
         </div>
       </div>
 
@@ -129,7 +129,7 @@ export default function NewContactPage() {
             <div>
               <Label htmlFor="type">Contact Type *</Label>
               <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
-                <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                <SelectTrigger className="mt-1">
                   <SelectValue placeholder="Select contact type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -152,7 +152,7 @@ export default function NewContactPage() {
                   id="firstName"
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
               <div>
@@ -161,7 +161,7 @@ export default function NewContactPage() {
                   id="lastName"
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
             </div>
@@ -172,7 +172,7 @@ export default function NewContactPage() {
                 id="companyName"
                 value={formData.companyName}
                 onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                className="mt-1 bg-slate-900/50 border-slate-800"
+                className="mt-1"
               />
             </div>
 
@@ -184,7 +184,7 @@ export default function NewContactPage() {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
               <div>
@@ -194,7 +194,7 @@ export default function NewContactPage() {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
             </div>
@@ -205,7 +205,7 @@ export default function NewContactPage() {
                 id="address"
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                className="mt-1 bg-slate-900/50 border-slate-800"
+                className="mt-1"
               />
             </div>
 
@@ -216,7 +216,7 @@ export default function NewContactPage() {
                   id="city"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
               <div>
@@ -225,7 +225,7 @@ export default function NewContactPage() {
                   id="state"
                   value={formData.state}
                   onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
               <div>
@@ -234,7 +234,7 @@ export default function NewContactPage() {
                   id="zipCode"
                   value={formData.zipCode}
                   onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
             </div>

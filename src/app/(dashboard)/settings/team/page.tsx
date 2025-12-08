@@ -130,8 +130,8 @@ export default function TeamSettingsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Team Management</h1>
-          <p className="mt-1 text-slate-400">Manage team members and permissions</p>
+          <h1 className="text-3xl font-bold text-foreground">Team Management</h1>
+          <p className="mt-1 text-muted-foreground">Manage team members and permissions</p>
         </div>
         <Button onClick={() => setIsInviteOpen(true)}>
           <UserPlus className="mr-2 h-4 w-4" />
@@ -149,7 +149,7 @@ export default function TeamSettingsPage() {
             {users.map((u: any) => (
               <div
                 key={u.id}
-                className="flex items-center justify-between rounded-lg border border-slate-800 p-4"
+                className="flex items-center justify-between rounded-lg border border-border p-4"
               >
                 <div className="flex items-center gap-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/10 text-amber-500">
@@ -157,15 +157,15 @@ export default function TeamSettingsPage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-white">
+                      <p className="font-medium text-foreground">
                         {u.first_name} {u.last_name}
                       </p>
                       <Badge variant="outline">{ROLES.find((r) => r.value === u.role)?.label}</Badge>
                       {!u.is_active && <Badge variant="destructive">Inactive</Badge>}
                     </div>
-                    <p className="text-sm text-slate-400">{u.email}</p>
+                    <p className="text-sm text-muted-foreground">{u.email}</p>
                     {u.billing_rate && (
-                      <p className="text-xs text-slate-500">${u.billing_rate}/hr</p>
+                      <p className="text-xs text-muted-foreground">${u.billing_rate}/hr</p>
                     )}
                   </div>
                 </div>

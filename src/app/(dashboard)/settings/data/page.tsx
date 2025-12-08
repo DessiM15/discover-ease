@@ -39,8 +39,8 @@ export default function DataPrivacySettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Data & Privacy</h1>
-        <p className="mt-1 text-slate-400">Manage your data and privacy settings</p>
+        <h1 className="text-3xl font-bold text-foreground">Data & Privacy</h1>
+        <p className="mt-1 text-muted-foreground">Manage your data and privacy settings</p>
       </div>
 
       <Card>
@@ -50,7 +50,7 @@ export default function DataPrivacySettingsPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-muted-foreground">
               Export all your cases, contacts, documents, invoices, and other data in a portable
               format.
             </p>
@@ -68,7 +68,7 @@ export default function DataPrivacySettingsPage() {
           <CardDescription>Configure how long data is retained</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-muted-foreground">
             Your data is retained indefinitely unless you request deletion. Closed cases are
             archived after 7 years.
           </p>
@@ -86,7 +86,7 @@ export default function DataPrivacySettingsPage() {
               <AlertTriangle className="h-5 w-5 text-red-400" />
               <div className="flex-1">
                 <p className="font-medium text-red-400">Warning: This action cannot be undone</p>
-                <p className="mt-1 text-sm text-slate-400">
+                <p className="mt-1 text-sm text-muted-foreground">
                   Deleting your account will permanently remove all your data, including cases,
                   contacts, documents, invoices, and all other information. This action cannot be
                   reversed.

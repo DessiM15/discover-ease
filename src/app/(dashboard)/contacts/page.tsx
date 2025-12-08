@@ -37,8 +37,8 @@ export default function ContactsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Contacts</h1>
-          <p className="mt-1 text-slate-400">Manage clients, opposing parties, and other contacts</p>
+          <h1 className="text-3xl font-bold text-foreground">Contacts</h1>
+          <p className="mt-1 text-muted-foreground">Manage clients, opposing parties, and other contacts</p>
         </div>
         <Button asChild>
           <Link href="/contacts/new">
@@ -52,10 +52,10 @@ export default function ContactsPage() {
         <CardContent className="pt-6">
           <div className="flex items-center gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search contacts..."
-                className="pl-10 bg-slate-900/50 border-slate-800"
+                className="pl-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -84,8 +84,8 @@ export default function ContactsPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center py-12">
-              <Users className="h-12 w-12 mx-auto text-slate-400 mb-4" />
-              <p className="text-slate-400">No contacts found</p>
+              <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <p className="text-muted-foreground">No contacts found</p>
             </div>
           </CardContent>
         </Card>
@@ -97,22 +97,22 @@ export default function ContactsPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold text-white">{contact.name}</h3>
+                      <h3 className="font-semibold text-foreground">{contact.name}</h3>
                       <Badge variant="outline" className="text-xs">
                         {formatContactType(contact.type)}
                       </Badge>
                     </div>
                     {contact.company && (
-                      <div className="flex items-center gap-2 mb-2 text-sm text-slate-400">
+                      <div className="flex items-center gap-2 mb-2 text-sm text-muted-foreground">
                         <Building2 className="h-3 w-3" />
                         <span>{contact.company}</span>
                       </div>
                     )}
-                    <div className="flex items-center gap-2 mb-1 text-sm text-slate-400">
+                    <div className="flex items-center gap-2 mb-1 text-sm text-muted-foreground">
                       <Mail className="h-3 w-3" />
                       <span>{contact.email}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-400">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Phone className="h-3 w-3" />
                       <span>{contact.phone}</span>
                     </div>
@@ -129,19 +129,19 @@ export default function ContactsPage() {
               {filteredContacts.map((contact) => (
                 <div
                   key={contact.id}
-                  className="flex items-center gap-4 p-4 rounded-lg border border-slate-800 bg-slate-900/50 hover:bg-slate-900 transition-colors"
+                  className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card hover:bg-muted transition-colors"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10">
                     <Users className="h-5 w-5 text-amber-500" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-white truncate">{contact.name}</h3>
+                      <h3 className="font-semibold text-foreground truncate">{contact.name}</h3>
                       <Badge variant="outline" className="text-xs">
                         {formatContactType(contact.type)}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-4 mt-1 text-sm text-slate-400">
+                    <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
                       {contact.company && (
                         <div className="flex items-center gap-1">
                           <Building2 className="h-3 w-3" />

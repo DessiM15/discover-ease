@@ -213,8 +213,8 @@ export default function DocumentsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Documents</h1>
-          <p className="mt-1 text-slate-400">Manage all case documents</p>
+          <h1 className="text-3xl font-bold text-foreground">Documents</h1>
+          <p className="mt-1 text-muted-foreground">Manage all case documents</p>
         </div>
         <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
           <DialogTrigger asChild>
@@ -223,7 +223,7 @@ export default function DocumentsPage() {
               Upload Document
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass border-slate-800 max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="glass border-border max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Upload Document</DialogTitle>
               <DialogDescription>
@@ -239,8 +239,8 @@ export default function DocumentsPage() {
               className="space-y-4 mt-4"
             >
               {/* File Upload Area */}
-              <div className="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center hover:border-amber-500/50 transition-colors">
-                <Upload className="h-12 w-12 mx-auto text-slate-400 mb-4" />
+              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-amber-500/50 transition-colors">
+                <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <Label htmlFor="file-upload" className="cursor-pointer">
                   <span className="text-amber-500 hover:text-amber-400">Click to upload</span> or drag and drop
                 </Label>
@@ -254,8 +254,8 @@ export default function DocumentsPage() {
                 {uploadFiles.length > 0 && (
                   <div className="mt-4 space-y-2">
                     {uploadFiles.map((file, idx) => (
-                      <div key={idx} className="flex items-center justify-between bg-slate-900/50 p-2 rounded">
-                        <span className="text-sm text-white">{file.name}</span>
+                      <div key={idx} className="flex items-center justify-between bg-muted/50 p-2 rounded">
+                        <span className="text-sm text-foreground">{file.name}</span>
                         <Button
                           type="button"
                           variant="ghost"
@@ -274,7 +274,7 @@ export default function DocumentsPage() {
               <div>
                 <Label>Case *</Label>
                 <Select name="caseId" required>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select case" />
                   </SelectTrigger>
                   <SelectContent>
@@ -291,7 +291,7 @@ export default function DocumentsPage() {
               <div>
                 <Label>Category</Label>
                 <Select name="category">
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -310,7 +310,7 @@ export default function DocumentsPage() {
                 <Textarea
                   name="description"
                   placeholder="Document description..."
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
 
@@ -320,7 +320,7 @@ export default function DocumentsPage() {
                 <Input
                   name="tags"
                   placeholder="tag1, tag2, tag3"
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
 
@@ -342,11 +342,11 @@ export default function DocumentsPage() {
               {/* Upload Progress */}
               {isUploading && (
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm text-slate-400">
+                  <div className="flex justify-between text-sm text-muted-foreground">
                     <span>Uploading...</span>
                     <span>{Math.round(uploadProgress)}%</span>
                   </div>
-                  <div className="w-full bg-slate-800 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className="bg-amber-500 h-2 rounded-full transition-all"
                       style={{ width: `${uploadProgress}%` }}
@@ -387,16 +387,16 @@ export default function DocumentsPage() {
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search documents..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-slate-900/50 border-slate-800"
+                className="pl-10"
               />
             </div>
             <Select value={selectedCase} onValueChange={setSelectedCase}>
-              <SelectTrigger className="bg-slate-900/50 border-slate-800">
+              <SelectTrigger>
                 <SelectValue placeholder="All Cases" />
               </SelectTrigger>
               <SelectContent>
@@ -409,7 +409,7 @@ export default function DocumentsPage() {
               </SelectContent>
             </Select>
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="bg-slate-900/50 border-slate-800">
+              <SelectTrigger>
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
@@ -422,7 +422,7 @@ export default function DocumentsPage() {
               </SelectContent>
             </Select>
             <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-              <SelectTrigger className="bg-slate-900/50 border-slate-800">
+              <SelectTrigger>
                 <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
@@ -463,8 +463,8 @@ export default function DocumentsPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center py-12">
-              <FileText className="h-12 w-12 mx-auto text-slate-400 mb-4" />
-              <p className="text-slate-400">No documents found</p>
+              <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <p className="text-muted-foreground">No documents found</p>
             </div>
           </CardContent>
         </Card>
@@ -491,7 +491,7 @@ export default function DocumentsPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <CardTitle className="text-base truncate">{doc.name}</CardTitle>
-                        <p className="text-xs text-slate-400 mt-1 truncate">{caseName}</p>
+                        <p className="text-xs text-muted-foreground mt-1 truncate">{caseName}</p>
                       </div>
                     </div>
                   </div>
@@ -500,8 +500,8 @@ export default function DocumentsPage() {
                   <div className="space-y-3">
                     {doc.bates_start && doc.bates_end && (
                       <div>
-                        <Label className="text-xs text-slate-400">Bates Range</Label>
-                        <p className="text-white font-mono text-sm">
+                        <Label className="text-xs text-muted-foreground">Bates Range</Label>
+                        <p className="text-foreground font-mono text-sm">
                           {doc.bates_start}-{doc.bates_end}
                         </p>
                       </div>
@@ -516,11 +516,11 @@ export default function DocumentsPage() {
                         {doc.status.replace("_", " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
                       </Badge>
                     </div>
-                    <div className="flex items-center justify-between text-xs text-slate-400">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <span>{formatFileSize(doc.file_size)}</span>
                       <span>{formatDistanceToNow(new Date(doc.created_at), { addSuffix: true })}</span>
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-muted-foreground">
                       Uploaded by {uploadedBy}
                     </div>
                   </div>
@@ -543,14 +543,14 @@ export default function DocumentsPage() {
                 return (
                   <div
                     key={doc.id}
-                    className="flex items-center gap-4 p-4 rounded-lg border border-slate-800 bg-slate-900/50 hover:bg-slate-900 transition-colors"
+                    className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card/50 hover:bg-card transition-colors"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10">
                       <FileIcon className="h-5 w-5 text-amber-500" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h3 className="font-medium text-white truncate">{doc.name}</h3>
+                        <h3 className="font-medium text-foreground truncate">{doc.name}</h3>
                         {doc.category && (
                           <Badge variant="secondary" className="text-xs">
                             {doc.category}
@@ -560,7 +560,7 @@ export default function DocumentsPage() {
                           {doc.status.replace("_", " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-4 mt-1 text-sm text-slate-400">
+                      <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
                         <span>{caseName}</span>
                         {doc.bates_start && doc.bates_end && (
                           <span className="font-mono">
@@ -603,7 +603,7 @@ export default function DocumentsPage() {
 
       {/* Document Detail Modal */}
       <Dialog open={detailDialogOpen} onOpenChange={setDetailDialogOpen}>
-        <DialogContent className="glass border-slate-800 max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="glass border-border max-w-4xl max-h-[90vh] overflow-y-auto">
           {selectedDocument && (
             <>
               <DialogHeader>
@@ -618,7 +618,7 @@ export default function DocumentsPage() {
                   <TabsTrigger value="metadata">Metadata</TabsTrigger>
                 </TabsList>
                 <TabsContent value="preview" className="mt-4">
-                  <div className="border border-slate-800 rounded-lg p-4 bg-slate-900/50 min-h-[400px] flex items-center justify-center">
+                  <div className="border border-border rounded-lg p-4 bg-card/50 min-h-[400px] flex items-center justify-center">
                     {selectedDocument.mime_type?.includes("pdf") ? (
                       <iframe
                         src={`${supabase.storage.from("documents").getPublicUrl(selectedDocument.storage_path).data.publicUrl}`}
@@ -631,7 +631,7 @@ export default function DocumentsPage() {
                         className="max-w-full max-h-[600px] rounded"
                       />
                     ) : (
-                      <div className="text-center text-slate-400">
+                      <div className="text-center text-muted-foreground">
                         <FileText className="h-12 w-12 mx-auto mb-4" />
                         <p>Preview not available for this file type</p>
                         <Button
@@ -654,43 +654,43 @@ export default function DocumentsPage() {
                 <TabsContent value="metadata" className="mt-4 space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-xs text-slate-400">File Name</Label>
-                      <p className="text-white mt-1">{selectedDocument.original_name}</p>
+                      <Label className="text-xs text-muted-foreground">File Name</Label>
+                      <p className="text-foreground mt-1">{selectedDocument.original_name}</p>
                     </div>
                     <div>
-                      <Label className="text-xs text-slate-400">File Size</Label>
-                      <p className="text-white mt-1">{formatFileSize(selectedDocument.file_size)}</p>
+                      <Label className="text-xs text-muted-foreground">File Size</Label>
+                      <p className="text-foreground mt-1">{formatFileSize(selectedDocument.file_size)}</p>
                     </div>
                     <div>
-                      <Label className="text-xs text-slate-400">File Type</Label>
-                      <p className="text-white mt-1">{selectedDocument.mime_type || "Unknown"}</p>
+                      <Label className="text-xs text-muted-foreground">File Type</Label>
+                      <p className="text-foreground mt-1">{selectedDocument.mime_type || "Unknown"}</p>
                     </div>
                     <div>
-                      <Label className="text-xs text-slate-400">Upload Date</Label>
-                      <p className="text-white mt-1">
+                      <Label className="text-xs text-muted-foreground">Upload Date</Label>
+                      <p className="text-foreground mt-1">
                         {new Date(selectedDocument.created_at).toLocaleDateString()}
                       </p>
                     </div>
                     {selectedDocument.bates_start && selectedDocument.bates_end && (
                       <>
                         <div>
-                          <Label className="text-xs text-slate-400">Bates Start</Label>
-                          <p className="text-white font-mono mt-1">{selectedDocument.bates_start}</p>
+                          <Label className="text-xs text-muted-foreground">Bates Start</Label>
+                          <p className="text-foreground font-mono mt-1">{selectedDocument.bates_start}</p>
                         </div>
                         <div>
-                          <Label className="text-xs text-slate-400">Bates End</Label>
-                          <p className="text-white font-mono mt-1">{selectedDocument.bates_end}</p>
+                          <Label className="text-xs text-muted-foreground">Bates End</Label>
+                          <p className="text-foreground font-mono mt-1">{selectedDocument.bates_end}</p>
                         </div>
                       </>
                     )}
                     {selectedDocument.category && (
                       <div>
-                        <Label className="text-xs text-slate-400">Category</Label>
-                        <p className="text-white mt-1">{selectedDocument.category}</p>
+                        <Label className="text-xs text-muted-foreground">Category</Label>
+                        <p className="text-foreground mt-1">{selectedDocument.category}</p>
                       </div>
                     )}
                     <div>
-                      <Label className="text-xs text-slate-400">Status</Label>
+                      <Label className="text-xs text-muted-foreground">Status</Label>
                       <Badge variant={getStatusBadgeVariant(selectedDocument.status)} className="mt-1">
                         {selectedDocument.status.replace("_", " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
                       </Badge>
@@ -698,13 +698,13 @@ export default function DocumentsPage() {
                   </div>
                   {selectedDocument.description && (
                     <div>
-                      <Label className="text-xs text-slate-400">Description</Label>
-                      <p className="text-white mt-1">{selectedDocument.description}</p>
+                      <Label className="text-xs text-muted-foreground">Description</Label>
+                      <p className="text-foreground mt-1">{selectedDocument.description}</p>
                     </div>
                   )}
                   {selectedDocument.tags && selectedDocument.tags.length > 0 && (
                     <div>
-                      <Label className="text-xs text-slate-400">Tags</Label>
+                      <Label className="text-xs text-muted-foreground">Tags</Label>
                       <div className="flex flex-wrap gap-2 mt-1">
                         {selectedDocument.tags.map((tag: string, idx: number) => (
                           <Badge key={idx} variant="outline">
@@ -716,9 +716,9 @@ export default function DocumentsPage() {
                   )}
                   {selectedDocument.ocr_text && (
                     <div>
-                      <Label className="text-xs text-slate-400">OCR Text</Label>
-                      <div className="mt-1 p-3 bg-slate-900/50 rounded border border-slate-800 max-h-48 overflow-y-auto">
-                        <p className="text-sm text-slate-300 whitespace-pre-wrap">
+                      <Label className="text-xs text-muted-foreground">OCR Text</Label>
+                      <div className="mt-1 p-3 bg-card/50 rounded border border-border max-h-48 overflow-y-auto">
+                        <p className="text-sm text-muted-foreground whitespace-pre-wrap">
                           {selectedDocument.ocr_text.substring(0, 1000)}
                           {selectedDocument.ocr_text.length > 1000 && "..."}
                         </p>
@@ -726,10 +726,10 @@ export default function DocumentsPage() {
                     </div>
                   )}
                   <div>
-                    <Label className="text-xs text-slate-400">AI Summary</Label>
+                    <Label className="text-xs text-muted-foreground">AI Summary</Label>
                     {selectedDocument.ai_summary ? (
-                      <div className="mt-1 p-3 bg-slate-900/50 rounded border border-slate-800">
-                        <p className="text-sm text-slate-300">{selectedDocument.ai_summary}</p>
+                      <div className="mt-1 p-3 bg-card/50 rounded border border-border">
+                        <p className="text-sm text-muted-foreground">{selectedDocument.ai_summary}</p>
                       </div>
                     ) : (
                       <Button

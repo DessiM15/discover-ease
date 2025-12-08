@@ -12,8 +12,8 @@ export default function BillingPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Billing Dashboard</h1>
-          <p className="mt-1 text-slate-400">Track time, expenses, and manage invoices</p>
+          <h1 className="text-3xl font-bold text-foreground">Billing Dashboard</h1>
+          <p className="mt-1 text-muted-foreground">Track time, expenses, and manage invoices</p>
         </div>
         <div className="flex gap-2">
           <Button asChild>
@@ -52,31 +52,31 @@ export default function BillingPage() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-400">Current (0-30 days)</span>
-                <span className="text-lg font-semibold text-white">$45,200</span>
+                <span className="text-sm text-muted-foreground">Current (0-30 days)</span>
+                <span className="text-lg font-semibold text-foreground">$45,200</span>
               </div>
-              <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div className="h-full bg-green-500" style={{ width: "65%" }} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-400">31-60 days</span>
-                <span className="text-lg font-semibold text-white">$18,500</span>
+                <span className="text-sm text-muted-foreground">31-60 days</span>
+                <span className="text-lg font-semibold text-foreground">$18,500</span>
               </div>
-              <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div className="h-full bg-yellow-500" style={{ width: "27%" }} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-400">61-90 days</span>
-                <span className="text-lg font-semibold text-white">$8,200</span>
+                <span className="text-sm text-muted-foreground">61-90 days</span>
+                <span className="text-lg font-semibold text-foreground">$8,200</span>
               </div>
-              <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div className="h-full bg-orange-500" style={{ width: "12%" }} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-400">90+ days</span>
+                <span className="text-sm text-muted-foreground">90+ days</span>
                 <span className="text-lg font-semibold text-red-500">$2,100</span>
               </div>
-              <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div className="h-full bg-red-500" style={{ width: "3%" }} />
               </div>
             </div>
@@ -96,10 +96,10 @@ export default function BillingPage() {
                 { case: "Estate of Williams", hours: 1.0, date: "Today" },
                 { case: "State v. Davis", hours: 3.0, date: "Yesterday" },
               ].map((entry, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50">
+                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
                   <div>
-                    <p className="text-sm font-medium text-white">{entry.case}</p>
-                    <p className="text-xs text-slate-400">{entry.hours} hours • {entry.date}</p>
+                    <p className="text-sm font-medium text-foreground">{entry.case}</p>
+                    <p className="text-xs text-muted-foreground">{entry.hours} hours • {entry.date}</p>
                   </div>
                   <Button variant="ghost" size="sm">View</Button>
                 </div>
@@ -119,10 +119,10 @@ export default function BillingPage() {
                 { number: "INV-2024-002", client: "Williams Estate", amount: "$3,800", status: "Due Soon", days: 3 },
                 { number: "INV-2024-003", client: "Davis, John", amount: "$2,100", status: "Sent", days: 5 },
               ].map((invoice, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50">
+                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
                   <div>
-                    <p className="text-sm font-medium text-white">{invoice.number}</p>
-                    <p className="text-xs text-slate-400">{invoice.client} • {invoice.amount}</p>
+                    <p className="text-sm font-medium text-foreground">{invoice.number}</p>
+                    <p className="text-xs text-muted-foreground">{invoice.client} • {invoice.amount}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs px-2 py-1 rounded ${

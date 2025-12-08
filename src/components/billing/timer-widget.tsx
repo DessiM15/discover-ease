@@ -123,7 +123,7 @@ export function TimerWidget({ onStop }: TimerWidgetProps) {
               <div>
                 <Label>Case</Label>
                 <Select value={caseId} onValueChange={setCaseId}>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select case" />
                   </SelectTrigger>
                   <SelectContent>
@@ -137,7 +137,7 @@ export function TimerWidget({ onStop }: TimerWidgetProps) {
               <div>
                 <Label>Activity Code</Label>
                 <Select>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select activity" />
                   </SelectTrigger>
                   <SelectContent>
@@ -157,7 +157,7 @@ export function TimerWidget({ onStop }: TimerWidgetProps) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="What are you working on?"
-                className="mt-1 bg-slate-900/50 border-slate-800"
+                className="mt-1"
               />
             </div>
           </div>

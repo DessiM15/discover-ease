@@ -62,7 +62,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
   if (!caseData) {
     return (
       <div className="text-center py-12">
-        <p className="text-slate-400">Case not found</p>
+        <p className="text-muted-foreground">Case not found</p>
         <Button asChild className="mt-4">
           <Link href="/cases">Back to Cases</Link>
         </Button>
@@ -82,13 +82,13 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold text-white">{caseData.name}</h1>
+            <h1 className="text-3xl font-bold text-foreground">{caseData.name}</h1>
             <Badge variant={caseData.status === "active" ? "default" : "outline"}>
               {caseData.status}
             </Badge>
             <Badge variant="outline">{getCaseTypeLabel(caseData.type)}</Badge>
           </div>
-          <p className="mt-2 text-slate-400">Case #: {(caseData as any).case_number || caseData.caseNumber}</p>
+          <p className="mt-2 text-muted-foreground">Case #: {(caseData as any).case_number || caseData.caseNumber}</p>
         </div>
         <Button>Edit Case</Button>
       </div>
@@ -97,10 +97,10 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-400">Client</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Client</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-semibold text-white">
+            <p className="text-lg font-semibold text-foreground">
               {primaryClient
                 ? `${primaryClient.first_name || ""} ${primaryClient.last_name || ""}`.trim() ||
                   primaryClient.company_name ||
@@ -111,19 +111,19 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-400">Court</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Court</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-semibold text-white">{caseData.court || "N/A"}</p>
-            {caseData.judge && <p className="text-sm text-slate-400 mt-1">{caseData.judge}</p>}
+            <p className="text-lg font-semibold text-foreground">{caseData.court || "N/A"}</p>
+            {caseData.judge && <p className="text-sm text-muted-foreground mt-1">{caseData.judge}</p>}
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-400">Date Opened</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Date Opened</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-semibold text-white">
+            <p className="text-lg font-semibold text-foreground">
               {((caseData as any).date_opened || caseData.dateOpened)
                 ? new Date(((caseData as any).date_opened || caseData.dateOpened) as string).toLocaleDateString()
                 : "N/A"}
@@ -164,7 +164,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
               <CardTitle>Case Description</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-300">{caseData.description || "No description provided."}</p>
+              <p className="text-foreground">{caseData.description || "No description provided."}</p>
             </CardContent>
           </Card>
 
@@ -176,24 +176,24 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
               <CardContent className="space-y-2">
                 {((caseData as any).trial_date || caseData.trialDate) && (
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Trial Date:</span>
-                    <span className="text-white">
+                    <span className="text-muted-foreground">Trial Date:</span>
+                    <span className="text-foreground">
                       {new Date(((caseData as any).trial_date || caseData.trialDate) as string).toLocaleDateString()}
                     </span>
                   </div>
                 )}
                 {((caseData as any).discovery_cutoff || caseData.discoveryCutoff) && (
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Discovery Cutoff:</span>
-                    <span className="text-white">
+                    <span className="text-muted-foreground">Discovery Cutoff:</span>
+                    <span className="text-foreground">
                       {new Date(((caseData as any).discovery_cutoff || caseData.discoveryCutoff) as string).toLocaleDateString()}
                     </span>
                   </div>
                 )}
                 {((caseData as any).statute_of_limitations || caseData.statuteOfLimitations) && (
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Statute of Limitations:</span>
-                    <span className="text-white">
+                    <span className="text-muted-foreground">Statute of Limitations:</span>
+                    <span className="text-foreground">
                       {new Date(((caseData as any).statute_of_limitations || caseData.statuteOfLimitations) as string).toLocaleDateString()}
                     </span>
                   </div>
@@ -242,22 +242,22 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                   {caseContacts.map((cc: any) => (
                     <div
                       key={cc.id}
-                      className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50"
+                      className="flex items-center justify-between p-3 rounded-lg bg-muted"
                     >
                       <div>
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-sm font-medium text-foreground">
                           {cc.contacts?.first_name && cc.contacts?.last_name
                             ? `${cc.contacts.first_name} ${cc.contacts.last_name}`
                             : cc.contacts?.company_name || "Unknown"}
                         </p>
-                        <p className="text-xs text-slate-400">{cc.role}</p>
+                        <p className="text-xs text-muted-foreground">{cc.role}</p>
                       </div>
                       {cc.is_primary && <Badge variant="outline">Primary</Badge>}
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-400">No contacts linked to this case</p>
+                <p className="text-muted-foreground">No contacts linked to this case</p>
               )}
             </CardContent>
           </Card>
@@ -274,24 +274,24 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                   {caseTeam.map((member: any) => (
                     <div
                       key={member.id}
-                      className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50"
+                      className="flex items-center justify-between p-3 rounded-lg bg-muted"
                     >
                       <div>
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-sm font-medium text-foreground">
                           {member.users?.first_name} {member.users?.last_name}
                         </p>
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-muted-foreground">
                           {member.role} {member.users?.title ? `• ${member.users.title}` : ""}
                         </p>
                       </div>
                       {member.billing_rate && (
-                        <p className="text-sm text-slate-400">${member.billing_rate}/hr</p>
+                        <p className="text-sm text-muted-foreground">${member.billing_rate}/hr</p>
                       )}
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-400">No team members assigned</p>
+                <p className="text-muted-foreground">No team members assigned</p>
               )}
             </CardContent>
           </Card>

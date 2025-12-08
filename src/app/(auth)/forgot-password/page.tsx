@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
           <CardDescription>We've sent you a password reset link</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-slate-400 mb-4">
+          <p className="text-sm text-muted-foreground mb-4">
             If an account exists with {email}, you will receive a password reset link.
             Please check your inbox and follow the instructions to reset your password.
           </p>
@@ -99,7 +99,7 @@ export default function ForgotPasswordPage() {
           </Button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-slate-400">
+        <div className="mt-6 text-center text-sm text-muted-foreground">
           Remember your password?{" "}
           <Link href="/login" className="text-amber-500 hover:underline">
             Sign in

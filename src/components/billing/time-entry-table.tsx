@@ -147,7 +147,7 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
           <CardTitle>Time Entries</CardTitle>
           <div className="flex gap-2">
             <Select value={dateFilter} onValueChange={setDateFilter}>
-              <SelectTrigger className="w-[180px] bg-slate-900/50 border-slate-800">
+              <SelectTrigger className="w-[180px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -170,7 +170,7 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-slate-800">
+                <tr className="border-b border-border">
                   <th className="px-4 py-3 text-left">
                     <Button
                       variant="ghost"
@@ -185,23 +185,23 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
                       )}
                     </Button>
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Case</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Case</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">
                     Description
                   </th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Hours</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Rate</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Amount</th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400">Status</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Actions</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Hours</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Rate</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Amount</th>
+                  <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground">Status</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {timeEntries.map((entry: any) => (
                   <tr
                     key={entry.id}
-                    className="border-b border-slate-800/50 hover:bg-slate-900/50 transition-colors"
+                    className="border-b border-border hover:bg-muted transition-colors"
                   >
                     <td className="px-4 py-3">
                       <Button
@@ -217,22 +217,22 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
                         )}
                       </Button>
                     </td>
-                    <td className="px-4 py-3 text-sm text-slate-300">
+                    <td className="px-4 py-3 text-sm text-foreground">
                       {new Date(entry.date).toLocaleDateString()}
                     </td>
-                    <td className="px-4 py-3 text-sm text-white">
+                    <td className="px-4 py-3 text-sm text-foreground">
                       {entry.cases?.name || "No case"}
                     </td>
-                    <td className="px-4 py-3 text-sm text-slate-300 max-w-xs truncate">
+                    <td className="px-4 py-3 text-sm text-foreground max-w-xs truncate">
                       {entry.description}
                     </td>
-                    <td className="px-4 py-3 text-sm text-slate-300 text-right">
+                    <td className="px-4 py-3 text-sm text-foreground text-right">
                       {parseFloat(entry.hours || 0).toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-slate-300 text-right">
+                    <td className="px-4 py-3 text-sm text-foreground text-right">
                       ${parseFloat(entry.rate || 0).toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-white font-medium text-right">
+                    <td className="px-4 py-3 text-sm text-foreground font-medium text-right">
                       ${parseFloat(entry.amount || 0).toFixed(2)}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -260,17 +260,17 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-slate-800">
-                  <td colSpan={4} className="px-4 py-4 text-sm font-medium text-white">
+                <tr className="border-t-2 border-border">
+                  <td colSpan={4} className="px-4 py-4 text-sm font-medium text-foreground">
                     Totals
                   </td>
-                  <td className="px-4 py-4 text-sm font-medium text-white text-right">
+                  <td className="px-4 py-4 text-sm font-medium text-foreground text-right">
                     {totalHours.toFixed(2)} hrs
                   </td>
-                  <td colSpan={2} className="px-4 py-4 text-sm font-medium text-white text-right">
+                  <td colSpan={2} className="px-4 py-4 text-sm font-medium text-foreground text-right">
                     ${totalAmount.toFixed(2)}
                   </td>
-                  <td colSpan={2} className="px-4 py-4 text-sm text-slate-400 text-right">
+                  <td colSpan={2} className="px-4 py-4 text-sm text-muted-foreground text-right">
                     Unbilled: ${unbilledAmount.toFixed(2)}
                   </td>
                 </tr>
@@ -278,7 +278,7 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
             </table>
           </div>
         ) : (
-          <p className="text-center text-slate-400 py-8">No time entries found</p>
+          <p className="text-center text-muted-foreground py-8">No time entries found</p>
         )}
       </CardContent>
     </Card>

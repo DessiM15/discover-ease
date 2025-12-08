@@ -160,14 +160,14 @@ export function BillingStats() {
       {stats.map((stat, idx) => (
         <Card key={idx}>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-400 flex items-center gap-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
               <stat.icon className={`h-4 w-4 ${stat.color}`} />
               {stat.title}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-white">{stat.value}</p>
-            <p className="text-xs text-slate-400 mt-1">{stat.amount}</p>
+            <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+            <p className="text-xs text-muted-foreground mt-1">{stat.amount}</p>
           </CardContent>
         </Card>
       ))}

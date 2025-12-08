@@ -161,11 +161,11 @@ export default function RegisterPage() {
               id="terms"
               checked={acceptedTerms}
               onChange={(e) => setAcceptedTerms(e.target.checked)}
-              className="mt-1 h-4 w-4 rounded border-slate-800 bg-slate-900 text-amber-500 focus:ring-amber-500"
+              className="mt-1 h-4 w-4 rounded border-border bg-background text-amber-500 focus:ring-amber-500"
               required
               disabled={loading}
             />
-            <Label htmlFor="terms" className="text-sm text-slate-400 cursor-pointer">
+            <Label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer">
               I agree to the{" "}
               <Link href="/terms" className="text-amber-500 hover:underline">
                 Terms and Conditions
@@ -189,7 +189,7 @@ export default function RegisterPage() {
           </Button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-slate-400">
+        <div className="mt-6 text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <Link href="/login" className="text-amber-500 hover:underline">
             Sign in

@@ -61,8 +61,8 @@ export default function TrustAccountsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Trust Accounts</h1>
-          <p className="mt-1 text-slate-400">Manage client trust accounts and transactions</p>
+          <h1 className="text-3xl font-bold text-foreground">Trust Accounts</h1>
+          <p className="mt-1 text-muted-foreground">Manage client trust accounts and transactions</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
@@ -85,7 +85,7 @@ export default function TrustAccountsPage() {
             <div>
               <Label>Select Account</Label>
               <Select value={selectedAccount} onValueChange={setSelectedAccount}>
-                <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                <SelectTrigger className="mt-1 bg-card border-border">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -99,9 +99,9 @@ export default function TrustAccountsPage() {
             </div>
             {currentAccount && (
               <>
-                <div className="p-4 rounded-lg bg-slate-900/50">
-                  <p className="text-sm text-slate-400 mb-2">Current Balance</p>
-                  <p className="text-4xl font-bold text-white">
+                <div className="p-4 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground mb-2">Current Balance</p>
+                  <p className="text-4xl font-bold text-foreground">
                     ${currentAccount.balance.toLocaleString()}
                   </p>
                 </div>

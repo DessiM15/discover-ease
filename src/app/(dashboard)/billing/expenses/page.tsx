@@ -73,8 +73,8 @@ export default function ExpensesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Expenses</h1>
-          <p className="mt-1 text-slate-400">Track and manage case expenses</p>
+          <h1 className="text-3xl font-bold text-foreground">Expenses</h1>
+          <p className="mt-1 text-muted-foreground">Track and manage case expenses</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
@@ -92,7 +92,7 @@ export default function ExpensesPage() {
                 New Expense
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl glass border-slate-800">
+            <DialogContent className="max-w-2xl glass border-border">
               <DialogHeader>
                 <DialogTitle>New Expense</DialogTitle>
                 <DialogDescription>Record a new expense</DialogDescription>
@@ -111,35 +111,35 @@ export default function ExpensesPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-slate-800">
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Case</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">
+                <tr className="border-b border-border">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Case</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">
                     Category
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Vendor</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Vendor</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">
                     Description
                   </th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Amount</th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400">Receipt</th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400">Status</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Amount</th>
+                  <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground">Receipt</th>
+                  <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {demoExpenses.map((expense) => (
                   <tr
                     key={expense.id}
-                    className="border-b border-slate-800/50 hover:bg-slate-900/50 transition-colors"
+                    className="border-b border-border hover:bg-muted transition-colors"
                   >
-                    <td className="px-4 py-3 text-sm text-slate-300">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {new Date(expense.date).toLocaleDateString()}
                     </td>
-                    <td className="px-4 py-3 text-sm text-white">{expense.caseName}</td>
-                    <td className="px-4 py-3 text-sm text-slate-300">{expense.category}</td>
-                    <td className="px-4 py-3 text-sm text-slate-300">{expense.vendor}</td>
-                    <td className="px-4 py-3 text-sm text-slate-300">{expense.description}</td>
-                    <td className="px-4 py-3 text-sm text-white font-medium text-right">
+                    <td className="px-4 py-3 text-sm text-foreground">{expense.caseName}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{expense.category}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{expense.vendor}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{expense.description}</td>
+                    <td className="px-4 py-3 text-sm text-foreground font-medium text-right">
                       ${expense.amount.toFixed(2)}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -148,7 +148,7 @@ export default function ExpensesPage() {
                           <Receipt className="h-4 w-4 text-amber-500" />
                         </Button>
                       ) : (
-                        <span className="text-xs text-slate-500">—</span>
+                        <span className="text-xs text-muted-foreground">—</span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -164,14 +164,14 @@ export default function ExpensesPage() {
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-slate-800">
-                  <td colSpan={5} className="px-4 py-4 text-sm font-medium text-white">
+                <tr className="border-t-2 border-border">
+                  <td colSpan={5} className="px-4 py-4 text-sm font-medium text-foreground">
                     Totals
                   </td>
-                  <td className="px-4 py-4 text-sm font-medium text-white text-right">
+                  <td className="px-4 py-4 text-sm font-medium text-foreground text-right">
                     ${totalAmount.toFixed(2)}
                   </td>
-                  <td colSpan={2} className="px-4 py-4 text-sm text-slate-400 text-right">
+                  <td colSpan={2} className="px-4 py-4 text-sm text-muted-foreground text-right">
                     Unbilled: ${unbilledAmount.toFixed(2)}
                   </td>
                 </tr>

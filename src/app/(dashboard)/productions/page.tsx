@@ -177,8 +177,8 @@ export default function ProductionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Productions</h1>
-          <p className="mt-1 text-slate-400">Manage document productions and privilege logs</p>
+          <h1 className="text-3xl font-bold text-foreground">Productions</h1>
+          <p className="mt-1 text-muted-foreground">Manage document productions and privilege logs</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
@@ -187,7 +187,7 @@ export default function ProductionsPage() {
               New Production Set
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass border-slate-800">
+          <DialogContent className="glass border-border">
             <DialogHeader>
               <DialogTitle>Create Production Set</DialogTitle>
               <DialogDescription>
@@ -201,7 +201,7 @@ export default function ProductionsPage() {
                   value={newProduction.name}
                   onChange={(e) => setNewProduction({ ...newProduction, name: e.target.value })}
                   placeholder="e.g., Initial Production - Case Name"
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1 bg-background border-border"
                 />
               </div>
               <div>
@@ -220,7 +220,7 @@ export default function ProductionsPage() {
                     }
                   }}
                 >
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1 bg-background border-border">
                     <SelectValue placeholder="Select case" />
                   </SelectTrigger>
                   <SelectContent>
@@ -240,7 +240,7 @@ export default function ProductionsPage() {
                     setNewProduction({ ...newProduction, batesPrefix: e.target.value.toUpperCase() })
                   }
                   placeholder="e.g., SJ, EW"
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1 bg-background border-border"
                   maxLength={10}
                 />
               </div>
@@ -250,7 +250,7 @@ export default function ProductionsPage() {
                   value={newProduction.description}
                   onChange={(e) => setNewProduction({ ...newProduction, description: e.target.value })}
                   placeholder="Describe this production set..."
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1 bg-background border-border"
                 />
               </div>
               <div className="flex justify-end gap-2">
@@ -280,8 +280,8 @@ export default function ProductionsPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center py-12">
-              <FileText className="h-12 w-12 mx-auto text-slate-400 mb-4" />
-              <p className="text-slate-400">No production sets found</p>
+              <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <p className="text-muted-foreground">No production sets found</p>
             </div>
           </CardContent>
         </Card>
@@ -315,10 +315,10 @@ export default function ProductionsPage() {
                   <div className="space-y-3">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-xs text-slate-400">Bates Range</Label>
+                        <Label className="text-xs text-muted-foreground">Bates Range</Label>
                         <div className="flex items-center gap-2 mt-1">
-                          <Hash className="h-4 w-4 text-slate-400" />
-                          <span className="text-white font-mono text-sm">
+                          <Hash className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-foreground font-mono text-sm">
                             {production.bates_start && production.bates_end
                               ? formatBatesRange(production.bates_start, production.bates_end)
                               : "Not set"}
@@ -326,27 +326,27 @@ export default function ProductionsPage() {
                         </div>
                       </div>
                       <div>
-                        <Label className="text-xs text-slate-400">Documents</Label>
-                        <p className="text-white mt-1">{documentCount.toLocaleString()}</p>
+                        <Label className="text-xs text-muted-foreground">Documents</Label>
+                        <p className="text-foreground mt-1">{documentCount.toLocaleString()}</p>
                       </div>
                     </div>
                     {production.produced_date && (
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label className="text-xs text-slate-400">Produced Date</Label>
+                          <Label className="text-xs text-muted-foreground">Produced Date</Label>
                           <div className="flex items-center gap-2 mt-1">
-                            <Calendar className="h-4 w-4 text-slate-400" />
-                            <span className="text-white text-sm">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-foreground text-sm">
                               {new Date(production.produced_date).toLocaleDateString()}
                             </span>
                           </div>
                         </div>
                         {production.produced_to && (
                           <div>
-                            <Label className="text-xs text-slate-400">Produced To</Label>
+                            <Label className="text-xs text-muted-foreground">Produced To</Label>
                             <div className="flex items-center gap-2 mt-1">
-                              <User className="h-4 w-4 text-slate-400" />
-                              <span className="text-white text-sm">
+                              <User className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-foreground text-sm">
                                 {production.produced_to.company_name ||
                                   `${production.produced_to.first_name} ${production.produced_to.last_name}`}
                               </span>
@@ -357,8 +357,8 @@ export default function ProductionsPage() {
                     )}
                     {production.description && (
                       <div>
-                        <Label className="text-xs text-slate-400">Description</Label>
-                        <p className="text-slate-300 text-sm mt-1">{production.description}</p>
+                        <Label className="text-xs text-muted-foreground">Description</Label>
+                        <p className="text-foreground text-sm mt-1">{production.description}</p>
                       </div>
                     )}
                     <div className="flex gap-2 pt-2">
@@ -397,7 +397,7 @@ export default function ProductionsPage() {
 
       {/* View Documents Dialog */}
       <Dialog open={viewDocumentsDialogOpen} onOpenChange={setViewDocumentsDialogOpen}>
-        <DialogContent className="glass border-slate-800 max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="glass border-border max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Production Documents</DialogTitle>
             <DialogDescription>
@@ -406,7 +406,7 @@ export default function ProductionsPage() {
           </DialogHeader>
           <div className="mt-4 space-y-4">
             {selectedProduction && allProductions.find((p: any) => p.id === selectedProduction)?.is_mock ? (
-              <div className="text-center py-8 text-slate-400">
+              <div className="text-center py-8 text-muted-foreground">
                 <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>This is demo data. Create a real production set to view documents.</p>
               </div>
@@ -416,18 +416,18 @@ export default function ProductionsPage() {
                 return (
                   <div
                     key={pd.id}
-                    className="flex items-center justify-between p-4 rounded-lg border border-slate-800 bg-slate-900/50"
+                    className="flex items-center justify-between p-4 rounded-lg border border-border bg-card"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-white">{doc?.name || "Unknown Document"}</p>
+                        <p className="font-medium text-foreground">{doc?.name || "Unknown Document"}</p>
                         {pd.is_privileged && (
                           <Badge variant="outline" className="text-xs">
                             Privileged
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-4 mt-1 text-sm text-slate-400">
+                      <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
                         {pd.bates_number && (
                           <span className="font-mono">{pd.bates_number}</span>
                         )}
@@ -450,7 +450,7 @@ export default function ProductionsPage() {
                 );
               })
             ) : (
-              <div className="text-center py-8 text-slate-400">
+              <div className="text-center py-8 text-muted-foreground">
                 <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No documents in this production set</p>
               </div>
@@ -471,7 +471,7 @@ export default function ProductionsPage() {
 
       {/* Privilege Log Dialog */}
       <Dialog open={privilegeLogDialogOpen} onOpenChange={setPrivilegeLogDialogOpen}>
-        <DialogContent className="glass border-slate-800 max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="glass border-border max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Privilege Log</DialogTitle>
             <DialogDescription>
@@ -489,30 +489,30 @@ export default function ProductionsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
-                      <tr className="border-b border-slate-800">
-                        <th className="text-left p-2 text-xs text-slate-400">Bates Number</th>
-                        <th className="text-left p-2 text-xs text-slate-400">Document Date</th>
-                        <th className="text-left p-2 text-xs text-slate-400">Author</th>
-                        <th className="text-left p-2 text-xs text-slate-400">Recipients</th>
-                        <th className="text-left p-2 text-xs text-slate-400">Document Type</th>
-                        <th className="text-left p-2 text-xs text-slate-400">Privilege Claimed</th>
-                        <th className="text-left p-2 text-xs text-slate-400">Basis</th>
+                      <tr className="border-b border-border">
+                        <th className="text-left p-2 text-xs text-muted-foreground">Bates Number</th>
+                        <th className="text-left p-2 text-xs text-muted-foreground">Document Date</th>
+                        <th className="text-left p-2 text-xs text-muted-foreground">Author</th>
+                        <th className="text-left p-2 text-xs text-muted-foreground">Recipients</th>
+                        <th className="text-left p-2 text-xs text-muted-foreground">Document Type</th>
+                        <th className="text-left p-2 text-xs text-muted-foreground">Privilege Claimed</th>
+                        <th className="text-left p-2 text-xs text-muted-foreground">Basis</th>
                       </tr>
                     </thead>
                     <tbody>
                       {privilegeLogMutation.data.privilegeLog.map((log: any, idx: number) => (
-                        <tr key={idx} className="border-b border-slate-800">
-                          <td className="p-2 text-white font-mono text-sm">{log.batesNumber}</td>
-                          <td className="p-2 text-white text-sm">
+                        <tr key={idx} className="border-b border-border">
+                          <td className="p-2 text-foreground font-mono text-sm">{log.batesNumber}</td>
+                          <td className="p-2 text-foreground text-sm">
                             {new Date(log.documentDate).toLocaleDateString()}
                           </td>
-                          <td className="p-2 text-white text-sm">{log.author}</td>
-                          <td className="p-2 text-white text-sm">
+                          <td className="p-2 text-foreground text-sm">{log.author}</td>
+                          <td className="p-2 text-foreground text-sm">
                             {Array.isArray(log.recipients) ? log.recipients.join(", ") : log.recipients}
                           </td>
-                          <td className="p-2 text-white text-sm">{log.documentType}</td>
-                          <td className="p-2 text-white text-sm">{log.privilegeClaimed}</td>
-                          <td className="p-2 text-white text-sm">{log.basis}</td>
+                          <td className="p-2 text-foreground text-sm">{log.documentType}</td>
+                          <td className="p-2 text-foreground text-sm">{log.privilegeClaimed}</td>
+                          <td className="p-2 text-foreground text-sm">{log.basis}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -532,7 +532,7 @@ export default function ProductionsPage() {
                 </div>
               </>
             ) : (
-              <div className="text-center py-12 text-slate-400">
+              <div className="text-center py-12 text-muted-foreground">
                 <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No privileged documents in this production set</p>
               </div>

@@ -43,7 +43,7 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
   }
 
   if (!request) {
-    return <div className="text-center text-slate-400">Discovery request not found</div>;
+    return <div className="text-center text-muted-foreground">Discovery request not found</div>;
   }
 
   const getStatusVariant = (status: string) => {
@@ -78,13 +78,13 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold text-white">{request.title}</h1>
+            <h1 className="text-3xl font-bold text-foreground">{request.title}</h1>
             <Badge variant={getStatusVariant(request.status || "draft")}>
               {getStatusIcon(request.status || "draft")}
               <span className="ml-1">{request.status?.replace("_", " ") || "Draft"}</span>
             </Badge>
           </div>
-          <p className="mt-2 text-slate-400">Case ID: {request.caseId || request.case_id}</p>
+          <p className="mt-2 text-muted-foreground">Case ID: {request.caseId || request.case_id}</p>
         </div>
         <Button>Edit Request</Button>
       </div>
@@ -93,18 +93,18 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-400">Type</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Type</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-semibold text-white">{request.type}</p>
+            <p className="text-lg font-semibold text-foreground">{request.type}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-400">Direction</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Direction</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-semibold text-white">
+            <p className="text-lg font-semibold text-foreground">
               {(request as any).isOutgoing || (request as any).is_outgoing ? "Outgoing" : "Incoming"}
             </p>
           </CardContent>
@@ -112,10 +112,10 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
         {((request as any).dueDate || (request as any).due_date) && (
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-400">Due Date</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Due Date</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-lg font-semibold text-white">
+              <p className="text-lg font-semibold text-foreground">
                 {new Date((request as any).dueDate || (request as any).due_date).toLocaleDateString()}
               </p>
             </CardContent>
@@ -166,8 +166,8 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <p className="text-sm font-medium text-slate-400 mb-2">Request:</p>
-                    <p className="text-white">{item.text}</p>
+                    <p className="text-sm font-medium text-muted-foreground mb-2">Request:</p>
+                    <p className="text-foreground">{item.text}</p>
                   </div>
                   {((item as any).aiDraftResponse || (item as any).ai_draft_response) && (
                     <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4">
@@ -175,15 +175,15 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
                         <Sparkles className="h-4 w-4 text-amber-500" />
                         <p className="text-sm font-medium text-amber-500">AI Draft Response</p>
                       </div>
-                      <p className="text-sm text-slate-300 whitespace-pre-wrap">
+                      <p className="text-sm text-foreground whitespace-pre-wrap">
                         {(item as any).aiDraftResponse || (item as any).ai_draft_response}
                       </p>
                     </div>
                   )}
                   {((item as any).responseText || (item as any).response_text) && (
                     <div>
-                      <p className="text-sm font-medium text-slate-400 mb-2">Response:</p>
-                      <p className="text-white">{(item as any).responseText || (item as any).response_text}</p>
+                      <p className="text-sm font-medium text-muted-foreground mb-2">Response:</p>
+                      <p className="text-foreground">{(item as any).responseText || (item as any).response_text}</p>
                     </div>
                   )}
                 </CardContent>
@@ -192,7 +192,7 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
           ) : (
             <Card>
               <CardContent className="py-12 text-center">
-                <p className="text-slate-400">No items found</p>
+                <p className="text-muted-foreground">No items found</p>
               </CardContent>
             </Card>
           )}
@@ -206,7 +206,7 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
             </CardHeader>
             <CardContent>
               <Textarea
-                className="min-h-[300px] bg-slate-900/50 border-slate-800"
+                className="min-h-[300px]"
                 placeholder="Enter response text..."
                 defaultValue={(request as any).responseText || (request as any).response_text || ""}
               />
@@ -223,7 +223,7 @@ export default function DiscoveryDetailPage({ params }: { params: Promise<{ id: 
             </CardHeader>
             <CardContent>
               <Textarea
-                className="min-h-[200px] bg-slate-900/50 border-slate-800"
+                className="min-h-[200px]"
                 placeholder="Enter objections..."
                 defaultValue={(request as any).objections || ""}
               />

@@ -46,13 +46,13 @@ export function RevenueChart() {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-        <XAxis dataKey="month" stroke="#94a3b8" />
-        <YAxis stroke="#94a3b8" />
+        <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+        <XAxis dataKey="month" className="stroke-muted-foreground" />
+        <YAxis className="stroke-muted-foreground" />
         <Tooltip
           contentStyle={{
-            backgroundColor: "#0f172a",
-            border: "1px solid #1e293b",
+            backgroundColor: "hsl(var(--card))",
+            border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
         />

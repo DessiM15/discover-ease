@@ -261,8 +261,8 @@ export default function CalendarPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Calendar</h1>
-          <p className="mt-1 text-slate-400">View deadlines, court dates, and events</p>
+          <h1 className="text-3xl font-bold text-foreground">Calendar</h1>
+          <p className="mt-1 text-muted-foreground">View deadlines, court dates, and events</p>
         </div>
         <Button onClick={() => setIsNewEventOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
@@ -281,7 +281,7 @@ export default function CalendarPage() {
           <Button variant="outline" size="icon" onClick={() => navigateDate("next")}>
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <div className="ml-4 text-lg font-semibold text-white">
+          <div className="ml-4 text-lg font-semibold text-foreground">
             {view === "month" && formatDate(currentDate)}
             {view === "week" && formatWeekRange(currentDate)}
             {view === "day" &&
@@ -373,7 +373,7 @@ export default function CalendarPage() {
               <CardContent>
                 <div className="space-y-3">
                   {getUpcomingDeadlines().length === 0 ? (
-                    <p className="text-sm text-slate-400">No upcoming deadlines</p>
+                    <p className="text-sm text-muted-foreground">No upcoming deadlines</p>
                   ) : (
                     getUpcomingDeadlines().map((event: any) => {
                       const eventDate = new Date(event.start_date);
@@ -388,7 +388,7 @@ export default function CalendarPage() {
                         <div
                           key={event.id}
                           className={cn(
-                            "cursor-pointer rounded-lg border border-slate-800 p-3 transition-colors hover:bg-slate-800",
+                            "cursor-pointer rounded-lg border border-border p-3 transition-colors hover:bg-secondary",
                             isOverdue && "border-red-500 bg-red-500/10"
                           )}
                           onClick={() => {
@@ -398,14 +398,14 @@ export default function CalendarPage() {
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <p className="text-sm font-medium text-white">{event.title}</p>
+                              <p className="text-sm font-medium text-foreground">{event.title}</p>
                               {event.cases && (
-                                <p className="text-xs text-slate-400">{event.cases.name}</p>
+                                <p className="text-xs text-muted-foreground">{event.cases.name}</p>
                               )}
                               <p
                                 className={cn(
                                   "mt-1 text-xs",
-                                  isOverdue ? "text-red-400" : "text-slate-400"
+                                  isOverdue ? "text-red-400" : "text-muted-foreground"
                                 )}
                               >
                                 {isOverdue
@@ -551,7 +551,7 @@ function MonthView({
     <div className="p-4">
       <div className="grid grid-cols-7 gap-1">
         {DAYS_OF_WEEK.map((day) => (
-          <div key={day} className="p-2 text-center text-sm font-semibold text-slate-400">
+          <div key={day} className="p-2 text-center text-sm font-semibold text-muted-foreground">
             {day}
           </div>
         ))}
@@ -571,7 +571,7 @@ function MonthView({
             <div
               key={date.toISOString()}
               className={cn(
-                "aspect-square cursor-pointer rounded-lg border border-slate-800 p-2 transition-colors hover:bg-slate-800",
+                "aspect-square cursor-pointer rounded-lg border border-border p-2 transition-colors hover:bg-secondary",
                 isToday && "border-amber-500 bg-amber-500/10"
               )}
               onClick={() => onDateClick(date)}
@@ -580,7 +580,7 @@ function MonthView({
                 <span
                   className={cn(
                     "text-sm font-medium",
-                    isToday ? "text-amber-500" : "text-white"
+                    isToday ? "text-amber-500" : "text-foreground"
                   )}
                 >
                   {date.getDate()}
@@ -603,14 +603,14 @@ function MonthView({
                         onEventClick(event);
                       }}
                     >
-                      <span className="text-xs text-white truncate flex-1 min-w-0">
+                      <span className="text-xs text-foreground truncate flex-1 min-w-0">
                         {event.title}
                       </span>
                     </div>
                   );
                 })}
                 {dayEvents.length > 3 && (
-                  <div className="text-xs text-slate-400 px-1.5">+{dayEvents.length - 3} more</div>
+                  <div className="text-xs text-muted-foreground px-1.5">+{dayEvents.length - 3} more</div>
                 )}
               </div>
             </div>
@@ -662,16 +662,16 @@ function WeekView({
             <div key={date.toISOString()} className="flex flex-col">
               <div
                 className={cn(
-                  "mb-2 cursor-pointer rounded-lg border border-slate-800 p-2 text-center transition-colors hover:bg-slate-800",
+                  "mb-2 cursor-pointer rounded-lg border border-border p-2 text-center transition-colors hover:bg-secondary",
                   isToday && "border-amber-500 bg-amber-500/10"
                 )}
                 onClick={() => onDateClick(date)}
               >
-                <div className="text-xs text-slate-400">{DAYS_OF_WEEK[date.getDay()]}</div>
+                <div className="text-xs text-muted-foreground">{DAYS_OF_WEEK[date.getDay()]}</div>
                 <div
                   className={cn(
                     "text-lg font-semibold",
-                    isToday ? "text-amber-500" : "text-white"
+                    isToday ? "text-amber-500" : "text-foreground"
                   )}
                 >
                   {date.getDate()}
@@ -690,13 +690,13 @@ function WeekView({
                     <div
                       key={event.id}
                       className={cn(
-                        "cursor-pointer rounded border-l-4 p-2 text-xs transition-colors hover:bg-slate-800",
+                        "cursor-pointer rounded border-l-4 p-2 text-xs transition-colors hover:bg-secondary",
                         eventColor.border
                       )}
                       onClick={() => onEventClick(event)}
                     >
-                      <div className="font-medium text-white">{event.title}</div>
-                      <div className="text-slate-400">{startTime}</div>
+                      <div className="font-medium text-foreground">{event.title}</div>
+                      <div className="text-muted-foreground">{startTime}</div>
                     </div>
                   );
                 })}
@@ -732,8 +732,8 @@ function DayView({
       <div className="flex">
         <div className="w-20 flex-shrink-0">
           {hours.map((hour) => (
-            <div key={hour} className="h-16 border-b border-slate-800">
-              <div className="text-xs text-slate-400">
+            <div key={hour} className="h-16 border-b border-border">
+              <div className="text-xs text-muted-foreground">
                 {hour === 0 ? "12 AM" : hour < 12 ? `${hour} AM` : hour === 12 ? "12 PM" : `${hour - 12} PM`}
               </div>
             </div>
@@ -741,7 +741,7 @@ function DayView({
         </div>
         <div className="flex-1">
           {hours.map((hour) => (
-            <div key={hour} className="h-16 border-b border-slate-800">
+            <div key={hour} className="h-16 border-b border-border">
               {dayEvents
                 .filter((event: any) => {
                   if (event.all_day) return hour === 0;
@@ -754,14 +754,14 @@ function DayView({
                     <div
                       key={event.id}
                       className={cn(
-                        "mb-1 cursor-pointer rounded border-l-4 p-2 text-sm transition-colors hover:bg-slate-800",
+                        "mb-1 cursor-pointer rounded border-l-4 p-2 text-sm transition-colors hover:bg-secondary",
                         eventColor.border
                       )}
                       onClick={() => onEventClick(event)}
                     >
-                      <div className="font-medium text-white">{event.title}</div>
+                      <div className="font-medium text-foreground">{event.title}</div>
                       {!event.all_day && (
-                        <div className="text-xs text-slate-400">
+                        <div className="text-xs text-muted-foreground">
                           {new Date(event.start_date).toLocaleTimeString("en-US", {
                             hour: "numeric",
                             minute: "2-digit",
@@ -925,7 +925,7 @@ function NewEventModal({
                       "flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-all",
                       isSelected
                         ? `${colorOption.border} border-2 scale-110`
-                        : "border-slate-800 hover:border-slate-700"
+                        : "border-border hover:border-border/70"
                     )}
                     title={colorOption.label}
                   >
@@ -944,7 +944,7 @@ function NewEventModal({
                       "bg-slate-500"
                 )}
               />
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Preview: This color will appear on the calendar
               </p>
             </div>
@@ -1148,13 +1148,13 @@ function EventDetailModal({
           {event.cases && (
             <div>
               <Label>Case</Label>
-              <p className="text-sm text-white">{event.cases.name}</p>
+              <p className="text-sm text-foreground">{event.cases.name}</p>
             </div>
           )}
 
           <div>
             <Label>Time</Label>
-            <p className="text-sm text-white">
+            <p className="text-sm text-foreground">
               {event.all_day ? (
                 "All Day"
               ) : (
@@ -1176,7 +1176,7 @@ function EventDetailModal({
           {event.location && (
             <div>
               <Label>Location</Label>
-              <p className="text-sm text-white">{event.location}</p>
+              <p className="text-sm text-foreground">{event.location}</p>
             </div>
           )}
 
@@ -1198,7 +1198,7 @@ function EventDetailModal({
           {event.description && (
             <div>
               <Label>Description</Label>
-              <p className="text-sm text-white">{event.description}</p>
+              <p className="text-sm text-foreground">{event.description}</p>
             </div>
           )}
 
@@ -1252,30 +1252,30 @@ function DayDetailPanel({
 
         <div className="space-y-3">
           {events.length === 0 ? (
-            <p className="text-sm text-slate-400">No events scheduled for this day</p>
+            <p className="text-sm text-muted-foreground">No events scheduled for this day</p>
           ) : (
             events.map((event) => {
               const eventType = EVENT_TYPES.find((t) => t.value === event.type);
               return (
                 <div
                   key={event.id}
-                  className="cursor-pointer rounded-lg border border-slate-800 p-3 transition-colors hover:bg-slate-800"
+                  className="cursor-pointer rounded-lg border border-border p-3 transition-colors hover:bg-secondary"
                   onClick={() => onEventClick(event)}
                 >
                   <div className="flex items-start gap-3">
                     <div className={cn("mt-1 h-2 w-2 rounded-full", getEventColor(event).bg)} />
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-white">{event.title}</p>
+                        <p className="font-medium text-foreground">{event.title}</p>
                         <Badge variant="outline" className="text-xs">
                           {eventType?.label}
                         </Badge>
                       </div>
                       {event.cases && (
-                        <p className="mt-1 text-xs text-slate-400">{event.cases.name}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{event.cases.name}</p>
                       )}
                       {!event.all_day && (
-                        <p className="mt-1 text-xs text-slate-400">
+                        <p className="mt-1 text-xs text-muted-foreground">
                           {new Date(event.start_date).toLocaleTimeString("en-US", {
                             hour: "numeric",
                             minute: "2-digit",
@@ -1288,7 +1288,7 @@ function DayDetailPanel({
                         </p>
                       )}
                       {event.location && (
-                        <p className="mt-1 flex items-center gap-1 text-xs text-slate-400">
+                        <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
                           <MapPin className="h-3 w-3" />
                           {event.location}
                         </p>

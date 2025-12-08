@@ -59,14 +59,14 @@ export function InvoiceBuilder({ lineItems, setLineItems }: InvoiceBuilderProps)
       <CardContent>
         <div className="space-y-4">
           {lineItems.map((item) => (
-            <div key={item.id} className="p-4 rounded-lg border border-slate-800 bg-slate-900/50">
+            <div key={item.id} className="p-4 rounded-lg border border-border bg-muted">
               <div className="grid gap-4 md:grid-cols-12">
                 <div className="md:col-span-6">
                   <Label>Description</Label>
                   <Textarea
                     value={item.description}
                     onChange={(e) => updateLineItem(item.id, "description", e.target.value)}
-                    className="mt-1 bg-slate-900/50 border-slate-800"
+                    className="mt-1"
                     placeholder="Item description..."
                   />
                 </div>
@@ -78,7 +78,7 @@ export function InvoiceBuilder({ lineItems, setLineItems }: InvoiceBuilderProps)
                     step="0.01"
                     value={item.quantity}
                     onChange={(e) => updateLineItem(item.id, "quantity", parseFloat(e.target.value) || 0)}
-                    className="mt-1 bg-slate-900/50 border-slate-800"
+                    className="mt-1"
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -89,7 +89,7 @@ export function InvoiceBuilder({ lineItems, setLineItems }: InvoiceBuilderProps)
                     step="0.01"
                     value={item.rate}
                     onChange={(e) => updateLineItem(item.id, "rate", parseFloat(e.target.value) || 0)}
-                    className="mt-1 bg-slate-900/50 border-slate-800"
+                    className="mt-1"
                   />
                 </div>
                 <div className="md:col-span-1">
@@ -98,7 +98,7 @@ export function InvoiceBuilder({ lineItems, setLineItems }: InvoiceBuilderProps)
                     type="text"
                     value={`$${item.amount.toFixed(2)}`}
                     readOnly
-                    className="mt-1 bg-slate-800/50 border-slate-800"
+                    className="mt-1 bg-muted"
                   />
                 </div>
                 <div className="md:col-span-1 flex items-end">
@@ -115,7 +115,7 @@ export function InvoiceBuilder({ lineItems, setLineItems }: InvoiceBuilderProps)
             </div>
           ))}
           {lineItems.length === 0 && (
-            <p className="text-center text-slate-400 py-8">No custom line items. Click "Add Item" to create one.</p>
+            <p className="text-center text-muted-foreground py-8">No custom line items. Click "Add Item" to create one.</p>
           )}
         </div>
       </CardContent>

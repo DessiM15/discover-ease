@@ -206,7 +206,7 @@ export default function ProductionDetailPage() {
   if (!production) {
     return (
       <div className="text-center py-12">
-        <p className="text-slate-400">Production set not found</p>
+        <p className="text-muted-foreground">Production set not found</p>
         <Button variant="outline" className="mt-4" asChild>
           <Link href="/productions">Back to Productions</Link>
         </Button>
@@ -225,8 +225,8 @@ export default function ProductionDetailPage() {
           </Link>
         </Button>
         <div className="flex-1">
-          <h1 className="text-3xl font-bold text-white">{production.name}</h1>
-          <p className="mt-1 text-slate-400">{caseName}</p>
+          <h1 className="text-3xl font-bold text-foreground">{production.name}</h1>
+          <p className="mt-1 text-muted-foreground">{caseName}</p>
         </div>
       </div>
 
@@ -238,10 +238,10 @@ export default function ProductionDetailPage() {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <Label className="text-xs text-slate-400">Bates Range</Label>
+              <Label className="text-xs text-muted-foreground">Bates Range</Label>
               <div className="flex items-center gap-2 mt-1">
-                <Hash className="h-4 w-4 text-slate-400" />
-                <span className="text-white font-mono text-sm">
+                <Hash className="h-4 w-4 text-muted-foreground" />
+                <span className="text-foreground font-mono text-sm">
                   {production.bates_start && production.bates_end
                     ? formatBatesRange(production.bates_start, production.bates_end)
                     : "Not set"}
@@ -249,26 +249,26 @@ export default function ProductionDetailPage() {
               </div>
             </div>
             <div>
-              <Label className="text-xs text-slate-400">Documents</Label>
-              <p className="text-white mt-1">{productionDocuments?.length || 0}</p>
+              <Label className="text-xs text-muted-foreground">Documents</Label>
+              <p className="text-foreground mt-1">{productionDocuments?.length || 0}</p>
             </div>
             {production.produced_date && (
               <>
                 <div>
-                  <Label className="text-xs text-slate-400">Produced Date</Label>
+                  <Label className="text-xs text-muted-foreground">Produced Date</Label>
                   <div className="flex items-center gap-2 mt-1">
-                    <Calendar className="h-4 w-4 text-slate-400" />
-                    <span className="text-white text-sm">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-foreground text-sm">
                       {new Date(production.produced_date).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
                 {production.produced_to && (
                   <div>
-                    <Label className="text-xs text-slate-400">Produced To</Label>
+                    <Label className="text-xs text-muted-foreground">Produced To</Label>
                     <div className="flex items-center gap-2 mt-1">
-                      <User className="h-4 w-4 text-slate-400" />
-                      <span className="text-white text-sm">
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-foreground text-sm">
                         {production.produced_to.company_name ||
                           `${production.produced_to.first_name} ${production.produced_to.last_name}`}
                       </span>
@@ -280,8 +280,8 @@ export default function ProductionDetailPage() {
           </div>
           {production.description && (
             <div className="mt-4">
-              <Label className="text-xs text-slate-400">Description</Label>
-              <p className="text-white mt-1">{production.description}</p>
+              <Label className="text-xs text-muted-foreground">Description</Label>
+              <p className="text-foreground mt-1">{production.description}</p>
             </div>
           )}
         </CardContent>
@@ -296,7 +296,7 @@ export default function ProductionDetailPage() {
               Add Documents
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass border-slate-800 max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="glass border-border max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Add Documents to Production</DialogTitle>
               <DialogDescription>
@@ -305,7 +305,7 @@ export default function ProductionDetailPage() {
             </DialogHeader>
             <div className="mt-4 space-y-4">
               {availableDocuments.length === 0 ? (
-                <div className="text-center py-8 text-slate-400">
+                <div className="text-center py-8 text-muted-foreground">
                   <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>No available documents to add</p>
                 </div>
@@ -315,7 +315,7 @@ export default function ProductionDetailPage() {
                     {availableDocuments.map((doc: any) => (
                       <div
                         key={doc.id}
-                        className="flex items-center gap-3 p-3 rounded-lg border border-slate-800 bg-slate-900/50"
+                        className="flex items-center gap-3 p-3 rounded-lg border border-border bg-card"
                       >
                         <Checkbox
                           checked={selectedDocumentIds.includes(doc.id)}
@@ -328,8 +328,8 @@ export default function ProductionDetailPage() {
                           }}
                         />
                         <div className="flex-1">
-                          <p className="text-white font-medium">{doc.name}</p>
-                          <p className="text-sm text-slate-400">
+                          <p className="text-foreground font-medium">{doc.name}</p>
+                          <p className="text-sm text-muted-foreground">
                             {doc.category || "No category"} • {doc.status}
                           </p>
                         </div>
@@ -394,7 +394,7 @@ export default function ProductionDetailPage() {
                 return (
                   <div
                     key={pd.id}
-                    className="flex items-start gap-4 p-4 rounded-lg border border-slate-800 bg-slate-900/50"
+                    className="flex items-start gap-4 p-4 rounded-lg border border-border bg-card"
                   >
                     <Checkbox
                       checked={pd.is_privileged}
@@ -405,14 +405,14 @@ export default function ProductionDetailPage() {
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-white">{doc?.name || "Unknown Document"}</p>
+                        <p className="font-medium text-foreground">{doc?.name || "Unknown Document"}</p>
                         {pd.is_privileged && (
                           <Badge variant="outline" className="text-xs">
                             Privileged
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-4 mt-1 text-sm text-slate-400">
+                      <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
                         {pd.bates_number && (
                           <span className="font-mono">{pd.bates_number}</span>
                         )}
@@ -425,7 +425,7 @@ export default function ProductionDetailPage() {
                       </div>
                       {pd.is_privileged && (
                         <div className="mt-2">
-                          <Label className="text-xs text-slate-400">Privilege Reason</Label>
+                          <Label className="text-xs text-muted-foreground">Privilege Reason</Label>
                           <Input
                             value={privilegeReason}
                             onChange={(e) => setPrivilegeReason(e.target.value)}
@@ -435,7 +435,7 @@ export default function ProductionDetailPage() {
                               }
                             }}
                             placeholder="e.g., Attorney-Client Privilege"
-                            className="mt-1 bg-slate-900/50 border-slate-800"
+                            className="mt-1 bg-background border-border"
                           />
                         </div>
                       )}
@@ -457,7 +457,7 @@ export default function ProductionDetailPage() {
               })}
             </div>
           ) : (
-            <div className="text-center py-12 text-slate-400">
+            <div className="text-center py-12 text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>No documents in this production set</p>
               <Button variant="outline" className="mt-4" onClick={() => setAddDocumentsDialogOpen(true)}>
@@ -471,7 +471,7 @@ export default function ProductionDetailPage() {
 
       {/* Mark as Produced Dialog */}
       <Dialog open={markProducedDialogOpen} onOpenChange={setMarkProducedDialogOpen}>
-        <DialogContent className="glass border-slate-800">
+        <DialogContent className="glass border-border">
           <DialogHeader>
             <DialogTitle>Mark as Produced</DialogTitle>
             <DialogDescription>
@@ -485,14 +485,14 @@ export default function ProductionDetailPage() {
                 type="date"
                 value={producedDate}
                 onChange={(e) => setProducedDate(e.target.value)}
-                className="mt-1 bg-slate-900/50 border-slate-800"
+                className="mt-1 bg-background border-border"
                 required
               />
             </div>
             <div>
               <Label>Produced To</Label>
               <Select value={producedToId} onValueChange={setProducedToId}>
-                <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                <SelectTrigger className="mt-1 bg-background border-border">
                   <SelectValue placeholder="Select contact (optional)" />
                 </SelectTrigger>
                 <SelectContent>

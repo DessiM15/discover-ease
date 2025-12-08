@@ -41,8 +41,8 @@ export function SettingsNav({ isAdmin }: { isAdmin: boolean }) {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-slate-900 text-amber-500"
-                  : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                  ? "bg-secondary text-amber-500"
+                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
               )}
             >
               <item.icon className="h-4 w-4" />

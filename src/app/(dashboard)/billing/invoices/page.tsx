@@ -85,8 +85,8 @@ export default function InvoicesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Invoices</h1>
-          <p className="mt-1 text-slate-400">Create and manage client invoices</p>
+          <h1 className="text-3xl font-bold text-foreground">Invoices</h1>
+          <p className="mt-1 text-muted-foreground">Create and manage client invoices</p>
         </div>
         <Button asChild>
           <Link href="/billing/invoices/new">
@@ -116,34 +116,34 @@ export default function InvoicesPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-slate-800">
-                      <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">
+                    <tr className="border-b border-border">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">
                         Invoice #
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Client</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Case</th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Amount</th>
-                      <th className="px-4 py-3 text-center text-xs font-medium text-slate-400">Status</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Sent</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Due</th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-slate-400">Actions</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Client</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Case</th>
+                      <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Amount</th>
+                      <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground">Status</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Sent</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Due</th>
+                      <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredInvoices.map((invoice) => (
                       <tr
                         key={invoice.id}
-                        className="border-b border-slate-800/50 hover:bg-slate-900/50 transition-colors"
+                        className="border-b border-border hover:bg-muted transition-colors"
                       >
-                        <td className="px-4 py-3 text-sm font-medium text-white">
+                        <td className="px-4 py-3 text-sm font-medium text-foreground">
                           {invoice.invoiceNumber}
                         </td>
-                        <td className="px-4 py-3 text-sm text-white">{invoice.client}</td>
-                        <td className="px-4 py-3 text-sm text-slate-300">{invoice.caseName}</td>
-                        <td className="px-4 py-3 text-sm text-white font-medium text-right">
+                        <td className="px-4 py-3 text-sm text-foreground">{invoice.client}</td>
+                        <td className="px-4 py-3 text-sm text-muted-foreground">{invoice.caseName}</td>
+                        <td className="px-4 py-3 text-sm text-foreground font-medium text-right">
                           ${invoice.amount.toLocaleString()}
                           {invoice.paidAmount && (
-                            <span className="block text-xs text-slate-400">
+                            <span className="block text-xs text-muted-foreground">
                               Paid: ${invoice.paidAmount.toLocaleString()}
                             </span>
                           )}
@@ -154,10 +154,10 @@ export default function InvoicesPage() {
                             {invoice.daysOverdue > 0 && ` (${invoice.daysOverdue}d)`}
                           </Badge>
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-300">
+                        <td className="px-4 py-3 text-sm text-muted-foreground">
                           {new Date(invoice.sentDate).toLocaleDateString()}
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-300">
+                        <td className="px-4 py-3 text-sm text-muted-foreground">
                           {new Date(invoice.dueDate).toLocaleDateString()}
                         </td>
                         <td className="px-4 py-3">

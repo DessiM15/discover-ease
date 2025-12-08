@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto max-w-4xl py-12 px-4">
         <div className="mb-6">
           <Button variant="ghost" size="sm" asChild>
@@ -18,12 +18,12 @@ export default function PrivacyPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-3xl text-white">Privacy Policy</CardTitle>
+            <CardTitle className="text-3xl">Privacy Policy</CardTitle>
             <CardDescription>Last updated: {new Date().toLocaleDateString()}</CardDescription>
           </CardHeader>
-          <CardContent className="prose prose-invert max-w-none space-y-6 text-slate-300">
+          <CardContent className="prose prose-invert max-w-none space-y-6 text-foreground">
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">1. Introduction</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">1. Introduction</h2>
               <p>
                 DiscoverEase ("we," "our," or "us") is committed to protecting your privacy. This
                 Privacy Policy explains how we collect, use, disclose, and safeguard your information
@@ -32,7 +32,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">2. Information We Collect</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">2. Information We Collect</h2>
               <p>We collect information that you provide directly to us, including:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Account information (name, email, phone number)</li>
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">3. How We Use Your Information</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">3. How We Use Your Information</h2>
               <p>We use the information we collect to:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Provide, maintain, and improve our services</li>
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">4. Data Security</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">4. Data Security</h2>
               <p>
                 We implement appropriate technical and organizational security measures to protect
                 your personal information. This includes encryption, secure data transmission, access
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">5. Data Retention</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">5. Data Retention</h2>
               <p>
                 We retain your personal information for as long as your account is active or as
                 needed to provide you services. We may retain certain information as required by law
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">6. Sharing of Information</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">6. Sharing of Information</h2>
               <p>We do not sell, trade, or rent your personal information. We may share information:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>With service providers who assist in operating our platform</li>
@@ -87,7 +87,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">7. Your Rights</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">7. Your Rights</h2>
               <p>You have the right to:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Access and update your personal information</li>
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">8. Cookies and Tracking</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">8. Cookies and Tracking</h2>
               <p>
                 We use cookies and similar tracking technologies to track activity on our service
                 and hold certain information. You can instruct your browser to refuse all cookies
@@ -108,7 +108,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">9. Children's Privacy</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">9. Children's Privacy</h2>
               <p>
                 Our service is not intended for individuals under the age of 18. We do not knowingly
                 collect personal information from children.
@@ -116,7 +116,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">10. Changes to This Policy</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">10. Changes to This Policy</h2>
               <p>
                 We may update our Privacy Policy from time to time. We will notify you of any
                 changes by posting the new Privacy Policy on this page and updating the "Last
@@ -125,7 +125,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">11. Contact Us</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">11. Contact Us</h2>
               <p>
                 If you have any questions about this Privacy Policy, please contact us at
                 privacy@discoverease.com.

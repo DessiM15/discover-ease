@@ -122,7 +122,7 @@ export default function UploadDocumentPage() {
         <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
           <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
           <Label htmlFor="file-upload" className="cursor-pointer">
-            <span className="text-primary hover:text-primary">Click to upload</span> or drag and drop
+            <span className="text-primary hover:text-primary/80">Click to upload</span> or drag and drop
           </Label>
           <Input
             id="file-upload"
@@ -228,7 +228,7 @@ export default function UploadDocumentPage() {
             </div>
             <div className="w-full bg-muted rounded-full h-2">
               <div
-                className="bg-primary h-2 rounded-full transition-all"
+                className="bg-amber-500 h-2 rounded-full transition-all"
                 style={{ width: `${uploadProgress}%` }}
               />
             </div>

@@ -125,8 +125,8 @@ export default function FirmSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Firm Settings</h1>
-        <p className="mt-1 text-slate-400">Manage firm information and billing defaults</p>
+        <h1 className="text-3xl font-bold text-foreground">Firm Settings</h1>
+        <p className="mt-1 text-muted-foreground">Manage firm information and billing defaults</p>
       </div>
 
       <Card>

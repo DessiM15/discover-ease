@@ -116,8 +116,8 @@ export default function NewCasePage() {
           </Link>
         </Button>
         <div>
-          <h1 className="text-3xl font-bold text-white">New Case</h1>
-          <p className="mt-1 text-slate-400">Create a new case file</p>
+          <h1 className="text-3xl font-bold text-foreground">New Case</h1>
+          <p className="mt-1 text-muted-foreground">Create a new case file</p>
         </div>
       </div>
 
@@ -135,7 +135,7 @@ export default function NewCasePage() {
                   id="caseNumber"
                   value={formData.caseNumber}
                   onChange={(e) => setFormData({ ...formData, caseNumber: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                   required
                 />
               </div>
@@ -146,7 +146,7 @@ export default function NewCasePage() {
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                   required
                 />
               </div>
@@ -154,7 +154,7 @@ export default function NewCasePage() {
               <div>
                 <Label htmlFor="type">Case Type *</Label>
                 <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select case type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -177,7 +177,7 @@ export default function NewCasePage() {
               <div>
                 <Label htmlFor="status">Status *</Label>
                 <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -194,7 +194,7 @@ export default function NewCasePage() {
               <div>
                 <Label htmlFor="billingType">Billing Type</Label>
                 <Select value={formData.billingType} onValueChange={(value) => setFormData({ ...formData, billingType: value })}>
-                  <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+                  <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select billing type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -220,7 +220,7 @@ export default function NewCasePage() {
                   id="court"
                   value={formData.court}
                   onChange={(e) => setFormData({ ...formData, court: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
 
@@ -230,7 +230,7 @@ export default function NewCasePage() {
                   id="judge"
                   value={formData.judge}
                   onChange={(e) => setFormData({ ...formData, judge: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
 
@@ -240,7 +240,7 @@ export default function NewCasePage() {
                   id="courtCaseNumber"
                   value={formData.courtCaseNumber}
                   onChange={(e) => setFormData({ ...formData, courtCaseNumber: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
 
@@ -250,7 +250,7 @@ export default function NewCasePage() {
                   id="jurisdiction"
                   value={formData.jurisdiction}
                   onChange={(e) => setFormData({ ...formData, jurisdiction: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
             </CardContent>
@@ -271,7 +271,7 @@ export default function NewCasePage() {
                   type="date"
                   value={formData.dateOpened}
                   onChange={(e) => setFormData({ ...formData, dateOpened: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
               <div>
@@ -281,7 +281,7 @@ export default function NewCasePage() {
                   type="date"
                   value={formData.statuteOfLimitations}
                   onChange={(e) => setFormData({ ...formData, statuteOfLimitations: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
               <div>
@@ -291,7 +291,7 @@ export default function NewCasePage() {
                   type="date"
                   value={formData.trialDate}
                   onChange={(e) => setFormData({ ...formData, trialDate: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
               <div>
@@ -301,7 +301,7 @@ export default function NewCasePage() {
                   type="date"
                   value={formData.discoveryCutoff}
                   onChange={(e) => setFormData({ ...formData, discoveryCutoff: e.target.value })}
-                  className="mt-1 bg-slate-900/50 border-slate-800"
+                  className="mt-1"
                 />
               </div>
             </div>
@@ -318,7 +318,7 @@ export default function NewCasePage() {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Enter case description..."
-              className="bg-slate-900/50 border-slate-800 min-h-[120px]"
+              className="min-h-[120px]"
             />
           </CardContent>
         </Card>

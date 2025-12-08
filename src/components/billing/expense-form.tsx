@@ -65,14 +65,14 @@ export function ExpenseForm({ onSuccess }: ExpenseFormProps) {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="mt-1 bg-slate-900/50 border-slate-800"
+            className="mt-1"
             required
           />
         </div>
         <div>
           <Label>Case</Label>
           <Select value={caseId} onValueChange={setCaseId} required>
-            <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+            <SelectTrigger className="mt-1">
               <SelectValue placeholder="Select case" />
             </SelectTrigger>
             <SelectContent>
@@ -88,7 +88,7 @@ export function ExpenseForm({ onSuccess }: ExpenseFormProps) {
         <div>
           <Label>Category</Label>
           <Select value={category} onValueChange={setCategory} required>
-            <SelectTrigger className="mt-1 bg-slate-900/50 border-slate-800">
+            <SelectTrigger className="mt-1">
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
@@ -106,7 +106,7 @@ export function ExpenseForm({ onSuccess }: ExpenseFormProps) {
             value={vendor}
             onChange={(e) => setVendor(e.target.value)}
             placeholder="Vendor name"
-            className="mt-1 bg-slate-900/50 border-slate-800"
+            className="mt-1"
             required
           />
         </div>
@@ -118,7 +118,7 @@ export function ExpenseForm({ onSuccess }: ExpenseFormProps) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Describe the expense..."
-          className="mt-1 bg-slate-900/50 border-slate-800"
+          className="mt-1"
           required
         />
       </div>
@@ -133,7 +133,7 @@ export function ExpenseForm({ onSuccess }: ExpenseFormProps) {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0.00"
-            className="mt-1 bg-slate-900/50 border-slate-800"
+            className="mt-1"
             required
           />
         </div>
@@ -149,7 +149,6 @@ export function ExpenseForm({ onSuccess }: ExpenseFormProps) {
           <Input
             type="file"
             accept="image/*,application/pdf"
-            className="bg-slate-900/50 border-slate-800"
           />
           <Button type="button" variant="outline" size="icon">
             <Upload className="h-4 w-4" />

@@ -55,12 +55,12 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
           </Button>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold text-white">{invoice.invoiceNumber}</h1>
+              <h1 className="text-3xl font-bold text-foreground">{invoice.invoiceNumber}</h1>
               <Badge variant={invoice.status === "overdue" ? "destructive" : "default"}>
                 {invoice.status}
               </Badge>
             </div>
-            <p className="mt-1 text-slate-400">{invoice.client} • {invoice.caseName}</p>
+            <p className="mt-1 text-muted-foreground">{invoice.client} • {invoice.caseName}</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -83,7 +83,7 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
                 Record Payment
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md glass border-slate-800">
+            <DialogContent className="max-w-md glass border-border">
               <DialogHeader>
                 <DialogTitle>Record Payment</DialogTitle>
                 <DialogDescription>Record a payment for this invoice</DialogDescription>
@@ -117,15 +117,15 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-slate-400">Total</span>
-                <span className="text-white font-medium">${invoice.total.toFixed(2)}</span>
+                <span className="text-muted-foreground">Total</span>
+                <span className="text-foreground font-medium">${invoice.total.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Paid</span>
+                <span className="text-muted-foreground">Paid</span>
                 <span className="text-green-400">${invoice.paidAmount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between pt-2 border-t border-slate-800">
-                <span className="text-white font-semibold">Balance</span>
+              <div className="flex justify-between pt-2 border-t border-border">
+                <span className="text-foreground font-semibold">Balance</span>
                 <span className="text-amber-500 font-semibold">${invoice.balance.toFixed(2)}</span>
               </div>
             </CardContent>
@@ -139,19 +139,19 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
               {payments.length > 0 ? (
                 <div className="space-y-3">
                   {payments.map((payment, idx) => (
-                    <div key={idx} className="p-3 rounded-lg bg-slate-900/50">
+                    <div key={idx} className="p-3 rounded-lg bg-muted">
                       <div className="flex justify-between mb-1">
-                        <span className="text-sm text-white">${payment.amount.toFixed(2)}</span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-sm text-foreground">${payment.amount.toFixed(2)}</span>
+                        <span className="text-xs text-muted-foreground">
                           {new Date(payment.date).toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400">{payment.method} • {payment.reference}</p>
+                      <p className="text-xs text-muted-foreground">{payment.method} • {payment.reference}</p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-slate-400 text-center py-4">No payments recorded</p>
+                <p className="text-sm text-muted-foreground text-center py-4">No payments recorded</p>
               )}
             </CardContent>
           </Card>

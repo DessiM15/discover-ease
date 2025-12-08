@@ -90,13 +90,13 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="glass rounded-xl border border-slate-800 bg-gradient-to-r from-amber-500/10 to-slate-900/80 p-6">
+      <div className="glass rounded-xl border border-border bg-gradient-to-r from-amber-500/10 to-background/80 p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-2xl font-bold text-foreground">
               Welcome back{userData?.first_name ? `, ${userData.first_name}` : ""}!
             </h1>
-            <p className="mt-1 text-slate-400">Here's what's happening with your practice today.</p>
+            <p className="mt-1 text-muted-foreground">Here's what's happening with your practice today.</p>
           </div>
           <Button asChild>
             <Link href="/cases">View All Cases</Link>
@@ -105,15 +105,15 @@ export default function DashboardPage() {
       </div>
 
       {/* AI Insights Banner */}
-      <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-slate-900/80">
+      <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-background/80">
         <CardContent className="pt-6">
           <div className="flex items-start gap-4">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20">
               <Sparkles className="h-5 w-5 text-amber-500" />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-white">AI Insights Available</h3>
-              <p className="mt-1 text-sm text-slate-400">
+              <h3 className="font-semibold text-foreground">AI Insights Available</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
                 Review 3 new AI-generated case summaries and discovery response suggestions.
               </p>
               <Button variant="outline" size="sm" className="mt-3" asChild>
@@ -129,12 +129,12 @@ export default function DashboardPage() {
         {stats.map((stat) => (
           <Card key={stat.label}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-slate-400">{stat.label}</CardTitle>
-              <stat.icon className="h-4 w-4 text-slate-400" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">{stat.label}</CardTitle>
+              <stat.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stat.value}</div>
-              <p className="text-xs text-slate-400 mt-1">
+              <div className="text-2xl font-bold text-foreground">{stat.value}</div>
+              <p className="text-xs text-muted-foreground mt-1">
                 <span className={stat.trend === "up" ? "text-green-500" : "text-red-500"}>
                   {stat.change}
                 </span>{" "}
@@ -166,13 +166,13 @@ export default function DashboardPage() {
                 recentCases.map((caseItem: any) => (
                   <div
                     key={caseItem.id}
-                    className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/50 p-4 hover:bg-slate-900 transition-colors"
+                    className="flex items-center justify-between rounded-lg border border-border bg-card p-4 hover:bg-muted transition-colors"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/cases/${caseItem.id}`}
-                          className="font-medium text-white hover:text-amber-500"
+                          className="font-medium text-foreground hover:text-amber-500"
                         >
                           {caseItem.name}
                         </Link>
@@ -180,7 +180,7 @@ export default function DashboardPage() {
                           {caseItem.type?.replace("_", " ") || "Other"}
                         </Badge>
                       </div>
-                      <p className="mt-1 text-xs text-slate-400">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         Updated {formatDistanceToNow(new Date(caseItem.updated_at), { addSuffix: true })}
                       </p>
                     </div>
@@ -193,7 +193,7 @@ export default function DashboardPage() {
                   </div>
                 ))
               ) : (
-                <p className="text-center text-slate-400 py-8">No cases found</p>
+                <p className="text-center text-muted-foreground py-8">No cases found</p>
               )}
             </div>
           </CardContent>
@@ -218,17 +218,17 @@ export default function DashboardPage() {
                 deadlines.map((deadline: any) => (
                   <div
                     key={deadline.id}
-                    className="flex items-start gap-4 rounded-lg border border-slate-800 bg-slate-900/50 p-4"
+                    className="flex items-start gap-4 rounded-lg border border-border bg-card p-4"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10">
                       <Calendar className="h-5 w-5 text-amber-500" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-white">{deadline.title}</h4>
-                      <p className="mt-1 text-sm text-slate-400">
+                      <h4 className="font-medium text-foreground">{deadline.title}</h4>
+                      <p className="mt-1 text-sm text-muted-foreground">
                         {deadline.cases?.name || "No case"}
                       </p>
-                      <p className="mt-1 text-xs text-slate-500">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {new Date(deadline.start_date).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -242,7 +242,7 @@ export default function DashboardPage() {
                   </div>
                 ))
               ) : (
-                <p className="text-center text-slate-400 py-8">No upcoming deadlines</p>
+                <p className="text-center text-muted-foreground py-8">No upcoming deadlines</p>
               )}
             </div>
           </CardContent>
@@ -262,16 +262,16 @@ export default function DashboardPage() {
               { action: "Time entry added", case: "Estate of Williams", user: "Jane Smith", time: "4 hours ago" },
               { action: "Discovery response drafted", case: "State v. Davis", user: "AI Assistant", time: "1 day ago" },
             ].map((activity, idx) => (
-              <div key={idx} className="flex items-center gap-4 border-b border-slate-800 pb-4 last:border-0 last:pb-0">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800">
-                  <Activity className="h-4 w-4 text-slate-400" />
+              <div key={idx} className="flex items-center gap-4 border-b border-border pb-4 last:border-0 last:pb-0">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary">
+                  <Activity className="h-4 w-4 text-muted-foreground" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm text-white">
+                  <p className="text-sm text-foreground">
                     <span className="font-medium">{activity.action}</span> in{" "}
                     <span className="text-amber-500">{activity.case}</span>
                   </p>
-                  <p className="mt-1 text-xs text-slate-400">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     by {activity.user} • {activity.time}
                   </p>
                 </div>
