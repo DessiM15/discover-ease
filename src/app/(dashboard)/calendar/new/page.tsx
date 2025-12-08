@@ -24,7 +24,9 @@ import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import Link from "next/link";
 
-const EVENT_TYPES = [
+type EventType = "deadline" | "court_date" | "meeting" | "deposition" | "hearing" | "trial" | "reminder" | "other";
+
+const EVENT_TYPES: { value: EventType; label: string; defaultColor: string }[] = [
   { value: "deadline", label: "Deadline", defaultColor: "red" },
   { value: "court_date", label: "Court Date", defaultColor: "red" },
   { value: "meeting", label: "Meeting", defaultColor: "blue" },
@@ -32,7 +34,6 @@ const EVENT_TYPES = [
   { value: "hearing", label: "Hearing", defaultColor: "purple" },
   { value: "trial", label: "Trial", defaultColor: "purple" },
   { value: "reminder", label: "Reminder", defaultColor: "amber" },
-  { value: "task_due", label: "Task Due", defaultColor: "amber" },
   { value: "other", label: "Other", defaultColor: "slate" },
 ];
 
@@ -83,7 +84,23 @@ export default function NewEventPage() {
   const { data: users = [] } = useUsers(firmId);
 
   const today = new Date().toISOString().split("T")[0];
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    type: EventType;
+    case_id: string;
+    start_date: string;
+    start_time: string;
+    end_date: string;
+    end_time: string;
+    all_day: boolean;
+    location: string;
+    video_link: string;
+    description: string;
+    reminder_minutes: number | null;
+    is_recurring: boolean;
+    recurrence_rule: string;
+    color: string;
+  }>({
     title: "",
     type: "meeting",
     case_id: "",
@@ -95,7 +112,7 @@ export default function NewEventPage() {
     location: "",
     video_link: "",
     description: "",
-    reminder_minutes: null as number | null,
+    reminder_minutes: null,
     is_recurring: false,
     recurrence_rule: "",
     color: "",
@@ -174,7 +191,7 @@ export default function NewEventPage() {
             <Label htmlFor="type">Event Type *</Label>
             <Select
               value={formData.type}
-              onValueChange={(value) => setFormData({ ...formData, type: value })}
+              onValueChange={(value) => setFormData({ ...formData, type: value as EventType })}
             >
               <SelectTrigger className="mt-1">
                 <SelectValue />
