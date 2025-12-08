@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +21,9 @@ import {
   Edit,
   Eye,
   TrendingUp,
+  Loader2,
 } from "lucide-react";
+import Link from "next/link";
 import { DiscoveryDetailModal } from "@/components/discovery/discovery-detail-modal";
 import { FollowUpEmailModal } from "@/components/discovery/follow-up-email-modal";
 import {
@@ -31,12 +35,30 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function DiscoveryPage() {
+  const router = useRouter();
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [dismissedInsights, setDismissedInsights] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [generatingDraft, setGeneratingDraft] = useState<string | null>(null);
+
+  const handleEditRequest = (request: any) => {
+    router.push(`/discovery/${request.id}/edit`);
+  };
+
+  const handleAIDraft = async (request: any) => {
+    setGeneratingDraft(request.id);
+    toast.info("Generating AI draft response...");
+
+    // Simulate AI generation delay
+    setTimeout(() => {
+      setGeneratingDraft(null);
+      toast.success("AI draft generated! Opening editor...");
+      router.push(`/discovery/${request.id}/draft`);
+    }, 2000);
+  };
 
   // Demo data - will be replaced with real data hooks
   const requests = [
@@ -181,9 +203,11 @@ export default function DiscoveryPage() {
           <h1 className="text-3xl font-bold text-foreground">Discovery Log</h1>
           <p className="mt-1 text-muted-foreground">Track and manage discovery requests and responses</p>
         </div>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          New Request
+        <Button asChild>
+          <Link href="/discovery/new">
+            <Plus className="mr-2 h-4 w-4" />
+            New Request
+          </Link>
         </Button>
       </div>
 
@@ -384,15 +408,24 @@ export default function DiscoveryPage() {
                       <Eye className="mr-2 h-4 w-4" />
                       View
                     </Button>
-                    <Button variant="ghost" size="sm">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleEditRequest(request)}
+                    >
                       <Edit className="mr-2 h-4 w-4" />
                       Edit
                     </Button>
                     {!request.isOutgoing && request.status !== "completed" && (
                       <>
-                        <Button variant="outline" size="sm">
-                          <Sparkles className="mr-2 h-4 w-4" />
-                          AI Draft
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleAIDraft(request)}
+                          disabled={generatingDraft === request.id}
+                        >
+                          <Sparkles className={cn("mr-2 h-4 w-4", generatingDraft === request.id && "animate-spin")} />
+                          {generatingDraft === request.id ? "Generating..." : "AI Draft"}
                         </Button>
                         {isOverdue && (
                           <Button

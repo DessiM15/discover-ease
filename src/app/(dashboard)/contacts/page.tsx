@@ -5,12 +5,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, Users, Grid3x3, List, Mail, Phone, Building2 } from "lucide-react";
+import { Plus, Search, Users, Grid3x3, List, Mail, Phone, Building2, ChevronDown, ChevronUp, Edit, Eye } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export default function ContactsPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+
+  const toggleCardExpand = (id: string) => {
+    setExpandedCard(expandedCard === id ? null : id);
+  };
 
   const contacts = [
     { id: "1", name: "Jane Smith", type: "client", email: "jane@example.com", phone: "555-0100", company: "Acme Corp" },
@@ -91,36 +97,101 @@ export default function ContactsPage() {
         </Card>
       ) : viewMode === "grid" ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredContacts.map((contact) => (
-            <Card key={contact.id} className="hover:border-amber-500/20 transition-colors">
-              <CardContent className="pt-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold text-foreground">{contact.name}</h3>
-                      <Badge variant="outline" className="text-xs">
-                        {formatContactType(contact.type)}
-                      </Badge>
-                    </div>
-                    {contact.company && (
-                      <div className="flex items-center gap-2 mb-2 text-sm text-muted-foreground">
-                        <Building2 className="h-3 w-3" />
-                        <span>{contact.company}</span>
+          {filteredContacts.map((contact) => {
+            const isExpanded = expandedCard === contact.id;
+            return (
+              <Card
+                key={contact.id}
+                className={cn(
+                  "hover:border-amber-500/20 transition-all cursor-pointer",
+                  isExpanded && "border-amber-500/40 shadow-lg"
+                )}
+                onClick={() => toggleCardExpand(contact.id)}
+              >
+                <CardContent className="pt-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-foreground">{contact.name}</h3>
+                        <Badge variant="outline" className="text-xs">
+                          {formatContactType(contact.type)}
+                        </Badge>
                       </div>
-                    )}
-                    <div className="flex items-center gap-2 mb-1 text-sm text-muted-foreground">
-                      <Mail className="h-3 w-3" />
-                      <span>{contact.email}</span>
+                      {contact.company && (
+                        <div className="flex items-center gap-2 mb-2 text-sm text-muted-foreground">
+                          <Building2 className="h-3 w-3" />
+                          <span>{contact.company}</span>
+                        </div>
+                      )}
+                      <div className="flex items-center gap-2 mb-1 text-sm text-muted-foreground">
+                        <Mail className="h-3 w-3" />
+                        <span>{contact.email}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Phone className="h-3 w-3" />
+                        <span>{contact.phone}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Phone className="h-3 w-3" />
-                      <span>{contact.phone}</span>
+                    <div className="text-muted-foreground">
+                      {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                  {/* Expanded Actions */}
+                  {isExpanded && (
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.location.href = `mailto:${contact.email}`;
+                          }}
+                        >
+                          <Mail className="mr-2 h-4 w-4" />
+                          Email
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.location.href = `tel:${contact.phone}`;
+                          }}
+                        >
+                          <Phone className="mr-2 h-4 w-4" />
+                          Call
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          asChild
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Link href={`/contacts/${contact.id}`}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            View
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          asChild
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Link href={`/contacts/${contact.id}/edit`}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       ) : (
         <Card>
@@ -159,11 +230,41 @@ export default function ContactsPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="icon">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => window.location.href = `mailto:${contact.email}`}
+                      title={`Email ${contact.name}`}
+                    >
                       <Mail className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => window.location.href = `tel:${contact.phone}`}
+                      title={`Call ${contact.name}`}
+                    >
                       <Phone className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      asChild
+                      title={`View ${contact.name}`}
+                    >
+                      <Link href={`/contacts/${contact.id}`}>
+                        <Eye className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      asChild
+                      title={`Edit ${contact.name}`}
+                    >
+                      <Link href={`/contacts/${contact.id}/edit`}>
+                        <Edit className="h-4 w-4" />
+                      </Link>
                     </Button>
                   </div>
                 </div>

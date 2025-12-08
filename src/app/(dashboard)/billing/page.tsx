@@ -92,16 +92,18 @@ export default function BillingPage() {
           <CardContent>
             <div className="space-y-3">
               {[
-                { case: "Smith v. Johnson", hours: 2.5, date: "Today" },
-                { case: "Estate of Williams", hours: 1.0, date: "Today" },
-                { case: "State v. Davis", hours: 3.0, date: "Yesterday" },
-              ].map((entry, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
+                { id: "1", case: "Smith v. Johnson", hours: 2.5, date: "Today" },
+                { id: "2", case: "Estate of Williams", hours: 1.0, date: "Today" },
+                { id: "3", case: "State v. Davis", hours: 3.0, date: "Yesterday" },
+              ].map((entry) => (
+                <div key={entry.id} className="flex items-center justify-between p-3 rounded-lg bg-muted">
                   <div>
                     <p className="text-sm font-medium text-foreground">{entry.case}</p>
                     <p className="text-xs text-muted-foreground">{entry.hours} hours • {entry.date}</p>
                   </div>
-                  <Button variant="ghost" size="sm">View</Button>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href={`/billing/time?entry=${entry.id}`}>View</Link>
+                  </Button>
                 </div>
               ))}
             </div>
@@ -115,11 +117,11 @@ export default function BillingPage() {
           <CardContent>
             <div className="space-y-3">
               {[
-                { number: "INV-2024-001", client: "Smith, Jane", amount: "$5,200", status: "Overdue", days: 15 },
-                { number: "INV-2024-002", client: "Williams Estate", amount: "$3,800", status: "Due Soon", days: 3 },
-                { number: "INV-2024-003", client: "Davis, John", amount: "$2,100", status: "Sent", days: 5 },
-              ].map((invoice, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
+                { id: "inv-001", number: "INV-2024-001", client: "Smith, Jane", amount: "$5,200", status: "Overdue", days: 15 },
+                { id: "inv-002", number: "INV-2024-002", client: "Williams Estate", amount: "$3,800", status: "Due Soon", days: 3 },
+                { id: "inv-003", number: "INV-2024-003", client: "Davis, John", amount: "$2,100", status: "Sent", days: 5 },
+              ].map((invoice) => (
+                <div key={invoice.id} className="flex items-center justify-between p-3 rounded-lg bg-muted">
                   <div>
                     <p className="text-sm font-medium text-foreground">{invoice.number}</p>
                     <p className="text-xs text-muted-foreground">{invoice.client} • {invoice.amount}</p>
@@ -132,7 +134,9 @@ export default function BillingPage() {
                     }`}>
                       {invoice.status}
                     </span>
-                    <Button variant="ghost" size="sm">View</Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href={`/billing/invoices/${invoice.id}`}>View</Link>
+                    </Button>
                   </div>
                 </div>
               ))}

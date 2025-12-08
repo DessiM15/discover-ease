@@ -491,3 +491,115 @@ export const notifications = pgTable('notifications', {
   timestamp: timestamp('timestamp').defaultNow().notNull(),
 });
 
+// Team Invites table
+export const teamInvites = pgTable('team_invites', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  firmId: uuid('firm_id').references(() => firms.id, { onDelete: 'cascade' }).notNull(),
+  email: text('email').notNull(),
+  role: userRoleEnum('role').notNull(),
+  invitedById: uuid('invited_by_id').references(() => users.id),
+  token: text('token').notNull().unique(),
+  status: text('status').default('pending').notNull(),
+  expiresAt: timestamp('expires_at').notNull(),
+  acceptedAt: timestamp('accepted_at'),
+  lastSentAt: timestamp('last_sent_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// Calendar Integrations table
+export const calendarIntegrations = pgTable('calendar_integrations', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  provider: text('provider').notNull(),
+  accessToken: text('access_token').notNull(),
+  refreshToken: text('refresh_token'),
+  expiresAt: timestamp('expires_at'),
+  calendarId: text('calendar_id').default('primary'),
+  isEnabled: boolean('is_enabled').default(true).notNull(),
+  lastSyncAt: timestamp('last_sync_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// Calendar Shares table
+export const calendarShares = pgTable('calendar_shares', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  ownerUserId: uuid('owner_user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  sharedWithUserId: uuid('shared_with_user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  permissions: text('permissions').default('read').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+// Integrations table (Slack, Teams, etc.)
+export const integrations = pgTable('integrations', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  firmId: uuid('firm_id').references(() => firms.id, { onDelete: 'cascade' }).notNull(),
+  provider: text('provider').notNull(),
+  accessToken: text('access_token'),
+  refreshToken: text('refresh_token'),
+  webhookUrl: text('webhook_url'),
+  teamId: text('team_id'),
+  teamName: text('team_name'),
+  defaultChannel: text('default_channel'),
+  isEnabled: boolean('is_enabled').default(true).notNull(),
+  settings: jsonb('settings'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// Workflow Executions table
+export const workflowExecutions = pgTable('workflow_executions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  workflowId: uuid('workflow_id').references(() => workflows.id, { onDelete: 'cascade' }).notNull(),
+  firmId: uuid('firm_id').references(() => firms.id, { onDelete: 'cascade' }).notNull(),
+  triggerEvent: jsonb('trigger_event'),
+  status: text('status').default('running').notNull(),
+  errorMessage: text('error_message'),
+  startedAt: timestamp('started_at').defaultNow().notNull(),
+  completedAt: timestamp('completed_at'),
+});
+
+// Scheduled Workflow Steps table
+export const scheduledWorkflowSteps = pgTable('scheduled_workflow_steps', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  workflowId: uuid('workflow_id').references(() => workflows.id, { onDelete: 'cascade' }).notNull(),
+  stepId: text('step_id').notNull(),
+  eventData: jsonb('event_data').notNull(),
+  executeAt: timestamp('execute_at').notNull(),
+  executedAt: timestamp('executed_at'),
+  status: text('status').default('pending').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+// Discovery Share Links table
+export const discoveryShareLinks = pgTable('discovery_share_links', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  requestId: uuid('request_id').references(() => discoveryRequests.id, { onDelete: 'cascade' }).notNull(),
+  token: text('token').notNull().unique(),
+  recipientName: text('recipient_name').notNull(),
+  recipientEmail: text('recipient_email').notNull(),
+  expiresAt: timestamp('expires_at').notNull(),
+  maxUploads: integer('max_uploads'),
+  currentUploads: integer('current_uploads').default(0).notNull(),
+  instructions: text('instructions'),
+  isActive: boolean('is_active').default(true).notNull(),
+  createdById: uuid('created_by_id').references(() => users.id),
+  lastSentAt: timestamp('last_sent_at'),
+  lastAccessedAt: timestamp('last_accessed_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// Discovery Uploads table
+export const discoveryUploads = pgTable('discovery_uploads', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  shareLinkId: uuid('share_link_id').references(() => discoveryShareLinks.id, { onDelete: 'cascade' }).notNull(),
+  documentId: uuid('document_id').references(() => documents.id, { onDelete: 'cascade' }).notNull(),
+  requestId: uuid('request_id').references(() => discoveryRequests.id, { onDelete: 'cascade' }).notNull(),
+  uploaderName: text('uploader_name').notNull(),
+  uploaderEmail: text('uploader_email').notNull(),
+  notes: text('notes'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
