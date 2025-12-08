@@ -48,8 +48,8 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
     if (user) {
       setFormData({
         role: user.role,
-        billing_rate: user.billing_rate || "",
-        is_active: user.is_active,
+        billing_rate: user.billingRate || "",
+        is_active: user.isActive,
       });
     }
   }, [user]);
