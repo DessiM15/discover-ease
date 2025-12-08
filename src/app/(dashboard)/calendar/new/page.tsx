@@ -219,7 +219,7 @@ export default function NewEventPage() {
                 <SelectItem value="none">None</SelectItem>
                 {cases.map((c) => (
                   <SelectItem key={c.id} value={c.id}>
-                    {c.case_number} - {c.name}
+                    {c.caseNumber} - {c.name}
                   </SelectItem>
                 ))}
               </SelectContent>
