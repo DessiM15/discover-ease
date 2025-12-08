@@ -20,7 +20,9 @@ import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import Link from "next/link";
 
-const ROLES = [
+type UserRole = "owner" | "attorney" | "paralegal" | "secretary" | "admin" | "billing";
+
+const ROLES: { value: UserRole; label: string }[] = [
   { value: "owner", label: "Owner" },
   { value: "admin", label: "Admin" },
   { value: "attorney", label: "Attorney" },
@@ -51,7 +53,13 @@ export default function InviteUserPage() {
 
   const firmId = userData?.firm_id;
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    email: string;
+    first_name: string;
+    last_name: string;
+    role: UserRole;
+    billing_rate: string;
+  }>({
     email: "",
     first_name: "",
     last_name: "",
@@ -140,7 +148,7 @@ export default function InviteUserPage() {
             <Label htmlFor="role">Role *</Label>
             <Select
               value={formData.role}
-              onValueChange={(value) => setFormData({ ...formData, role: value })}
+              onValueChange={(value) => setFormData({ ...formData, role: value as UserRole })}
             >
               <SelectTrigger className="mt-1">
                 <SelectValue />
