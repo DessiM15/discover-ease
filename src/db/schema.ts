@@ -603,3 +603,25 @@ export const discoveryUploads = pgTable('discovery_uploads', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+// User Integrations table (personal email/calendar connections per user)
+export const userIntegrations = pgTable('user_integrations', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  provider: text('provider').notNull(), // 'microsoft' or 'google'
+  accessToken: text('access_token').notNull(),
+  refreshToken: text('refresh_token'),
+  email: text('email'), // Connected account email
+  displayName: text('display_name'), // User's name from provider
+  providerUserId: text('provider_user_id'), // User ID from Microsoft/Google
+  picture: text('picture'), // Profile picture URL
+  expiresAt: timestamp('expires_at'),
+  scopes: text('scopes').array(), // Granted OAuth scopes
+  isEmailEnabled: boolean('is_email_enabled').default(true).notNull(),
+  isCalendarEnabled: boolean('is_calendar_enabled').default(true).notNull(),
+  lastEmailSync: timestamp('last_email_sync'),
+  lastCalendarSync: timestamp('last_calendar_sync'),
+  syncSettings: jsonb('sync_settings'), // Custom sync preferences
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
