@@ -138,3 +138,12 @@ export default function PrivacyPage() {
   );
 }
 
+
+
+
+
+
+
+
+
+

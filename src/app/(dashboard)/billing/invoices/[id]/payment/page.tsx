@@ -48,3 +48,12 @@ export default function RecordPaymentPage({ params }: { params: Promise<{ id: st
   );
 }
 
+
+
+
+
+
+
+
+
+

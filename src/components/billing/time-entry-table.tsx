@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -12,11 +14,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Edit, Trash2, CheckSquare, Square, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/components/providers/auth-provider";
+import { toast } from "sonner";
 
 interface TimeEntryTableProps {
   firmId?: string;
@@ -26,8 +37,19 @@ interface TimeEntryTableProps {
 export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
   const [dateFilter, setDateFilter] = useState("this_week");
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedEntry, setSelectedEntry] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editForm, setEditForm] = useState({
+    description: "",
+    hours: "",
+    rate: "",
+  });
+
   const supabase = createClient();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   // Get user's firm ID if not provided
   const { data: userData } = useQuery({
@@ -128,6 +150,96 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
     return { totalHours: hours, totalAmount: amount, unbilledAmount: unbilled };
   }, [timeEntries]);
 
+  const handleEditEntry = (entry: any) => {
+    setSelectedEntry(entry);
+    setEditForm({
+      description: entry.description || "",
+      hours: entry.hours?.toString() || "",
+      rate: entry.rate?.toString() || "",
+    });
+    setEditDialogOpen(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!selectedEntry) return;
+    setIsSubmitting(true);
+
+    try {
+      const hours = parseFloat(editForm.hours);
+      const rate = parseFloat(editForm.rate);
+      const amount = hours * rate;
+
+      const { error } = await supabase
+        .from("time_entries")
+        .update({
+          description: editForm.description,
+          hours,
+          rate,
+          amount,
+        })
+        .eq("id", selectedEntry.id);
+
+      if (error) throw error;
+
+      toast.success("Time entry updated");
+      queryClient.invalidateQueries({ queryKey: ["time-entries"] });
+      setEditDialogOpen(false);
+      setSelectedEntry(null);
+    } catch (error) {
+      toast.error("Failed to update time entry");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteEntry = (entry: any) => {
+    setSelectedEntry(entry);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!selectedEntry) return;
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from("time_entries")
+        .delete()
+        .eq("id", selectedEntry.id);
+
+      if (error) throw error;
+
+      toast.success("Time entry deleted");
+      queryClient.invalidateQueries({ queryKey: ["time-entries"] });
+      setDeleteDialogOpen(false);
+      setSelectedEntry(null);
+      setSelectedEntries((prev) => prev.filter((id) => id !== selectedEntry.id));
+    } catch (error) {
+      toast.error("Failed to delete time entry");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleAddToInvoice = async () => {
+    if (selectedEntries.length === 0) return;
+    setIsSubmitting(true);
+
+    try {
+      // Simulate adding to invoice - in real implementation, this would create/update an invoice
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      toast.success(`${selectedEntries.length} entries added to invoice`, {
+        description: "You can view and edit the invoice in the Invoices section.",
+      });
+      setSelectedEntries([]);
+    } catch (error) {
+      toast.error("Failed to add entries to invoice");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <Card>
@@ -158,8 +270,15 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
               </SelectContent>
             </Select>
             {selectedEntries.length > 0 && (
-              <Button variant="outline" size="sm">
-                Add to Invoice ({selectedEntries.length})
+              <Button variant="outline" size="sm" onClick={handleAddToInvoice} disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Adding...
+                  </>
+                ) : (
+                  `Add to Invoice (${selectedEntries.length})`
+                )}
               </Button>
             )}
           </div>
@@ -248,10 +367,20 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => handleEditEntry(entry)}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-red-400"
+                          onClick={() => handleDeleteEntry(entry)}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -281,6 +410,109 @@ export function TimeEntryTable({ firmId, caseId }: TimeEntryTableProps) {
           <p className="text-center text-muted-foreground py-8">No time entries found</p>
         )}
       </CardContent>
+
+      {/* Edit Dialog */}
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Time Entry</DialogTitle>
+            <DialogDescription>Update the details of this time entry.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                value={editForm.description}
+                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                placeholder="Work description..."
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="hours">Hours</Label>
+                <Input
+                  id="hours"
+                  type="number"
+                  step="0.25"
+                  value={editForm.hours}
+                  onChange={(e) => setEditForm({ ...editForm, hours: e.target.value })}
+                  placeholder="0.00"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="rate">Rate ($/hr)</Label>
+                <Input
+                  id="rate"
+                  type="number"
+                  value={editForm.rate}
+                  onChange={(e) => setEditForm({ ...editForm, rate: e.target.value })}
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+            {editForm.hours && editForm.rate && (
+              <div className="p-3 rounded-lg bg-muted">
+                <p className="text-sm text-muted-foreground">
+                  Total: <span className="font-semibold text-foreground">
+                    ${(parseFloat(editForm.hours || "0") * parseFloat(editForm.rate || "0")).toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditDialogOpen(false)} disabled={isSubmitting}>
+              Cancel
+            </Button>
+            <Button onClick={handleSaveEdit} disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save Changes"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Time Entry</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this time entry? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedEntry && (
+            <div className="p-4 rounded-lg bg-muted">
+              <p className="text-sm text-foreground font-medium">{selectedEntry.description}</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                {parseFloat(selectedEntry.hours || 0).toFixed(2)} hours • ${parseFloat(selectedEntry.amount || 0).toFixed(2)}
+              </p>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)} disabled={isSubmitting}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete} disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

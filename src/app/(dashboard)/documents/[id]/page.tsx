@@ -263,3 +263,12 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
   );
 }
 
+
+
+
+
+
+
+
+
+

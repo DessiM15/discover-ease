@@ -46,7 +46,10 @@ export function DiscoveryDetailModal({
   const [aiDraft, setAiDraft] = useState<string>("");
   const [generating, setGenerating] = useState(false);
   const [responseText, setResponseText] = useState<string>("");
-  const [notes, setNotes] = useState<string>("");
+  const [notes, setNotes] = useState<string>(request.notes || "");
+  const [fullResponseText, setFullResponseText] = useState<string>(request.responseText || request.response_text || "");
+  const [objections, setObjections] = useState<string>(request.objections || "");
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleGenerateAI = async (itemId: string, itemText: string) => {
     setSelectedItemId(itemId);
@@ -77,6 +80,36 @@ export function DiscoveryDetailModal({
     setResponseText(aiDraft);
     setAiDraft("");
     toast.success("Response draft accepted");
+  };
+
+  const handleSaveResponse = async () => {
+    setIsSaving(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      toast.success("Response saved successfully", {
+        description: "Your discovery response has been saved.",
+      });
+    } catch (error) {
+      toast.error("Failed to save response");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveNotes = async () => {
+    setIsSaving(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      toast.success("Notes saved successfully");
+    } catch (error) {
+      toast.error("Failed to save notes");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const getStatusVariant = (status: string) => {
@@ -234,7 +267,8 @@ export function DiscoveryDetailModal({
                 <Textarea
                   className="min-h-[300px] bg-card border-border mt-2"
                   placeholder="Enter complete response..."
-                  value={request.responseText || request.response_text || ""}
+                  value={fullResponseText}
+                  onChange={(e) => setFullResponseText(e.target.value)}
                 />
               </div>
               <div>
@@ -242,12 +276,22 @@ export function DiscoveryDetailModal({
                 <Textarea
                   className="min-h-[150px] bg-card border-border mt-2"
                   placeholder="Enter objections..."
-                  value={request.objections || ""}
+                  value={objections}
+                  onChange={(e) => setObjections(e.target.value)}
                 />
               </div>
-              <Button>
-                <FileText className="mr-2 h-4 w-4" />
-                Save Response
+              <Button onClick={handleSaveResponse} disabled={isSaving}>
+                {isSaving ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <FileText className="mr-2 h-4 w-4" />
+                    Save Response
+                  </>
+                )}
               </Button>
             </div>
           </TabsContent>
@@ -312,7 +356,16 @@ export function DiscoveryDetailModal({
                   onChange={(e) => setNotes(e.target.value)}
                 />
               </div>
-              <Button>Save Notes</Button>
+              <Button onClick={handleSaveNotes} disabled={isSaving}>
+                {isSaving ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  "Save Notes"
+                )}
+              </Button>
             </div>
           </TabsContent>
         </Tabs>

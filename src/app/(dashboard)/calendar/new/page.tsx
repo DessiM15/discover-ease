@@ -413,3 +413,12 @@ export default function NewEventPage() {
   );
 }
 
+
+
+
+
+
+
+
+
+

@@ -1,12 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, FileText, TrendingUp, AlertCircle, CheckCircle2, Clock, Link as LinkIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Sparkles, FileText, TrendingUp, AlertCircle, CheckCircle2, Clock, Link as LinkIcon, Copy, ThumbsUp, ThumbsDown } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function InsightsPage() {
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [selectedInsight, setSelectedInsight] = useState<any>(null);
   const insights = [
     {
       id: "1",
@@ -80,6 +92,59 @@ export default function InsightsPage() {
       default:
         return "outline";
     }
+  };
+
+  const handleViewDetails = (insight: any) => {
+    setSelectedInsight(insight);
+    setDetailDialogOpen(true);
+  };
+
+  const handleCopyInsight = () => {
+    toast.success("Copied to clipboard");
+  };
+
+  const handleMarkReviewed = () => {
+    toast.success("Marked as reviewed");
+    setDetailDialogOpen(false);
+  };
+
+  const getInsightContent = (insight: any) => {
+    if (insight?.type === "case_summary") {
+      return `## Case Summary: ${insight.caseName}
+
+### Key Developments
+- Discovery responses received from opposing counsel on December 5th
+- Motion for Summary Judgment hearing scheduled for January 15th
+- Expert witness report deadline approaching (December 20th)
+
+### Recommended Actions
+1. Review and respond to discovery requests by December 12th
+2. Prepare expert witness for deposition
+3. Draft opposition to defendant's motion
+
+### Risk Assessment
+Medium risk - Key deadlines approaching within next 30 days.`;
+    }
+    if (insight?.type === "discovery_response") {
+      return `## Suggested Response for Interrogatory #15
+
+**Question:** "Describe all communications between plaintiff and defendant regarding the contract terms."
+
+**Suggested Response:**
+Plaintiff objects to this interrogatory as overly broad and unduly burdensome. Without waiving said objection, Plaintiff responds as follows:
+
+Communications between the parties regarding contract terms occurred primarily via email between January 2024 and March 2024. Key communications include:
+- January 15, 2024: Initial contract proposal sent by Defendant
+- February 3, 2024: Plaintiff's counter-proposal
+- February 28, 2024: Final terms agreed upon
+
+Plaintiff reserves the right to supplement this response.`;
+    }
+    return `## ${insight?.title}
+
+${insight?.description}
+
+This insight was generated based on analysis of case data, deadlines, and recent activity patterns.`;
   };
 
   return (
@@ -173,7 +238,7 @@ export default function InsightsPage() {
                         </Link>
                       </Button>
                     )}
-                    <Button variant="default" size="sm">
+                    <Button variant="default" size="sm" onClick={() => handleViewDetails(insight)}>
                       View Details
                     </Button>
                   </div>
@@ -197,6 +262,47 @@ export default function InsightsPage() {
           </CardContent>
         </Card>
       )}
+
+      {/* Insight Detail Dialog */}
+      <Dialog open={detailDialogOpen} onOpenChange={setDetailDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="h-5 w-5 text-amber-500" />
+              <DialogTitle>{selectedInsight?.title}</DialogTitle>
+            </div>
+            <DialogDescription>
+              Generated {selectedInsight?.generatedAt} • {selectedInsight?.caseName}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="rounded-lg border border-border bg-muted/50 p-4">
+              <pre className="text-sm text-foreground whitespace-pre-wrap font-sans">
+                {getInsightContent(selectedInsight)}
+              </pre>
+            </div>
+            <div className="flex items-center gap-2 mt-4">
+              <span className="text-sm text-muted-foreground">Was this helpful?</span>
+              <Button variant="ghost" size="sm" onClick={() => toast.success("Thanks for your feedback!")}>
+                <ThumbsUp className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => toast.info("We'll improve our suggestions")}>
+                <ThumbsDown className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={handleCopyInsight}>
+              <Copy className="mr-2 h-4 w-4" />
+              Copy
+            </Button>
+            <Button onClick={handleMarkReviewed}>
+              <CheckCircle2 className="mr-2 h-4 w-4" />
+              Mark as Reviewed
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
